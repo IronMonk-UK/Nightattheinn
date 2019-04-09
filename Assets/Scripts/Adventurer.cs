@@ -9,7 +9,8 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] string className;
 
 	[Header("Floats & Integers")]
-	[SerializeField] float moveSpeed = 4f;
+	[SerializeField] float attackSpeed;
+	[SerializeField] float moveSpeed;
 	[SerializeField] int health;
 	[SerializeField] int mana;
 	[SerializeField] int damage;
@@ -23,7 +24,6 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] GameEvent primaryAttackEvent;
 
 	float nextAttackTime;
-	float attackSpeed = 2;
 
 	bool downed = false;
 
@@ -91,7 +91,11 @@ public class Adventurer : MonoBehaviour {
 	}
 
 	private void Attack() {
-		if (Input.GetButton("Fire1") && GameManager.gm._Time >= nextAttackTime) { SpawnMageBullet(); }
+		//if (Input.GetButton("Fire1") && GameManager.gm._Time >= nextAttackTime) { SpawnMageBullet(); }
+		if (Input.GetButton("Fire1") && GameManager.gm._Time >= nextAttackTime) {
+			primaryAttackData.Attack(transform.position, transform.rotation, transform.eulerAngles.y, gameObject);
+			nextAttackTime = GameManager.gm._Time + attackSpeed;
+		}
 		if (Input.GetButton("Fire2")) {
 			Debug.Log("Fire 2");
 		}
@@ -99,15 +103,15 @@ public class Adventurer : MonoBehaviour {
 			Debug.Log("Fire 3");
 		}
 	}
-
+	/*
 	private void SpawnMageBullet() {
 		Vector3 spawnPoint = transform.position + (transform.rotation * new Vector3(0.75f, 0, -0.75f));
 		Bullet instBul = Instantiate(bullet, spawnPoint, Quaternion.Euler(90, transform.eulerAngles.y - 45, 0)).GetComponent<Bullet>();
 		instBul.Adventurer = gameObject;
 		instBul.Damage = damage;
-		nextAttackTime = GameManager.gm._Time + 2;
+		nextAttackTime = GameManager.gm._Time + attackSpeed;
 	}
-
+	*/
 	private void adventurerDowned() {
 		downed = true;
 	}

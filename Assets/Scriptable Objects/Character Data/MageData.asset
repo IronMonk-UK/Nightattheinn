@@ -17,6 +17,6 @@ MonoBehaviour:
   attackSpeed: 5
   health: 10
   mana: 30
-  primarySkill: {fileID: 0}
+  primarySkill: {fileID: 11400000, guid: cdd9f09ef81b4e24fafc7a2ddfb72c24, type: 2}
   secondarySkill: {fileID: 0}
   adventurerClass: 0

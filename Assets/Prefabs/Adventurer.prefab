@@ -92,10 +92,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb64369dfd38725438d88af208263611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bullet: {fileID: 1237832826086430, guid: 0a056ba8c8d412d4b8de104a4a2d53e0, type: 3}
+  adventurerClass: 0
+  className: 
+  attackSpeed: 2
   moveSpeed: 15
   health: 5
+  mana: 0
   damage: 0
+  bullet: {fileID: 1237832826086430, guid: 0a056ba8c8d412d4b8de104a4a2d53e0, type: 3}
+  characterClassData: {fileID: 11400000, guid: 091b543b154687c49ba3dd2331070629, type: 2}
+  primaryAttackData: {fileID: 0}
+  primaryAttackEvent: {fileID: 0}
 --- !u!65 &65350893732419712
 BoxCollider:
   m_ObjectHideFlags: 0
