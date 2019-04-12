@@ -23,6 +23,9 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] SkillData primaryAttackData;
 	[SerializeField] GameEvent primaryAttackEvent;
 
+	[SerializeField]
+	GameManager instance;
+
 	float nextAttackTime;
 
 	bool downed = false;
@@ -51,6 +54,10 @@ public class Adventurer : MonoBehaviour {
 		ChangeClass();
 	}
 
+	private void Start() {
+		GameManager.instance.Adventurers.Add(gameObject);
+	}
+
 	private void Update() {
 		ChangeClassDebug();
 		if (!downed) {
@@ -63,13 +70,13 @@ public class Adventurer : MonoBehaviour {
 
 	private void ChangeClassDebug() {
 		if (Input.GetKeyDown(KeyCode.Alpha1)) {
-			CharacterClassData = GameManager.gm.Characters[0]; //Mage
+			CharacterClassData = GameManager.instance.Characters[0]; //Mage
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha2)) {
-			CharacterClassData = GameManager.gm.Characters[1]; //Ranger
+			CharacterClassData = GameManager.instance.Characters[1]; //Ranger
 		}
 		if (Input.GetKeyDown(KeyCode.Alpha3)) {
-			CharacterClassData = GameManager.gm.Characters[2]; //Warrior
+			CharacterClassData = GameManager.instance.Characters[2]; //Warrior
 		}
 	}
 
@@ -91,10 +98,9 @@ public class Adventurer : MonoBehaviour {
 	}
 
 	private void Attack() {
-		//if (Input.GetButton("Fire1") && GameManager.gm._Time >= nextAttackTime) { SpawnMageBullet(); }
-		if (Input.GetButton("Fire1") && GameManager.gm._Time >= nextAttackTime) {
+		if (Input.GetButton("Fire1") && GameManager.instance._Time >= nextAttackTime) {
 			primaryAttackData.Attack(transform.position, transform.rotation, transform.eulerAngles.y, gameObject);
-			nextAttackTime = GameManager.gm._Time + attackSpeed;
+			nextAttackTime = GameManager.instance._Time + attackSpeed;
 		}
 		if (Input.GetButton("Fire2")) {
 			Debug.Log("Fire 2");
@@ -103,15 +109,6 @@ public class Adventurer : MonoBehaviour {
 			Debug.Log("Fire 3");
 		}
 	}
-	/*
-	private void SpawnMageBullet() {
-		Vector3 spawnPoint = transform.position + (transform.rotation * new Vector3(0.75f, 0, -0.75f));
-		Bullet instBul = Instantiate(bullet, spawnPoint, Quaternion.Euler(90, transform.eulerAngles.y - 45, 0)).GetComponent<Bullet>();
-		instBul.Adventurer = gameObject;
-		instBul.Damage = damage;
-		nextAttackTime = GameManager.gm._Time + attackSpeed;
-	}
-	*/
 	private void adventurerDowned() {
 		downed = true;
 	}

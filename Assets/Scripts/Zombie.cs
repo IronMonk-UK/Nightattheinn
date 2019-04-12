@@ -19,22 +19,22 @@ public class Zombie : MonoBehaviour {
 	
 	void Update () {
 		float step = speed * Time.deltaTime;
-			transform.LookAt(GetClosestEnemy(GameManager.gm.Adventurers));
-			transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.gm.Adventurers).position, step);
+		transform.LookAt(GetClosestEnemy(GameManager.instance.Adventurers));
+		transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
 		
 	}
 
 	private void OnCollisionEnter(Collision col) {
 		if(col.gameObject.tag == "Adventurer") {
 			col.gameObject.GetComponent<Adventurer>().TakeDamage(damage);
-			lastHit = GameManager.gm._Time;
+			lastHit = GameManager.instance._Time;
 		}
 	}
 
 	private void OnCollisionStay(Collision col) {
-		if (col.gameObject.tag == "Adventurer" && GameManager.gm._Time >= lastHit + 2) {
+		if (col.gameObject.tag == "Adventurer" && GameManager.instance._Time >= lastHit + 2) {
 			col.gameObject.GetComponent<Adventurer>().TakeDamage(damage);
-			lastHit = GameManager.gm._Time;
+			lastHit = GameManager.instance._Time;
 		}
 	}
 
@@ -57,7 +57,7 @@ public class Zombie : MonoBehaviour {
 	}
 
 	//Transform takes the adventurers array from GameManager and looks at each of them, determining the closest, non-downed adventurer to them using the magic of maths
-	Transform GetClosestEnemy(GameObject[] adventurers) {
+	Transform GetClosestEnemy(List<GameObject> adventurers) {
 		Transform bestTarget = null;
 		Vector3 currentPos = transform.position;
 		float closestDistanceSqr = Mathf.Infinity;

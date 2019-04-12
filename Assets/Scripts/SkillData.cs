@@ -5,13 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Skill Data", menuName = "Skill Data")]
 public class SkillData : ScriptableObject{
 
-	[SerializeField] string name;
+	[SerializeField] string skillName;
 	[SerializeField] int damage;
 	[SerializeField] GameObject bulletPrefab;
 	[SerializeField] SkillType skillType;
 	[SerializeField] Adventurer.AdventurerClass adventurerClass;
 
-	public string Name { get { return name; } }
+	public string SkillName { get { return skillName; } }
 	public int Damage { get { return damage; } }
 	public GameObject BulletPrefab { get { return bulletPrefab; } }
 	public SkillType _SkillType { get { return skillType; } }

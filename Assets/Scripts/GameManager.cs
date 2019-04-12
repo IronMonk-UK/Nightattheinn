@@ -5,8 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 
 	[Header("Arrays")]
+	[SerializeField] List<GameObject> adventurers;
 	[SerializeField] Vector3[] zombieSpawns;
-	[SerializeField] GameObject[] adventurers;
 	[SerializeField] SkillData[] primarySkills;
 	//0 - Mage | 1 - Ranger | 2 - Warrior
 	[SerializeField] ClassData[] characters;
@@ -20,18 +20,17 @@ public class GameManager : MonoBehaviour {
 	[Header("Debug Tools")]
 	[SerializeField] bool spawnZombies;
 
-	public static GameManager gm;
+	public static GameManager instance;
 	float spawnTime;
 
-	public GameObject[] Adventurers { get { return adventurers; } }
+	public List<GameObject> Adventurers { get { return adventurers; } set { adventurers = value; } }
 	public float _Time { get { return time; } }
 	public SkillData[] PrimarySkills { get { return primarySkills; } }
 	public ClassData[] Characters { get { return characters; } }
 
 	void Awake() {
-		gm = this;
 		DontDestroyOnLoad(gameObject);
-		adventurers = GameObject.FindGameObjectsWithTag("Adventurer");
+		if(instance == null) { instance = this; }
 		spawnTime = Random.Range(1, 10);
 	}
 
