@@ -37,6 +37,8 @@ public class Adventurer : MonoBehaviour {
 
 	public enum AdventurerClass { Mage, Ranger, Warrior }
 
+	public AdventurerClass _AdventurerClass { get { return adventurerClass; } }
+
 	private ClassData CharacterClassData {
 		get {
 			return characterClassData;

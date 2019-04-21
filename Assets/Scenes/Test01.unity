@@ -221,7 +221,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 28ac90205e6b53f439a3300dd7824d29, type: 2}
   time: 0
   zombie: {fileID: 1751320589176948, guid: 14a50a8b77a80e84a8f09ec306091571, type: 3}
-  spawnZombies: 1
+  spawnZombies: 0
+  freezeZombies: 0
 --- !u!4 &188558099
 Transform:
   m_ObjectHideFlags: 0
@@ -427,6 +428,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall Tile X
       objectReference: {fileID: 0}
+    - target: {fileID: 2674700457707362381, guid: 6b4b38d4e782a564581fa7319e788d1f,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 1243451688000748789, guid: 6b4b38d4e782a564581fa7319e788d1f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -518,6 +524,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall Tile Z
       objectReference: {fileID: 0}
+    - target: {fileID: 2045782425085607509, guid: 2bc254ec771667c49ab9bbfe6a5e8283,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
     - target: {fileID: 8275791131594708670, guid: 2bc254ec771667c49ab9bbfe6a5e8283,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -596,6 +607,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Corner Tile
+      objectReference: {fileID: 0}
+    - target: {fileID: 3603663982528791905, guid: 0e76dd98bc202344db90765bad4561a9,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
       objectReference: {fileID: 0}
     - target: {fileID: 6683158390519016842, guid: 0e76dd98bc202344db90765bad4561a9,
         type: 3}

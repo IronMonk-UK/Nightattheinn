@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42ebb77e7f13b84e8f3269039f73894, type: 3}
   m_Name: Mage Bullet
   m_EditorClassIdentifier: 
-  name: Mage Bullet
+  skillName: Mage Bullet
   damage: 5
   bulletPrefab: {fileID: 1237832826086430, guid: 0a056ba8c8d412d4b8de104a4a2d53e0,
     type: 3}

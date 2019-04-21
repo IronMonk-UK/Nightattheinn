@@ -103,6 +103,7 @@ MonoBehaviour:
   characterClassData: {fileID: 11400000, guid: 091b543b154687c49ba3dd2331070629, type: 2}
   primaryAttackData: {fileID: 0}
   primaryAttackEvent: {fileID: 0}
+  instance: {fileID: 0}
 --- !u!65 &65350893732419712
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -130,5 +131,5 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 4
+  m_Constraints: 84
   m_CollisionDetection: 0

@@ -13,14 +13,18 @@ public class Zombie : MonoBehaviour {
 	[SerializeField]
 	int damage;
 
+	public bool followAdventurers = true;
+
 	void Awake () {
 		
 	}
 	
 	void Update () {
 		float step = speed * Time.deltaTime;
-		transform.LookAt(GetClosestEnemy(GameManager.instance.Adventurers));
-		transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
+		if (followAdventurers) {
+			transform.LookAt(GetClosestEnemy(GameManager.instance.Adventurers));
+			transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
+		}
 		
 	}
 
@@ -41,10 +45,11 @@ public class Zombie : MonoBehaviour {
 	//Trigger to detect when a bullet makes contact
 	//Destroys bullet and takes away health
 	private void OnTriggerEnter(Collider col) {
-		Debug.Log("Hit!");
 		if(col.gameObject.tag == "AdventurerProjectile") {
-			col.GetComponent<Bullet>().DestroyBullet();
-			health--;
+			Bullet bullet = col.GetComponent<Bullet>();
+			bullet.TriggerEffects();
+			bullet.EnemiesHit++;
+			health -= bullet.Damage;
 			if(health <= 0) {
 				zombieDead();
 			}

@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour {
 
 	[Header("Debug Tools")]
 	[SerializeField] bool spawnZombies;
+	[SerializeField] bool freezeZombies;
 
 	public static GameManager instance;
 	float spawnTime;
@@ -46,6 +47,9 @@ public class GameManager : MonoBehaviour {
 	void SpawnZombie() {
 		spawnTime = time + Random.Range(1, 10);
 		int i = Random.Range(0, zombieSpawns.Length);
-		Instantiate(zombie, zombieSpawns[i], Quaternion.identity);
+		Zombie zombieClass = Instantiate(zombie, zombieSpawns[i], Quaternion.identity).GetComponent<Zombie>();
+		if (freezeZombies) {
+			zombieClass.followAdventurers = false;
+		}
 	}
 }
