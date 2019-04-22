@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\GameEventListener.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\SkillData.cs" />
+    <Compile Include="Assets\Scripts\Weapon.cs" />
     <Compile Include="Assets\Scripts\Zombie.cs" />
     <Reference Include="Unity.PackageManagerUI.Editor">
       <HintPath>C:/Users/calum/Documents/PROJECTS/Night at the Inn/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>

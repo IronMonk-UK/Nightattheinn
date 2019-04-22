@@ -4,41 +4,31 @@ using UnityEngine;
 
 public class Zombie : MonoBehaviour {
 
-	[SerializeField]
-	float speed;
+	[SerializeField] float speed;
 	float lastHit;
 
-	[SerializeField]
-	int health;
-	[SerializeField]
-	int damage;
+	[SerializeField] int health;
+	[SerializeField] int damage;
 
 	public bool followAdventurers = true;
 
 	bool knocked = false;
 	float knockedTime;
-
-	Rigidbody rb;
+	Vector3 knockback;
 
 	void Awake () {
-		rb = gameObject.GetComponent<Rigidbody>();
 	}
 	
 	void FixedUpdate () {
 		float step = speed * Time.deltaTime;
-		if (followAdventurers) {
+		if (followAdventurers && !knocked) {
 			transform.LookAt(GetClosestEnemy(GameManager.instance.Adventurers));
-			//transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
-			Vector3 direction = GetClosestEnemy(GameManager.instance.Adventurers).position - transform.position;
-			float magnitude = direction.magnitude;
-			direction.Normalize();
-			Vector3 velocity = direction * speed;
-			rb.velocity = new Vector3(velocity.x, 0, velocity.z);
+			transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
 		}
 		if(knocked) {
+			transform.Translate(knockback * (Time.deltaTime * 10));
 			knockedTime += Time.deltaTime;
 			if(knockedTime >= 1) {
-				rb.velocity = new Vector3(0, 0, 0);
 				knocked = false;
 				knockedTime = 0;
 			}
@@ -46,16 +36,14 @@ public class Zombie : MonoBehaviour {
 	}
 
 	private void OnCollisionEnter(Collision col) {
-		if(col.gameObject.tag == "Adventurer") {
-			col.gameObject.GetComponent<Adventurer>().TakeDamage(damage);
-			lastHit = GameManager.instance._Time;
+		if(col.gameObject.tag == "Adventurer" && GameManager.instance._Time >= lastHit + 2) {
+			DealDamage(col);
 		}
 	}
 
 	private void OnCollisionStay(Collision col) {
 		if (col.gameObject.tag == "Adventurer" && GameManager.instance._Time >= lastHit + 2) {
-			col.gameObject.GetComponent<Adventurer>().TakeDamage(damage);
-			lastHit = GameManager.instance._Time;
+			DealDamage(col);
 		}
 	}
 
@@ -63,27 +51,44 @@ public class Zombie : MonoBehaviour {
 	//Destroys bullet and takes away health
 	private void OnTriggerEnter(Collider col) {
 		if(col.gameObject.tag == "AdventurerProjectile") {
-			Bullet bullet = col.GetComponent<Bullet>();
-			bullet.TriggerEffects();
-			bullet.EnemiesHit++;
-			health -= bullet.Damage;
-			if(health <= 0) {
-				//zombieDead();
-			}
+			GetShot(col);
 		}
-		if(col.gameObject.tag == "AdventurerWeapon") {
-			Vector3 knockback = gameObject.transform.position - col.transform.position;
-			rb.AddForce(knockback * 10, ForceMode.VelocityChange);
-			knocked = true;
-			health--;
-			if(health <= 0) {
-				zombieDead();
-			}
+		if (col.gameObject.tag == "AdventurerWeapon") {
+			GetHit(col);
 		}
 	}
 
+	private void GetHit(Collider col) {
+		Weapon weapon = col.GetComponent<Weapon>();
+		knockback = gameObject.transform.position - col.transform.position;
+		knockback = new Vector3(knockback.x, 0, knockback.z);
+		knocked = true;
+		health -= weapon.Damage;
+		CheckIfDead();
+	}
+
+	private void GetShot(Collider col) {
+		Bullet bullet = col.GetComponent<Bullet>();
+		bullet.TriggerEffects();
+		bullet.EnemiesHit++;
+		health -= bullet.Damage;
+		CheckIfDead();
+	}
+
+	private void CheckIfDead() {
+		if (health <= 0) {
+			ZombieDead();
+		}
+	}
+
+	private void DealDamage(Collision col) {
+		Debug.Log("Adventurer hit!");
+		col.gameObject.GetComponent<Adventurer>().TakeDamage(damage);
+		lastHit = GameManager.instance._Time;
+	}
+
 	//Simple function for now, designed as such for potential modular coding later
-	private void zombieDead() {
+	private void ZombieDead() {
 		Destroy(gameObject);
 	}
 
@@ -102,7 +107,6 @@ public class Zombie : MonoBehaviour {
 				}
 			}
 		}
-
 		return bestTarget;
 	}
 }

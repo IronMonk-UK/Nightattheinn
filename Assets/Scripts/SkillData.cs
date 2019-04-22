@@ -26,8 +26,8 @@ public class SkillData : ScriptableObject{
 		bullet.Damage = damage;
 	}
 
-	public void MeleeAttack(Animator anim) {
-		Debug.Log("Warrior should attack");
+	public void MeleeAttack(Animator anim, GameObject weapon) {
+		weapon.GetComponent<Weapon>().Damage = damage;
 		anim.SetTrigger("Attack");
 	}
 

@@ -14,7 +14,8 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] float moveSpeed;
 	[SerializeField] int health;
 	[SerializeField] int mana;
-	[SerializeField] int damage;
+	[SerializeField] int primaryDamage;
+	[SerializeField] int secondaryDamage;
 
 	[Header("Prefabs")]
 	[SerializeField] GameObject bullet;
@@ -53,7 +54,6 @@ public class Adventurer : MonoBehaviour {
 
 	private void Awake() {
 		anim = gameObject.GetComponent<Animator>();
-		nextAttackTime = attackSpeed;
 		SetMovementVectors();
 		cameraTransform = Camera.main.transform.position;
 		ChangeClass();
@@ -71,6 +71,7 @@ public class Adventurer : MonoBehaviour {
 		} else {
 			Debug.Log("Adventurer is downed!");
 		}
+		Debug.Log("A:" + gameObject.GetComponent<CharacterController>().isGrounded);
 	}
 
 	private void ChangeClassDebug() {
@@ -109,7 +110,8 @@ public class Adventurer : MonoBehaviour {
 				nextAttackTime = GameManager.instance._Time + attackSpeed;
 			} else {
 				anim.ResetTrigger("Attack");
-				primaryAttackData.MeleeAttack(anim);
+				primaryAttackData.MeleeAttack(anim, weapon);
+				nextAttackTime = GameManager.instance._Time + attackSpeed;
 			}
 		}
 		if (Input.GetButton("Fire2")) {
