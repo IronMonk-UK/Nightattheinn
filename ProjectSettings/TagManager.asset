@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - AdventurerProjectile
   - Wall
+  - AdventurerWeapon
+  - Sword
   layers:
   - Default
   - TransparentFX

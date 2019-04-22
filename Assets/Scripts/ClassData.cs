@@ -16,6 +16,7 @@ public class ClassData : ScriptableObject
 	[SerializeField] SkillData primarySkill;
 	[SerializeField] SkillData secondarySkill;
 	[SerializeField] Adventurer.AdventurerClass adventurerClass;
+	[SerializeField] GameObject weapon;
 
 	public string ClassName { get { return className; } }
 	public float MovementSpeed { get { return movementSpeed; } }
@@ -25,6 +26,7 @@ public class ClassData : ScriptableObject
 	public SkillData PrimarySkill { get { return primarySkill; } }
 	public SkillData SecondarySkill { get { return secondarySkill; } }
 	public Adventurer.AdventurerClass _AdventurerClass { get { return adventurerClass; } }
+	public GameObject Weapon { get { return weapon; } }
 
 
 }

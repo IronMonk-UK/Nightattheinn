@@ -19,11 +19,16 @@ public class SkillData : ScriptableObject{
 
 	public enum SkillType { Primary, Secondary, CC }
 
-	public void Attack(Vector3 position, Quaternion rotation, float eulerY, GameObject adventurer) {
+	public void RangedAttack(Vector3 position, Quaternion rotation, float eulerY, GameObject adventurer) {
 		Vector3 spawnPoint = position + (rotation * new Vector3(0.75f, 0, -0.75f));
 		Bullet bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.Euler(90, eulerY - 45, 0)).GetComponent<Bullet>();
 		bullet.Adventurer = adventurer;
 		bullet.Damage = damage;
+	}
+
+	public void MeleeAttack(Animator anim) {
+		Debug.Log("Warrior should attack");
+		anim.SetTrigger("Attack");
 	}
 
 }

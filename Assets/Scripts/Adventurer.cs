@@ -7,6 +7,7 @@ public class Adventurer : MonoBehaviour {
 	[Header("Class")]
 	[SerializeField] AdventurerClass adventurerClass;
 	[SerializeField] string className;
+	[SerializeField] GameObject weapon;
 
 	[Header("Floats & Integers")]
 	[SerializeField] float attackSpeed;
@@ -23,8 +24,10 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] SkillData primaryAttackData;
 	[SerializeField] GameEvent primaryAttackEvent;
 
-	[SerializeField]
-	GameManager instance;
+	[Header("Animation")]
+	[SerializeField] Animator anim;
+ 
+	[SerializeField] GameManager instance;
 
 	float nextAttackTime;
 
@@ -34,10 +37,9 @@ public class Adventurer : MonoBehaviour {
 	Vector3 cameraTransform;
 
 	public bool Downed { get { return downed; } }
-
 	public enum AdventurerClass { Mage, Ranger, Warrior }
-
 	public AdventurerClass _AdventurerClass { get { return adventurerClass; } }
+	public Animator Anim { get { return anim; } }
 
 	private ClassData CharacterClassData {
 		get {
@@ -50,6 +52,7 @@ public class Adventurer : MonoBehaviour {
 	}
 
 	private void Awake() {
+		anim = gameObject.GetComponent<Animator>();
 		nextAttackTime = attackSpeed;
 		SetMovementVectors();
 		cameraTransform = Camera.main.transform.position;
@@ -60,7 +63,7 @@ public class Adventurer : MonoBehaviour {
 		GameManager.instance.Adventurers.Add(gameObject);
 	}
 
-	private void Update() {
+	private void FixedUpdate() {
 		ChangeClassDebug();
 		if (!downed) {
 			Move();
@@ -101,8 +104,13 @@ public class Adventurer : MonoBehaviour {
 
 	private void Attack() {
 		if (Input.GetButton("Fire1") && GameManager.instance._Time >= nextAttackTime) {
-			primaryAttackData.Attack(transform.position, transform.rotation, transform.eulerAngles.y, gameObject);
-			nextAttackTime = GameManager.instance._Time + attackSpeed;
+			if(adventurerClass == AdventurerClass.Mage || adventurerClass == AdventurerClass.Ranger) {
+				primaryAttackData.RangedAttack(transform.position, transform.rotation, transform.eulerAngles.y, gameObject);
+				nextAttackTime = GameManager.instance._Time + attackSpeed;
+			} else {
+				anim.ResetTrigger("Attack");
+				primaryAttackData.MeleeAttack(anim);
+			}
 		}
 		if (Input.GetButton("Fire2")) {
 			Debug.Log("Fire 2");

@@ -15,17 +15,34 @@ public class Zombie : MonoBehaviour {
 
 	public bool followAdventurers = true;
 
+	bool knocked = false;
+	float knockedTime;
+
+	Rigidbody rb;
+
 	void Awake () {
-		
+		rb = gameObject.GetComponent<Rigidbody>();
 	}
 	
-	void Update () {
+	void FixedUpdate () {
 		float step = speed * Time.deltaTime;
 		if (followAdventurers) {
 			transform.LookAt(GetClosestEnemy(GameManager.instance.Adventurers));
-			transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
+			//transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
+			Vector3 direction = GetClosestEnemy(GameManager.instance.Adventurers).position - transform.position;
+			float magnitude = direction.magnitude;
+			direction.Normalize();
+			Vector3 velocity = direction * speed;
+			rb.velocity = new Vector3(velocity.x, 0, velocity.z);
 		}
-		
+		if(knocked) {
+			knockedTime += Time.deltaTime;
+			if(knockedTime >= 1) {
+				rb.velocity = new Vector3(0, 0, 0);
+				knocked = false;
+				knockedTime = 0;
+			}
+		}
 	}
 
 	private void OnCollisionEnter(Collision col) {
@@ -51,9 +68,18 @@ public class Zombie : MonoBehaviour {
 			bullet.EnemiesHit++;
 			health -= bullet.Damage;
 			if(health <= 0) {
+				//zombieDead();
+			}
+		}
+		if(col.gameObject.tag == "AdventurerWeapon") {
+			Vector3 knockback = gameObject.transform.position - col.transform.position;
+			rb.AddForce(knockback * 10, ForceMode.VelocityChange);
+			knocked = true;
+			health--;
+			if(health <= 0) {
 				zombieDead();
 			}
-		}	
+		}
 	}
 
 	//Simple function for now, designed as such for potential modular coding later
