@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42ebb77e7f13b84e8f3269039f73894, type: 3}
   m_Name: Warriors Strike
   m_EditorClassIdentifier: 
-  skillName: Warrior's Strike
-  damage: 5
-  bulletPrefab: {fileID: 0}
   skillType: 0
   adventurerClass: 2
+  skillName: Warrior's Strike
+  damage: 5
+  knockback: 1
+  knockbackForce: 2
+  knockbackTime: 1
+  bulletPrefab: {fileID: 0}
+  attackDegrees: 90
+  attackRadius: 2

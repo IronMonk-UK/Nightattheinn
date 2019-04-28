@@ -26,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1992177792}
-  m_LocalRotation: {x: -0, y: -0.008726558, z: -0, w: 0.999962}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0.5, z: -0.5}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children: []
@@ -103,7 +103,6 @@ GameObject:
   - component: {fileID: 114164660104380978}
   - component: {fileID: 6308960}
   - component: {fileID: 596919237}
-  - component: {fileID: 299866580667942059}
   m_Layer: 0
   m_Name: Adventurer
   m_TagString: Adventurer
@@ -147,13 +146,17 @@ MonoBehaviour:
   moveSpeed: 15
   health: 5
   mana: 0
-  damage: 0
+  primaryDamage: 0
+  secondaryDamage: 0
   bullet: {fileID: 1237832826086430, guid: 0a056ba8c8d412d4b8de104a4a2d53e0, type: 3}
   characterClassData: {fileID: 11400000, guid: 091b543b154687c49ba3dd2331070629, type: 2}
   primaryAttackData: {fileID: 0}
   primaryAttackEvent: {fileID: 0}
   anim: {fileID: 0}
   instance: {fileID: 0}
+  leftDot: 0
+  rightDot: 0
+  zombieDot: 0
 --- !u!95 &6308960
 Animator:
   serializedVersion: 3
@@ -186,24 +189,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!143 &299866580667942059
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1972726410194766}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 1
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7011857233990093650
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,7 +198,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 59095982140231}
-  - component: {fileID: 321841905969482100}
   m_Layer: 0
   m_Name: Weapon
   m_TagString: AdventurerWeapon
@@ -235,19 +219,6 @@ Transform:
   m_Father: {fileID: 4431936539969852}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &321841905969482100
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7011857233990093650}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.2, y: 0.7, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7567048501476307426
 GameObject:
   m_ObjectHideFlags: 0
@@ -273,7 +244,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7567048501476307426}
-  m_LocalRotation: {x: -0, y: -0.008726558, z: -0, w: 0.999962}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []

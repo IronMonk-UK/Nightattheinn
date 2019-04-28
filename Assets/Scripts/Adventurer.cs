@@ -23,7 +23,6 @@ public class Adventurer : MonoBehaviour {
 	[Header("Scriptable Objects")]
 	[SerializeField] ClassData characterClassData;
 	[SerializeField] SkillData primaryAttackData;
-	[SerializeField] GameEvent primaryAttackEvent;
 
 	[Header("Animation")]
 	[SerializeField] Animator anim;
@@ -71,7 +70,6 @@ public class Adventurer : MonoBehaviour {
 		} else {
 			Debug.Log("Adventurer is downed!");
 		}
-		Debug.Log("A:" + gameObject.GetComponent<CharacterController>().isGrounded);
 	}
 
 	private void ChangeClassDebug() {
@@ -110,7 +108,7 @@ public class Adventurer : MonoBehaviour {
 				nextAttackTime = GameManager.instance._Time + attackSpeed;
 			} else {
 				anim.ResetTrigger("Attack");
-				primaryAttackData.MeleeAttack(anim, weapon);
+				primaryAttackData.MeleeAttack(anim, transform.position, transform.rotation, right);
 				nextAttackTime = GameManager.instance._Time + attackSpeed;
 			}
 		}
@@ -143,13 +141,49 @@ public class Adventurer : MonoBehaviour {
 		
 		Vector3 moveRight = right * moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
 		Vector3 moveForward = forward * moveSpeed * Time.deltaTime * Input.GetAxis("Vertical");
-		Vector3 cameraPos = new Vector3(cameraTransform.x + transform.position.x, 17.5f, cameraTransform.z + transform.position.z);
+		Vector3 cameraPos = new Vector3(cameraTransform.x + transform.position.x, cameraTransform.y, cameraTransform.z + transform.position.z);
 		transform.position += moveRight;
 		transform.position += moveForward;
 		Camera.main.transform.position = cameraPos;
 	}
 
-	float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
+	private float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
 		return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
+	}
+
+	// Keeping for further development of the hit radius
+	// Currently takes centre of GO, want to change to far edges
+	// Will help debug later
+	[SerializeField] float leftDot;
+	[SerializeField] float rightDot;
+
+	private void OnDrawGizmos() {
+		if (adventurerClass == AdventurerClass.Warrior) {
+			Gizmos.color = Color.blue;
+			Gizmos.DrawRay(transform.position, (transform.rotation * -right) * 2);
+			Gizmos.color = Color.green;
+			Gizmos.DrawWireSphere(transform.position, 2);
+			Gizmos.color = Color.red;
+
+			float totalFOV = primaryAttackData.AttackDegrees;
+			float rayRange = primaryAttackData.AttackRadius;
+			float halfFOV = totalFOV / 2;
+
+			Vector3 leftRayDirection;
+			Quaternion leftRayRotation = Quaternion.AngleAxis(-halfFOV, Vector3.up);
+			leftRayDirection = leftRayRotation * (transform.rotation * -right);
+			Gizmos.color = Color.red;
+			Gizmos.DrawRay(transform.position, leftRayDirection * rayRange);
+			leftDot = Vector3.Dot(leftRayDirection, transform.rotation * -right);
+			leftDot = Mathf.Acos(leftDot) * Mathf.Rad2Deg;
+
+			Vector3 rightRayDirection;
+			Quaternion rightRayRotation = Quaternion.AngleAxis(halfFOV, Vector3.up);
+			rightRayDirection = rightRayRotation * (transform.rotation * -right);
+			Gizmos.color = Color.yellow;
+			Gizmos.DrawRay(transform.position, rightRayDirection * rayRange);
+			rightDot = Vector3.Dot(rightRayDirection, transform.rotation * -right);
+			rightDot = Mathf.Acos(rightDot) * Mathf.Rad2Deg;
+		}
 	}
 }
