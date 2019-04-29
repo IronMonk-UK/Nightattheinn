@@ -9,10 +9,14 @@ public class SkillData : ScriptableObject{
 	[SerializeField] Adventurer.AdventurerClass adventurerClass;
 	[SerializeField] string skillName;
 	[SerializeField] int damage;
+	[SerializeField] float cooldown;
+	[SerializeField] bool onCooldown;
 	[Header("Statuses")]
 	[SerializeField] bool knockback;
 	[SerializeField] float knockbackForce;
 	[SerializeField] float knockbackTime;
+	[SerializeField] bool stun;
+	[SerializeField] float stunTime;
 	[Header("Ranged Variables")]
 	[SerializeField] GameObject bulletPrefab;
 	[Header("Melee Variables")]
@@ -26,6 +30,8 @@ public class SkillData : ScriptableObject{
 	public Adventurer.AdventurerClass _AdventurerClass { get { return adventurerClass; } }
 	public float AttackDegrees { get { return attackDegrees; } }
 	public float AttackRadius { get { return attackRadius; } }
+	public float Cooldown { get { return cooldown; } }
+	public bool OnCooldown { set { onCooldown = value; } }
 
 	public enum SkillType { Primary, Secondary, CC }
 
@@ -34,6 +40,7 @@ public class SkillData : ScriptableObject{
 		Bullet bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.Euler(90, eulerY - 45, 0)).GetComponent<Bullet>();
 		bullet.Adventurer = adventurer;
 		bullet.Damage = damage;
+		onCooldown = true;
 	}
 
 	public void MeleeAttack(Animator anim, Vector3 centre, Quaternion rotation, Vector3 right) {
@@ -46,14 +53,20 @@ public class SkillData : ScriptableObject{
 			characterToCollider = (c.transform.position - centre).normalized;
 			dot = Vector3.Dot(characterToCollider, rotation * -right);
 			dotToDeg = Mathf.Acos(dot) * Mathf.Rad2Deg;
-			if(c.gameObject.tag == "Enemy") {
+			if(c.gameObject.tag == "Enemy" && !onCooldown) {
 				if(dot >= Mathf.Cos((attackDegrees / 2) * Mathf.Deg2Rad)) {
 					Enemy enemy = c.gameObject.GetComponent<Enemy>();
+					Debug.Log("Dealing " + damage + " Damage.");
 					enemy.Health -= damage;
 					enemy.CheckIfDead();
 					if (knockback) {
-						enemy.Knocked(centre, knockbackTime, knockbackForce);
+						enemy.GetKnocked(centre, knockbackTime, knockbackForce);
 					}
+					if (stun) {
+						enemy.GetStunned(stunTime);
+						Debug.Log("Enemy stunned!");
+					}
+					onCooldown = true;
 				} else {
 					Debug.Log("Target in sphere but not seen!");
 				}

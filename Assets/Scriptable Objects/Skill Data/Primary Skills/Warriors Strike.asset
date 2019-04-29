@@ -16,9 +16,13 @@ MonoBehaviour:
   adventurerClass: 2
   skillName: Warrior's Strike
   damage: 5
+  cooldown: 2
+  onCooldown: 0
   knockback: 1
   knockbackForce: 2
   knockbackTime: 1
+  stun: 0
+  stunTime: 0
   bulletPrefab: {fileID: 0}
-  attackDegrees: 90
+  attackDegrees: 180
   attackRadius: 2

@@ -12,9 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42ebb77e7f13b84e8f3269039f73894, type: 3}
   m_Name: Ranger Arrow
   m_EditorClassIdentifier: 
-  skillName: Ranger Arrow
-  damage: 5
-  bulletPrefab: {fileID: 1237832826086430, guid: 0a056ba8c8d412d4b8de104a4a2d53e0,
-    type: 3}
   skillType: 0
   adventurerClass: 1
+  skillName: Ranger Arrow
+  damage: 5
+  cooldown: 2
+  onCooldown: 0
+  knockback: 0
+  knockbackForce: 0
+  knockbackTime: 0
+  stun: 0
+  stunTime: 0
+  bulletPrefab: {fileID: 1237832826086430, guid: 0a056ba8c8d412d4b8de104a4a2d53e0,
+    type: 3}
+  attackDegrees: 0
+  attackRadius: 0

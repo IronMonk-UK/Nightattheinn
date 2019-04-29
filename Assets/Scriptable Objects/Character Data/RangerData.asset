@@ -18,5 +18,6 @@ MonoBehaviour:
   health: 20
   mana: 20
   primarySkill: {fileID: 11400000, guid: 21d75946ca3b14644b90add2d007a84f, type: 2}
-  secondarySkill: {fileID: 0}
+  secondarySkill: {fileID: 11400000, guid: a32d80d164abbc74baec02f0c8a1151f, type: 2}
   adventurerClass: 1
+  weapon: {fileID: 0}

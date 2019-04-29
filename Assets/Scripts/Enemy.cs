@@ -18,6 +18,10 @@ public class Enemy : MonoBehaviour {
 	float kbForce; // 10
 	float kbTime; // 1
 
+	bool stunned = false;
+	float stunnedTime;
+	float stunTime;
+
 	public int Health { get { return health; } set { health = value; } }
 
 	void Awake () {
@@ -26,17 +30,35 @@ public class Enemy : MonoBehaviour {
 	void FixedUpdate () {
 		float step = speed * Time.deltaTime;
 		if (followAdventurers && !knocked) {
-			transform.LookAt(GetClosestEnemy(GameManager.instance.Adventurers));
-			transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
+			Follow(step);
 		}
-		if(knocked) {
+		CheckForStatuses();
+	}
+
+	private void CheckForStatuses() {
+		if (knocked) {
 			transform.Translate(knockback * (Time.deltaTime * kbForce));
 			knockedTime += Time.deltaTime;
-			if(knockedTime >= kbTime) {
+			if (knockedTime >= kbTime) {
 				knocked = false;
 				knockedTime = 0;
 			}
 		}
+		if (stunned) {
+			Debug.Log("I have been stunned!");
+			followAdventurers = false;
+			stunnedTime += Time.deltaTime;
+			if(stunnedTime >= stunTime) {
+				followAdventurers = true;
+				stunned = false;
+				stunnedTime = 0;
+			}
+		}
+	}
+
+	private void Follow(float step) {
+		transform.LookAt(GetClosestEnemy(GameManager.instance.Adventurers));
+		transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
 	}
 
 	private void OnCollisionEnter(Collision col) {
@@ -57,22 +79,7 @@ public class Enemy : MonoBehaviour {
 		if(col.gameObject.tag == "AdventurerProjectile") {
 			GetShot(col);
 		}
-		/*
-		if (col.gameObject.tag == "AdventurerWeapon") {
-			GetHit(col);
-		}
-		*/
 	}
-	/*
-	private void GetHit(Collider col) {
-		Weapon weapon = col.GetComponent<Weapon>();
-		knockback = gameObject.transform.position - col.transform.position;
-		knockback = new Vector3(knockback.x, 0, knockback.z);
-		knocked = true;
-		health -= weapon.Damage;
-		CheckIfDead();
-	}
-	*/
 
 	private void GetShot(Collider col) {
 		Bullet bullet = col.GetComponent<Bullet>();
@@ -82,12 +89,17 @@ public class Enemy : MonoBehaviour {
 		CheckIfDead();
 	}
 
-	public void Knocked(Vector3 centre, float time, float force) {
+	public void GetKnocked(Vector3 centre, float time, float force) {
 		knockback = gameObject.transform.position - centre;
 		knockback = new Vector3(knockback.x, 0, knockback.z);
 		kbTime = time;
 		kbForce = force;
 		knocked = true;
+	}
+
+	public void GetStunned(float time) {
+		stunned = true;
+		stunTime = time;
 	}
 
 	public void CheckIfDead() {
