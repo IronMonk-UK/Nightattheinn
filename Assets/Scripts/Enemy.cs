@@ -37,10 +37,12 @@ public class Enemy : MonoBehaviour {
 
 	private void CheckForStatuses() {
 		if (knocked) {
-			transform.Translate(knockback * (Time.deltaTime * kbForce));
+			followAdventurers = false;
+			transform.Translate(knockback * (Time.deltaTime * kbForce), Space.World);
 			knockedTime += Time.deltaTime;
 			if (knockedTime >= kbTime) {
 				knocked = false;
+				followAdventurers = true;
 				knockedTime = 0;
 			}
 		}
@@ -49,8 +51,8 @@ public class Enemy : MonoBehaviour {
 			followAdventurers = false;
 			stunnedTime += Time.deltaTime;
 			if(stunnedTime >= stunTime) {
-				followAdventurers = true;
 				stunned = false;
+				followAdventurers = true;
 				stunnedTime = 0;
 			}
 		}
@@ -91,7 +93,7 @@ public class Enemy : MonoBehaviour {
 
 	public void GetKnocked(Vector3 centre, float time, float force) {
 		knockback = gameObject.transform.position - centre;
-		knockback = new Vector3(knockback.x, 0, knockback.z);
+		Debug.Log(knockback);
 		kbTime = time;
 		kbForce = force;
 		knocked = true;
@@ -135,5 +137,10 @@ public class Enemy : MonoBehaviour {
 			}
 		}
 		return bestTarget;
+	}
+
+	private void OnDrawGizmos() {
+		Gizmos.color = Color.blue;
+		Gizmos.DrawRay(transform.position, knockback);
 	}
 }

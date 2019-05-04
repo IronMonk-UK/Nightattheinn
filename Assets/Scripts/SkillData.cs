@@ -11,6 +11,7 @@ public class SkillData : ScriptableObject{
 	[SerializeField] int damage;
 	[SerializeField] float cooldown;
 	[SerializeField] bool onCooldown;
+	[SerializeField] int manaCost;
 	[Header("Statuses")]
 	[SerializeField] bool knockback;
 	[SerializeField] float knockbackForce;
@@ -31,6 +32,7 @@ public class SkillData : ScriptableObject{
 	public float AttackDegrees { get { return attackDegrees; } }
 	public float AttackRadius { get { return attackRadius; } }
 	public float Cooldown { get { return cooldown; } }
+	public int ManaCost { get { return manaCost; } }
 	public bool OnCooldown { set { onCooldown = value; } }
 
 	public enum SkillType { Primary, Secondary, CC }

@@ -18,6 +18,7 @@ MonoBehaviour:
   damage: 3
   cooldown: 3
   onCooldown: 0
+  manaCost: 4
   knockback: 0
   knockbackForce: 0
   knockbackTime: 0

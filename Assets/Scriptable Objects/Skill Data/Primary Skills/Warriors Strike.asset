@@ -18,9 +18,10 @@ MonoBehaviour:
   damage: 5
   cooldown: 2
   onCooldown: 0
+  manaCost: 0
   knockback: 1
-  knockbackForce: 2
-  knockbackTime: 1
+  knockbackForce: 10
+  knockbackTime: 0.3
   stun: 0
   stunTime: 0
   bulletPrefab: {fileID: 0}

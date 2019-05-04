@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 public class Adventurer : MonoBehaviour {
 
 	[Header("Class")]
@@ -13,8 +14,10 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] float primCooldown;
 	[SerializeField] float secCooldown;
 	[SerializeField] float moveSpeed;
-	[SerializeField] int health;
-	[SerializeField] int mana;
+	[SerializeField] int maxHealth;
+	[SerializeField] int currentHealth;
+	[SerializeField] int maxMana;
+	[SerializeField] int currentMana;
 	[SerializeField] int primaryDamage;
 	[SerializeField] int secondaryDamage;
 
@@ -28,6 +31,18 @@ public class Adventurer : MonoBehaviour {
 
 	[Header("Animation")]
 	[SerializeField] Animator anim;
+
+	[Header("UI")]
+	[SerializeField] Text healthText;
+	[SerializeField] Slider healthBar;
+	[SerializeField] Image healthBarFill;
+	Color maxHealthColour = Color.green;
+	Color minHealthColour = Color.red;
+	[SerializeField] Text manaText;
+	[SerializeField] Slider manaBar;
+	[SerializeField] Image manaBarFill;
+	Color maxManaColour = Color.blue;
+	Color minManaColour = Color.cyan;
  
 	[SerializeField] GameManager instance;
 
@@ -97,17 +112,33 @@ public class Adventurer : MonoBehaviour {
 	}
 
 	public void TakeDamage(int dam) {
-		health -= dam;
-		if(health <= 0) {
+		currentHealth -= dam;
+		healthText.text = currentHealth + "/" + maxHealth;
+		healthBar.value = currentHealth;
+		if(currentHealth <= maxHealth / 2) {
+			healthBarFill.color = minHealthColour;
+		}
+		if(currentHealth <= 0) {
 			adventurerDowned();
 		}
 	}
 
 	private void ChangeClass() {
+		maxHealth = characterClassData.Health;
+		currentHealth = maxHealth;
+		healthText.text = currentHealth + "/" + maxHealth;
+		healthBar.maxValue = maxHealth;
+		healthBar.value = maxHealth;
+		healthBarFill.color = maxHealthColour;
+
+		maxMana = characterClassData.Mana;
+		currentMana = maxMana;
+		manaText.text = currentMana + "/" + maxMana;
+		manaBar.maxValue = maxMana;
+		manaBar.value = maxMana;
+		manaBarFill.color = maxManaColour;
 		className = characterClassData.ClassName;
 		moveSpeed = characterClassData.MovementSpeed;
-		health = characterClassData.Health;
-		mana = characterClassData.Mana;
 		primaryAttackData = characterClassData.PrimarySkill;
 		primCooldown = characterClassData.PrimarySkill.Cooldown;
 		secondaryAttackData = characterClassData.SecondarySkill;
@@ -126,7 +157,7 @@ public class Adventurer : MonoBehaviour {
 				nextPrimAttackTime = GameManager.instance._Time + primCooldown;
 			}
 		}
-		if (Input.GetButton("Fire2")) {
+		if (Input.GetButton("Fire2") && GameManager.instance._Time >= nextSecAttackTime && currentMana >= secondaryAttackData.ManaCost) {
 			if(adventurerClass == AdventurerClass.Mage || adventurerClass == AdventurerClass.Ranger) {
 				secondaryAttackData.RangedAttack(transform.position, transform.rotation, transform.eulerAngles.y, gameObject);
 				nextSecAttackTime = GameManager.instance._Time + primCooldown;
@@ -134,6 +165,12 @@ public class Adventurer : MonoBehaviour {
 				anim.ResetTrigger("Attack");
 				secondaryAttackData.MeleeAttack(anim, transform.position, transform.rotation, right);
 				nextSecAttackTime = GameManager.instance._Time + primCooldown;
+			}
+			currentMana -= secondaryAttackData.ManaCost;
+			manaText.text = currentMana + "/" + maxMana;
+			manaBar.value = currentMana;
+			if(currentMana <= maxMana / 2) {
+				manaBarFill.color = minManaColour;
 			}
 		}
 		if (Input.GetButton("Fire3")) {
@@ -154,7 +191,6 @@ public class Adventurer : MonoBehaviour {
 	}
 
 	private void Move() {
-
 		Vector2 posOnScreen = Camera.main.WorldToViewportPoint(transform.position);
 		Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
 		float angle = AngleBetweenTwoPoints(posOnScreen, mouseOnScreen);
@@ -175,51 +211,91 @@ public class Adventurer : MonoBehaviour {
 	// Keeping for further development of the hit radius
 	// Currently takes centre of GO, want to change to far edges
 	// Will help debug later
-	[SerializeField] float leftDot;
-	[SerializeField] float rightDot;
+	[SerializeField] float primLeftDot;
+	[SerializeField] float primRightDot;
+	[SerializeField] float secLeftDot;
+	[SerializeField] float secRightDot;
 
-	private void OnDrawGizmos() {
+	private void OnDrawGizmos() {		
+		//Draw line in front of adventurer
+		Gizmos.color = Color.green;
+		Gizmos.DrawRay(transform.position, (transform.rotation * -right) * 2);
 		if (adventurerClass == AdventurerClass.Warrior) {
-			float totalFOV = primaryAttackData.AttackDegrees;
-			float rayRange = primaryAttackData.AttackRadius;
-			float halfFOV = totalFOV / 2;
-			float theta = 0;
-			float x = rayRange * Mathf.Cos(theta);
-			float y = rayRange * Mathf.Sin(theta);
-			//Draw line in front of adventurer
-			Gizmos.color = Color.blue;
-			Gizmos.DrawRay(transform.position, (transform.rotation * -right) * 2);
+			float primTotalFOV = primaryAttackData.AttackDegrees;
+			float primRayRange = primaryAttackData.AttackRadius;
+			float primHalfFOV = primTotalFOV / 2;
+			float primTheta = 0;
+			float primX = primRayRange * Mathf.Cos(primTheta);
+			float primY = primRayRange * Mathf.Sin(primTheta);
 			//Draw primary range circle around adventurer
-			Gizmos.color = Color.green;
-			Vector3 pos = transform.position + new Vector3(x, 0, y);
-			Vector3 newPos = pos;
-			Vector3 lastPos = pos;
-			for (theta = 0.1f; theta < Mathf.PI * 2; theta += 0.1f)
+			Gizmos.color = Color.blue;
+			Vector3 primPos = transform.position + new Vector3(primX, 0, primY);
+			Vector3 primNewPos = primPos;
+			Vector3 primLastPos = primPos;
+			for (primTheta = 0.1f; primTheta < Mathf.PI * 2; primTheta += 0.1f)
 			{
-				x = rayRange * Mathf.Cos(theta);
-				y = rayRange * Mathf.Sin(theta);
-				newPos = transform.position + new Vector3(x, 0, y);
-				Gizmos.DrawLine(pos, newPos);
-				pos = newPos;
+				primX = primRayRange * Mathf.Cos(primTheta);
+				primY = primRayRange * Mathf.Sin(primTheta);
+				primNewPos = transform.position + new Vector3(primX, 0, primY);
+				Gizmos.DrawLine(primPos, primNewPos);
+				primPos = primNewPos;
 			}
-			Gizmos.DrawLine(pos, lastPos);
+			Gizmos.DrawLine(primPos, primLastPos);
 			// Gizmos.DrawWireSphere(transform.position, rayRange);
 			//Draw primary left radian
-			Vector3 leftRayDirection;
-			Quaternion leftRayRotation = Quaternion.AngleAxis(-halfFOV, Vector3.up);
-			leftRayDirection = leftRayRotation * (transform.rotation * -right);
+			Vector3 primLeftRayDirection;
+			Quaternion primLeftRayRotation = Quaternion.AngleAxis(-primHalfFOV, Vector3.up);
+			primLeftRayDirection = primLeftRayRotation * (transform.rotation * -right);
 			Gizmos.color = Color.red;
-			Gizmos.DrawRay(transform.position, leftRayDirection * rayRange);
-			leftDot = Vector3.Dot(leftRayDirection, transform.rotation * -right);
-			leftDot = Mathf.Acos(leftDot) * Mathf.Rad2Deg;
+			Gizmos.DrawRay(transform.position, primLeftRayDirection * primRayRange);
+			primLeftDot = Vector3.Dot(primLeftRayDirection, transform.rotation * -right);
+			primLeftDot = Mathf.Acos(primLeftDot) * Mathf.Rad2Deg;
 			//Draw primary right radian
-			Vector3 rightRayDirection;
-			Quaternion rightRayRotation = Quaternion.AngleAxis(halfFOV, Vector3.up);
-			rightRayDirection = rightRayRotation * (transform.rotation * -right);
+			Vector3 primRightRayDirection;
+			Quaternion primRightRayRotation = Quaternion.AngleAxis(primHalfFOV, Vector3.up);
+			primRightRayDirection = primRightRayRotation * (transform.rotation * -right);;
+			Gizmos.DrawRay(transform.position, primRightRayDirection * primRayRange);
+			primRightDot = Vector3.Dot(primRightRayDirection, transform.rotation * -right);
+			primRightDot = Mathf.Acos(primRightDot) * Mathf.Rad2Deg;
+
+			float secTotalFOV = secondaryAttackData.AttackDegrees;
+			float secRayRange = secondaryAttackData.AttackRadius;
+			float secHalfFOV = secTotalFOV / 2;
+			float secTheta = 0;
+			float secX = secRayRange * Mathf.Cos(secTheta);
+			float secY = secRayRange * Mathf.Sin(secTheta);
+			//Draw secondary range circle around adventurer if it is not equal to the primary range circle
+			if(secRayRange != primRayRange) {
+				Gizmos.color = Color.cyan;
+				Vector3 secPos = transform.position + new Vector3(secX, 0, secY);
+				Vector3 secNewPos = secPos;
+				Vector3 secLastPos = secPos;
+				for (secTheta = 0.1f; secTheta < Mathf.PI * 2; secTheta += 0.1f)
+				{
+					secX = secRayRange * Mathf.Cos(secTheta);
+					secY = secRayRange * Mathf.Sin(secTheta);
+					secNewPos = transform.position + new Vector3(secX, 0, secY);
+					Gizmos.DrawLine(secPos, secNewPos);
+					secPos = secNewPos;
+				}
+				Gizmos.DrawLine(secPos, secLastPos);
+			}
+			// Gizmos.DrawWireSphere(transform.position, rayRange);
+			//Draw secondary left radian
+			Vector3 leftRayDirection;
+			Quaternion leftRayRotation = Quaternion.AngleAxis(-secHalfFOV, Vector3.up);
+			leftRayDirection = leftRayRotation * (transform.rotation * -right);
 			Gizmos.color = Color.yellow;
-			Gizmos.DrawRay(transform.position, rightRayDirection * rayRange);
-			rightDot = Vector3.Dot(rightRayDirection, transform.rotation * -right);
-			rightDot = Mathf.Acos(rightDot) * Mathf.Rad2Deg;
+			Gizmos.DrawRay(transform.position, leftRayDirection * secRayRange);
+			secLeftDot = Vector3.Dot(leftRayDirection, transform.rotation * -right);
+			secLeftDot = Mathf.Acos(secLeftDot) * Mathf.Rad2Deg;
+			//Draw secondary right radian
+			Vector3 rightRayDirection;
+			Quaternion rightRayRotation = Quaternion.AngleAxis(secHalfFOV, Vector3.up);
+			rightRayDirection = rightRayRotation * (transform.rotation * -right);
+			Gizmos.DrawRay(transform.position, rightRayDirection * secRayRange);
+			secRightDot = Vector3.Dot(rightRayDirection, transform.rotation * -right);
+			secRightDot = Mathf.Acos(secRightDot) * Mathf.Rad2Deg;
 		}
 	}
 }
