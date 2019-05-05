@@ -35,11 +35,11 @@ public class GameManager : MonoBehaviour {
 		spawnTime = Random.Range(1, 10);
 	}
 
-	void Start () {
+	void Start() {
 		
 	}
 	
-	void Update () {
+	void Update() {
 		time += Time.deltaTime;
 		if((time >= spawnTime) && spawnZombies) { SpawnZombie(); }
 	}
@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour {
 		spawnTime = time + Random.Range(1, 10);
 		int i = Random.Range(0, zombieSpawns.Length);
 		Enemy zombieClass = Instantiate(zombie, zombieSpawns[i], Quaternion.identity).GetComponent<Enemy>();
-		if (freezeZombies) {
+		if(freezeZombies) {
 			zombieClass.followAdventurers = false;
 		}
 	}

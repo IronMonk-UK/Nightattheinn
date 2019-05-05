@@ -395,7 +395,7 @@ PrefabInstance:
     - target: {fileID: 114060969639762212, guid: 14a50a8b77a80e84a8f09ec306091571,
         type: 3}
       propertyPath: followAdventurers
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114060969639762212, guid: 14a50a8b77a80e84a8f09ec306091571,
         type: 3}
@@ -494,6 +494,38 @@ PrefabInstance:
       propertyPath: manaBarFill
       value: 
       objectReference: {fileID: 6799280157929788371}
+    - target: {fileID: 114164660104380978, guid: 23a1ba58b88941a48927d802d7916b0b,
+        type: 3}
+      propertyPath: secondaryAttackData
+      value: 
+      objectReference: {fileID: 11400000, guid: a060d00bf7a3c934e9c4c8e65677b28e,
+        type: 2}
+    - target: {fileID: 114164660104380978, guid: 23a1ba58b88941a48927d802d7916b0b,
+        type: 3}
+      propertyPath: primaryAttackData
+      value: 
+      objectReference: {fileID: 11400000, guid: 1bec5ec5774825a40b24ff2155082ad0,
+        type: 2}
+    - target: {fileID: 114164660104380978, guid: 23a1ba58b88941a48927d802d7916b0b,
+        type: 3}
+      propertyPath: primLeftDot
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 114164660104380978, guid: 23a1ba58b88941a48927d802d7916b0b,
+        type: 3}
+      propertyPath: primRightDot
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 114164660104380978, guid: 23a1ba58b88941a48927d802d7916b0b,
+        type: 3}
+      propertyPath: secLeftDot
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 114164660104380978, guid: 23a1ba58b88941a48927d802d7916b0b,
+        type: 3}
+      propertyPath: secRightDot
+      value: 90
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23a1ba58b88941a48927d802d7916b0b, type: 3}
 --- !u!1 &643246809 stripped

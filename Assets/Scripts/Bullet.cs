@@ -35,12 +35,12 @@ public class Bullet : MonoBehaviour {
 		direction = new Vector3(0, transform.localPosition.y, 0);
 	}
 
-	void Start () {
+	void Start() {
 		GetComponent<Rigidbody>().velocity = -transform.up * thrust;
 		adventurerClass = adventurer.GetComponent<Adventurer>();
 	}
 
-	void Update () {
+	void Update() {
 		time += Time.deltaTime;
 		if(adventurerClass._AdventurerClass == global::Adventurer.AdventurerClass.Mage) {
 			if(!destroyed && time >= 5) { TriggerEffects(); }
@@ -57,7 +57,7 @@ public class Bullet : MonoBehaviour {
 
 	public void TriggerEffects() {
 		if(adventurerClass._AdventurerClass == global::Adventurer.AdventurerClass.Mage) {
-			if (!destroyed) {
+			if(!destroyed) {
 				Debug.Log("Destroyed");
 				destroyed = true;
 				setAoe();

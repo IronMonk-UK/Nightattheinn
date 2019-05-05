@@ -10,19 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f42ebb77e7f13b84e8f3269039f73894, type: 3}
-  m_Name: Mage Secondary
+  m_Name: Chilling Blast
   m_EditorClassIdentifier: 
   skillType: 0
   adventurerClass: 0
-  skillName: 
-  damage: 0
-  cooldown: 1
-  onCooldown: 0
+  skillName: Chilling Blast
+  damage: 2
+  cooldown: 0.1
+  manaCost: 0
   knockback: 0
   knockbackForce: 0
   knockbackTime: 0
   stun: 0
   stunTime: 0
+  slow: 1
+  slowForce: 1
+  slowTime: 3
+  useCone: 1
   bulletPrefab: {fileID: 0}
-  attackDegrees: 0
-  attackRadius: 0
+  attackDegrees: 120
+  attackRadius: 5

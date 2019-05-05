@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,22 +13,27 @@ public class Enemy : MonoBehaviour {
 
 	public bool followAdventurers = true;
 
-	bool knocked = false;
+	[SerializeField] bool knocked = false;
 	float knockedTime;
-	Vector3 knockback;
 	float kbForce; // 10
 	float kbTime; // 1
+	Vector3 knockback;
 
-	bool stunned = false;
+	[SerializeField] bool stunned = false;
 	float stunnedTime;
 	float stunTime;
 
+	[SerializeField] bool slowed = false;
+	float slowedTime;
+	float slowForce;
+	float slowTime;
+
 	public int Health { get { return health; } set { health = value; } }
 
-	void Awake () {
+	void Awake() {
 	}
 	
-	void FixedUpdate () {
+	void FixedUpdate() {
 		float step = speed * Time.deltaTime;
 		if (followAdventurers && !knocked) {
 			Follow(step);
@@ -36,7 +42,7 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void CheckForStatuses() {
-		if (knocked) {
+		if(knocked) {
 			followAdventurers = false;
 			transform.Translate(knockback * (Time.deltaTime * kbForce), Space.World);
 			knockedTime += Time.deltaTime;
@@ -46,14 +52,22 @@ public class Enemy : MonoBehaviour {
 				knockedTime = 0;
 			}
 		}
-		if (stunned) {
+		if(stunned) {
 			Debug.Log("I have been stunned!");
 			followAdventurers = false;
 			stunnedTime += Time.deltaTime;
 			if(stunnedTime >= stunTime) {
 				stunned = false;
-				followAdventurers = true;
+				//followAdventurers = true;
 				stunnedTime = 0;
+			}
+		}
+		if (slowed) {
+			slowedTime += Time.deltaTime;
+			if(slowedTime >= slowTime) {
+				slowed = false;
+				speed += slowForce;
+				slowedTime = 0;
 			}
 		}
 	}
@@ -92,20 +106,32 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public void GetKnocked(Vector3 centre, float time, float force) {
+		kbTime = time;
 		knockback = gameObject.transform.position - centre;
 		Debug.Log(knockback);
-		kbTime = time;
-		kbForce = force;
 		knocked = true;
+		kbForce = force;
 	}
 
 	public void GetStunned(float time) {
-		stunned = true;
 		stunTime = time;
+		stunned = true;
+	}
+
+	public void GetSlowed(float time, float force) {
+		slowTime = time;
+		Debug.Log("Enemy being slowed");
+		if (!slowed) {
+			Debug.Log("Enemy should be slowed");
+			speed -= force;
+			slowed = true;
+		}
+		Debug.Log("Part 2 of slow");
+		slowForce = force;
 	}
 
 	public void CheckIfDead() {
-		if (health <= 0) {
+		if(health <= 0) {
 			ZombieDead();
 		}
 	}

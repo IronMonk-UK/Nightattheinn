@@ -11,15 +11,21 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] GameObject weapon;
 
 	[Header("Floats & Integers")]
-	[SerializeField] float primCooldown;
-	[SerializeField] float secCooldown;
 	[SerializeField] float moveSpeed;
 	[SerializeField] int maxHealth;
 	[SerializeField] int currentHealth;
 	[SerializeField] int maxMana;
 	[SerializeField] int currentMana;
+
+	[Header("Primary Skill")]
 	[SerializeField] int primaryDamage;
+	[SerializeField] float primCooldown;
+	[SerializeField] bool primOnCooldown;
+
+	[Header("Secondary Skill")]
 	[SerializeField] int secondaryDamage;
+	[SerializeField] float secCooldown;
+	[SerializeField] bool secOnCooldown;
 
 	[Header("Prefabs")]
 	[SerializeField] GameObject bullet;
@@ -84,14 +90,16 @@ public class Adventurer : MonoBehaviour {
 
 	private void FixedUpdate() {
 		ChangeClassDebug();
-		if (!downed) {
+		if(!downed) {
 			Move();
 			Attack();
 			if(GameManager.instance._Time >= nextPrimAttackTime) {
-				primaryAttackData.OnCooldown = false;
+				//primaryAttackData.OnCooldown = false;
+				primOnCooldown = false;
 			}
 			if(GameManager.instance._Time >= nextSecAttackTime) {
-				secondaryAttackData.OnCooldown = false;
+				//secondaryAttackData.OnCooldown = false;
+				secOnCooldown = false;
 			}
 
 		} else {
@@ -100,13 +108,13 @@ public class Adventurer : MonoBehaviour {
 	}
 
 	private void ChangeClassDebug() {
-		if (Input.GetKeyDown(KeyCode.Alpha1)) {
+		if(Input.GetKeyDown(KeyCode.Alpha1)) {
 			CharacterClassData = GameManager.instance.Characters[0]; //Mage
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha2)) {
+		if(Input.GetKeyDown(KeyCode.Alpha2)) {
 			CharacterClassData = GameManager.instance.Characters[1]; //Ranger
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha3)) {
+		if(Input.GetKeyDown(KeyCode.Alpha3)) {
 			CharacterClassData = GameManager.instance.Characters[2]; //Warrior
 		}
 	}
@@ -147,24 +155,28 @@ public class Adventurer : MonoBehaviour {
 	}
 
 	private void Attack() {
-		if (Input.GetButton("Fire1") && GameManager.instance._Time >= nextPrimAttackTime) {
+		if(Input.GetButton("Fire1") && GameManager.instance._Time >= nextPrimAttackTime && !primOnCooldown) {
 			if(adventurerClass == AdventurerClass.Mage || adventurerClass == AdventurerClass.Ranger) {
-				primaryAttackData.RangedAttack(transform.position, transform.rotation, transform.eulerAngles.y, gameObject);
+				primaryAttackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
+				primOnCooldown = true;
 				nextPrimAttackTime = GameManager.instance._Time + primCooldown;
 			} else {
 				anim.ResetTrigger("Attack");
 				primaryAttackData.MeleeAttack(anim, transform.position, transform.rotation, right);
+				primOnCooldown = true;
 				nextPrimAttackTime = GameManager.instance._Time + primCooldown;
 			}
 		}
-		if (Input.GetButton("Fire2") && GameManager.instance._Time >= nextSecAttackTime && currentMana >= secondaryAttackData.ManaCost) {
+		if(Input.GetButton("Fire2") && GameManager.instance._Time >= nextSecAttackTime && currentMana >= secondaryAttackData.ManaCost && !secOnCooldown) {
 			if(adventurerClass == AdventurerClass.Mage || adventurerClass == AdventurerClass.Ranger) {
-				secondaryAttackData.RangedAttack(transform.position, transform.rotation, transform.eulerAngles.y, gameObject);
-				nextSecAttackTime = GameManager.instance._Time + primCooldown;
+				secondaryAttackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
+				secOnCooldown = true;
+				nextSecAttackTime = GameManager.instance._Time + secCooldown;
 			} else {
 				anim.ResetTrigger("Attack");
 				secondaryAttackData.MeleeAttack(anim, transform.position, transform.rotation, right);
-				nextSecAttackTime = GameManager.instance._Time + primCooldown;
+				secOnCooldown = true;
+				nextSecAttackTime = GameManager.instance._Time + secCooldown;
 			}
 			currentMana -= secondaryAttackData.ManaCost;
 			manaText.text = currentMana + "/" + maxMana;
@@ -173,7 +185,7 @@ public class Adventurer : MonoBehaviour {
 				manaBarFill.color = minManaColour;
 			}
 		}
-		if (Input.GetButton("Fire3")) {
+		if(Input.GetButton("Fire3")) {
 			Debug.Log("Fire 3");
 		}
 	}
@@ -220,9 +232,10 @@ public class Adventurer : MonoBehaviour {
 		//Draw line in front of adventurer
 		Gizmos.color = Color.green;
 		Gizmos.DrawRay(transform.position, (transform.rotation * -right) * 2);
-		if (adventurerClass == AdventurerClass.Warrior) {
+		float primRayRange = 0;
+		if(primaryAttackData._AdventurerClass == AdventurerClass.Warrior || primaryAttackData.UseCone) {
+			primRayRange = primaryAttackData.AttackRadius;
 			float primTotalFOV = primaryAttackData.AttackDegrees;
-			float primRayRange = primaryAttackData.AttackRadius;
 			float primHalfFOV = primTotalFOV / 2;
 			float primTheta = 0;
 			float primX = primRayRange * Mathf.Cos(primTheta);
@@ -232,8 +245,7 @@ public class Adventurer : MonoBehaviour {
 			Vector3 primPos = transform.position + new Vector3(primX, 0, primY);
 			Vector3 primNewPos = primPos;
 			Vector3 primLastPos = primPos;
-			for (primTheta = 0.1f; primTheta < Mathf.PI * 2; primTheta += 0.1f)
-			{
+			for (primTheta = 0.1f; primTheta < Mathf.PI * 2; primTheta += 0.1f) {
 				primX = primRayRange * Mathf.Cos(primTheta);
 				primY = primRayRange * Mathf.Sin(primTheta);
 				primNewPos = transform.position + new Vector3(primX, 0, primY);
@@ -253,11 +265,12 @@ public class Adventurer : MonoBehaviour {
 			//Draw primary right radian
 			Vector3 primRightRayDirection;
 			Quaternion primRightRayRotation = Quaternion.AngleAxis(primHalfFOV, Vector3.up);
-			primRightRayDirection = primRightRayRotation * (transform.rotation * -right);;
+			primRightRayDirection = primRightRayRotation * (transform.rotation * -right); ;
 			Gizmos.DrawRay(transform.position, primRightRayDirection * primRayRange);
 			primRightDot = Vector3.Dot(primRightRayDirection, transform.rotation * -right);
 			primRightDot = Mathf.Acos(primRightDot) * Mathf.Rad2Deg;
-
+		}
+		if (secondaryAttackData._AdventurerClass == AdventurerClass.Warrior || secondaryAttackData.UseCone) {
 			float secTotalFOV = secondaryAttackData.AttackDegrees;
 			float secRayRange = secondaryAttackData.AttackRadius;
 			float secHalfFOV = secTotalFOV / 2;
@@ -296,6 +309,6 @@ public class Adventurer : MonoBehaviour {
 			Gizmos.DrawRay(transform.position, rightRayDirection * secRayRange);
 			secRightDot = Vector3.Dot(rightRayDirection, transform.rotation * -right);
 			secRightDot = Mathf.Acos(secRightDot) * Mathf.Rad2Deg;
-		}
+		}	
 	}
 }
