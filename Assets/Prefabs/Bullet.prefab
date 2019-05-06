@@ -93,10 +93,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   adventurer: {fileID: 0}
-  thrust: 5
-  aoeTime: 1
-  aoeRadius: 100
-  direction: {x: 0, y: 0, z: 0}
+  thrust: 0
+  aoeTime: 0
+  aoeRadius: 0
 --- !u!54 &54000738200508112
 Rigidbody:
   m_ObjectHideFlags: 0

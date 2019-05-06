@@ -17,16 +17,22 @@ MonoBehaviour:
   skillName: Chilling Blast
   damage: 2
   cooldown: 0.1
-  manaCost: 0
+  manaCost: 1
   knockback: 0
   knockbackForce: 0
   knockbackTime: 0
-  stun: 0
-  stunTime: 0
   slow: 1
   slowForce: 1
   slowTime: 3
+  stun: 0
+  stunTime: 0
   useCone: 1
+  thrust: 0
   bulletPrefab: {fileID: 0}
+  bulletDuration: 0
+  aoe: 0
+  aoeRadius: 0
+  pierce: 0
+  pierceAmount: 0
   attackDegrees: 120
   attackRadius: 5

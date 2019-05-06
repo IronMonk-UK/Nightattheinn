@@ -10,19 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f42ebb77e7f13b84e8f3269039f73894, type: 3}
-  m_Name: Ranger Secondary
+  m_Name: Spike Net
   m_EditorClassIdentifier: 
   skillType: 0
-  adventurerClass: 0
-  skillName: 
-  damage: 0
+  adventurerClass: 1
+  skillName: Spike Net
+  damage: 3
   cooldown: 1
-  onCooldown: 0
+  manaCost: 4
   knockback: 0
   knockbackForce: 0
   knockbackTime: 0
-  stun: 0
-  stunTime: 0
-  bulletPrefab: {fileID: 0}
+  slow: 0
+  slowForce: 0
+  slowTime: 0
+  stun: 1
+  stunTime: 2
+  useCone: 0
+  thrust: 5
+  bulletPrefab: {fileID: 1237832826086430, guid: 0a056ba8c8d412d4b8de104a4a2d53e0,
+    type: 3}
+  bulletDuration: 0
+  aoe: 1
+  aoeRadius: 3
+  pierce: 0
+  pierceAmount: 0
   attackDegrees: 0
   attackRadius: 0

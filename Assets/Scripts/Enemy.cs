@@ -53,12 +53,11 @@ public class Enemy : MonoBehaviour {
 			}
 		}
 		if(stunned) {
-			Debug.Log("I have been stunned!");
 			followAdventurers = false;
 			stunnedTime += Time.deltaTime;
 			if(stunnedTime >= stunTime) {
 				stunned = false;
-				//followAdventurers = true;
+				followAdventurers = true;
 				stunnedTime = 0;
 			}
 		}
@@ -93,10 +92,10 @@ public class Enemy : MonoBehaviour {
 	//Destroys bullet and takes away health
 	private void OnTriggerEnter(Collider col) {
 		if(col.gameObject.tag == "AdventurerProjectile") {
-			GetShot(col);
+			//GetShot(col);
 		}
 	}
-
+	/*
 	private void GetShot(Collider col) {
 		Bullet bullet = col.GetComponent<Bullet>();
 		bullet.TriggerEffects();
@@ -104,7 +103,7 @@ public class Enemy : MonoBehaviour {
 		health -= bullet.Damage;
 		CheckIfDead();
 	}
-
+	*/
 	public void GetKnocked(Vector3 centre, float time, float force) {
 		kbTime = time;
 		knockback = gameObject.transform.position - centre;
@@ -120,13 +119,10 @@ public class Enemy : MonoBehaviour {
 
 	public void GetSlowed(float time, float force) {
 		slowTime = time;
-		Debug.Log("Enemy being slowed");
 		if (!slowed) {
-			Debug.Log("Enemy should be slowed");
 			speed -= force;
 			slowed = true;
 		}
-		Debug.Log("Part 2 of slow");
 		slowForce = force;
 	}
 
