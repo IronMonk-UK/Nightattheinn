@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] SkillData[] primarySkills;
 	//0 - Mage | 1 - Ranger | 2 - Warrior
 	[SerializeField] ClassData[] characters;
+	//0 - Zombie
+	//[SerializeField] EnemyData[] enemies;
 
 	[Header("Floats & Integers")]
 	[SerializeField] float time;
@@ -49,7 +51,7 @@ public class GameManager : MonoBehaviour {
 		int i = Random.Range(0, zombieSpawns.Length);
 		Enemy zombieClass = Instantiate(zombie, zombieSpawns[i], Quaternion.identity).GetComponent<Enemy>();
 		if(freezeZombies) {
-			zombieClass.followAdventurers = false;
+			zombieClass.FollowAdventurers = false;
 		}
 	}
 }

@@ -59,7 +59,6 @@ public class Adventurer : MonoBehaviour {
 
 	Vector3 forward, right;
 	Vector3 cameraTransform;
-
 	public bool Downed { get { return downed; } }
 	public enum AdventurerClass { Mage, Ranger, Warrior }
 	public AdventurerClass _AdventurerClass { get { return adventurerClass; } }
@@ -94,11 +93,9 @@ public class Adventurer : MonoBehaviour {
 			Move();
 			Attack();
 			if(GameManager.instance._Time >= nextPrimAttackTime) {
-				//primaryAttackData.OnCooldown = false;
 				primOnCooldown = false;
 			}
 			if(GameManager.instance._Time >= nextSecAttackTime) {
-				//secondaryAttackData.OnCooldown = false;
 				secOnCooldown = false;
 			}
 
@@ -155,7 +152,7 @@ public class Adventurer : MonoBehaviour {
 	}
 
 	private void Attack() {
-		if(Input.GetButton("Fire1") && GameManager.instance._Time >= nextPrimAttackTime && !primOnCooldown) {
+		if(Input.GetButton("Fire1") && !primOnCooldown) {
 			if(adventurerClass == AdventurerClass.Mage || adventurerClass == AdventurerClass.Ranger) {
 				primaryAttackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
 				primOnCooldown = true;
@@ -167,7 +164,7 @@ public class Adventurer : MonoBehaviour {
 				nextPrimAttackTime = GameManager.instance._Time + primCooldown;
 			}
 		}
-		if(Input.GetButton("Fire2") && GameManager.instance._Time >= nextSecAttackTime && currentMana >= secondaryAttackData.ManaCost && !secOnCooldown) {
+		if(Input.GetButton("Fire2") && currentMana >= secondaryAttackData.ManaCost && !secOnCooldown) {
 			if(adventurerClass == AdventurerClass.Mage || adventurerClass == AdventurerClass.Ranger) {
 				secondaryAttackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
 				secOnCooldown = true;

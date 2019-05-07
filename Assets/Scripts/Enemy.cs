@@ -5,13 +5,23 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
+	[SerializeField] EnemyData enemyData;
 	[SerializeField] float speed;
 	float lastHit;
 
-	[SerializeField] int health;
+	[SerializeField] int maxHealth;
+	[SerializeField] int currentHealth;
 	[SerializeField] int damage;
+	[SerializeField] float attackDegrees;
+	[SerializeField] float attackRadius;
+	[SerializeField] float cooldown;
+	[SerializeField] bool onCooldown;
+	[SerializeField] float nextAttackTime;
 
-	public bool followAdventurers = true;
+	[SerializeField] bool followAdventurers = true;
+	[SerializeField] GameObject target;
+	[SerializeField] float distanceToTarget;
+	[SerializeField] float attackDistance;
 
 	[SerializeField] bool knocked = false;
 	float knockedTime;
@@ -28,15 +38,28 @@ public class Enemy : MonoBehaviour {
 	float slowForce;
 	float slowTime;
 
-	public int Health { get { return health; } set { health = value; } }
+	public int Health { get { return currentHealth; } set { currentHealth = value; } }
+	public bool FollowAdventurers { get { return followAdventurers; } set { followAdventurers = value; } }
 
 	void Awake() {
+		SetData();
 	}
-	
+
+	private void SetData() {
+		damage = enemyData.Damage;
+		speed = enemyData.Speed;
+		maxHealth = enemyData.Health;
+		currentHealth = maxHealth;
+		cooldown = enemyData.Cooldown;
+	}
+
 	void FixedUpdate() {
 		float step = speed * Time.deltaTime;
 		if (followAdventurers && !knocked) {
 			Follow(step);
+		}
+		if(GameManager.instance._Time >= nextAttackTime) {
+			onCooldown = false;
 		}
 		CheckForStatuses();
 	}
@@ -72,8 +95,41 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void Follow(float step) {
+		target = GetClosestEnemy(GameManager.instance.Adventurers).gameObject;
+		distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
 		transform.LookAt(GetClosestEnemy(GameManager.instance.Adventurers));
-		transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
+		if(distanceToTarget >= attackDistance) {
+			//transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
+		} else {
+			Attack();
+		}	
+	}
+
+	private void Attack() {
+		if (!onCooldown) {
+			Debug.Log("I am attacking!");
+			Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRadius);
+			Vector3 characterToCollider;
+			float dot;
+			float dotToDeg;
+			foreach (Collider c in hitColliders) {
+				characterToCollider = (c.transform.position - transform.position).normalized;
+				dot = Vector3.Dot (characterToCollider, transform.forward);
+				dotToDeg = Mathf.Acos(dot) * Mathf.Rad2Deg;
+				if (c == target.GetComponent<Collider>()) {
+					Debug.Log("My target is in range!");
+					if (dot >= Mathf.Cos((attackDegrees / 2) * Mathf.Deg2Rad)) {
+						Debug.Log("My target is in my attack radius!");
+						Adventurer adventurer = c.gameObject.GetComponent<Adventurer>();
+						adventurer.TakeDamage(damage);
+					} else {
+						Debug.Log("Target in sphere but not seen!");
+					}
+				}
+			}
+			onCooldown = true;
+			nextAttackTime = GameManager.instance._Time + cooldown;
+		}
 	}
 
 	private void OnCollisionEnter(Collision col) {
@@ -88,22 +144,6 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 
-	//Trigger to detect when a bullet makes contact
-	//Destroys bullet and takes away health
-	private void OnTriggerEnter(Collider col) {
-		if(col.gameObject.tag == "AdventurerProjectile") {
-			//GetShot(col);
-		}
-	}
-	/*
-	private void GetShot(Collider col) {
-		Bullet bullet = col.GetComponent<Bullet>();
-		bullet.TriggerEffects();
-		bullet.EnemiesHit++;
-		health -= bullet.Damage;
-		CheckIfDead();
-	}
-	*/
 	public void GetKnocked(Vector3 centre, float time, float force) {
 		kbTime = time;
 		knockback = gameObject.transform.position - centre;
@@ -127,7 +167,7 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public void CheckIfDead() {
-		if(health <= 0) {
+		if(currentHealth <= 0) {
 			ZombieDead();
 		}
 	}
@@ -163,6 +203,40 @@ public class Enemy : MonoBehaviour {
 
 	private void OnDrawGizmos() {
 		Gizmos.color = Color.blue;
-		Gizmos.DrawRay(transform.position, knockback);
+		//Gizmos.DrawRay(transform.position, knockback);
+		Gizmos.DrawRay(transform.position, transform.forward * attackRadius);
+		float rayRange = attackRadius;
+		Gizmos.color = Color.red;
+		float primTotalFOV = attackDegrees;
+		float primHalfFOV = primTotalFOV / 2;
+		float primTheta = 0;
+		float primX = rayRange * Mathf.Cos(primTheta);
+		float primY = rayRange * Mathf.Sin(primTheta);
+		Vector3 primPos = transform.position + new Vector3(primX, 0, primY);
+		Vector3 primNewPos = primPos;
+		Vector3 primLastPos = primPos;
+		for (primTheta = 0.1f; primTheta < Mathf.PI * 2; primTheta += 0.1f) {
+			primX = rayRange * Mathf.Cos(primTheta);
+			primY = rayRange * Mathf.Sin(primTheta);
+			primNewPos = transform.position + new Vector3(primX, 0, primY);
+			Gizmos.DrawLine(primPos, primNewPos);
+			primPos = primNewPos;
+		}
+		Gizmos.DrawLine(primPos, primLastPos);
+		Gizmos.color = Color.yellow;
+		//Draw primary left radian
+		Vector3 primLeftRayDirection;
+		Quaternion primLeftRayRotation = Quaternion.AngleAxis(-primHalfFOV, Vector3.up);
+		primLeftRayDirection = primLeftRayRotation * (transform.forward);
+		Gizmos.DrawRay(transform.position, primLeftRayDirection * rayRange);
+		float primLeftDot = Vector3.Dot(primLeftRayDirection, transform.forward);
+		primLeftDot = Mathf.Acos(primLeftDot) * Mathf.Rad2Deg;
+		//Draw primary right radian
+		Vector3 primRightRayDirection;
+		Quaternion primRightRayRotation = Quaternion.AngleAxis(primHalfFOV, Vector3.up);
+		primRightRayDirection = primRightRayRotation * (transform.forward); ;
+		Gizmos.DrawRay(transform.position, primRightRayDirection * rayRange);
+		float primRightDot = Vector3.Dot(primRightRayDirection, transform.forward);
+		primRightDot = Mathf.Acos(primRightDot) * Mathf.Rad2Deg;
 	}
 }
