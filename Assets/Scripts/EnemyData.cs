@@ -5,11 +5,17 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Enemy Data", menuName = "Enemy Data")]
 public class EnemyData : ScriptableObject {
 	[Header("-Generic Variables-")]
+	[SerializeField] Material colour;
 	[SerializeField] string enemyName;
 	[SerializeField] float speed;
 	[SerializeField] int health;
 	[SerializeField] int damage;
 	[SerializeField] float cooldown;
+	[SerializeField] bool skirmisher;
+
+	[SerializeField] bool ranged; //True - Ranged unit | False - Melee unit
+	[SerializeField] float thrust;
+	[SerializeField] GameObject bulletPrefab;
 
 	[SerializeField] float attackDegrees;
 	[SerializeField] float attackRadius;
@@ -19,5 +25,10 @@ public class EnemyData : ScriptableObject {
 	public float Speed { get { return speed; } }
 	public int Health { get { return health; } }
 	public float Cooldown { get { return cooldown; } }
+	public bool Ranged { get { return ranged; } }
+	public bool Skirmisher { get { return skirmisher; } }
+	public float Thrust { get { return thrust; } }
+	public GameObject BulletPrefab { get { return bulletPrefab; } }
+	public Material Colour { get { return colour; } }
 }
 

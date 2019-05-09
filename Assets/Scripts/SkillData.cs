@@ -55,7 +55,7 @@ public class SkillData : ScriptableObject{
 		if (!useCone) {
 			Vector3 spawnPoint = centre + (rotation * new Vector3(0.75f, 0, -0.75f));
 			Bullet bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.Euler(90, eulerY - 45, 0)).GetComponent<Bullet>();
-			bullet.Adventurer = adventurer;
+			bullet.Actor = adventurer;
 			bullet.Damage = damage;
 			bullet.Thrust = thrust;
 			if (aoe) { bullet.Aoe = true; bullet.AoeRadius = aoeRadius; }
@@ -82,8 +82,7 @@ public class SkillData : ScriptableObject{
 				if (dot >= Mathf.Cos((attackDegrees / 2) * Mathf.Deg2Rad)) {
 					Enemy enemy = c.gameObject.GetComponent<Enemy>();
 					Debug.Log("Dealing " + damage + " Damage.");
-					enemy.Health -= damage;
-					enemy.CheckIfDead();
+					enemy.TakeDamage(damage);
 					if(knockback) { enemy.GetKnocked(centre, knockbackTime, knockbackForce); }
 					if(stun) { enemy.GetStunned(stunTime); }
 					if (slow) { enemy.GetSlowed(slowTime, slowForce); }

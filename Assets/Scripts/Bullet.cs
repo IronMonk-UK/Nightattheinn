@@ -1,11 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour {
 
-	[SerializeField] GameObject adventurer;
-	Adventurer adventurerClass;
+	[SerializeField] GameObject actor;
+	//Adventurer adventurerClass;
+	bool adventurer;
+	bool enemy;
 
 	[SerializeField] float thrust;
 	float time;
@@ -39,7 +42,7 @@ public class Bullet : MonoBehaviour {
 
 	public float Thrust { get { return thrust; } set { thrust = value; } }
 
-	public GameObject Adventurer { get { return adventurer; } set { adventurer = value; } }
+	public GameObject Actor { get { return actor; } set { actor = value; } }
 	public Vector3 Direction { get { return direction; } set { direction = value; } }
 	public int Damage { get { return damage; } set { damage = value; } }
 	public int EnemiesHit { get { return enemiesHit; } set { enemiesHit = value; } }
@@ -64,8 +67,13 @@ public class Bullet : MonoBehaviour {
 	}
 
 	void Start() {
-		adventurerClass = adventurer.GetComponent<Adventurer>();
-		forward = gameObject.transform.position - adventurer.transform.position;
+		//adventurerClass = adventurer.GetComponent<Adventurer>();
+		forward = gameObject.transform.position - actor.transform.position;
+		if (actor.tag == "Adventurer") {
+			adventurer = true;
+		}else if(actor.tag == "Enemy") {
+			enemy = true;
+		}
 	}
 
 	void Update() {
@@ -76,43 +84,51 @@ public class Bullet : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter(Collider col) {
-		if(col.gameObject.tag == "Enemy") {
-			if(!pierce || (pierce && pierceCount == pierceAmount)) {
-				Debug.Log("Trigger A");
+		if(adventurer) {		
+			if(col.gameObject.tag == "Enemy") {
+				if(!pierce || (pierce && pierceCount == pierceAmount)) {
+					DeleteBullet();
+					TriggerEnemyEffects(col);
+				}else if(pierce && pierceCount <= PierceAmount) {
+					TriggerEnemyEffects(col);
+					pierceCount++;
+				}
+			}
+		} else if(enemy) {
+			if(col.gameObject.tag == "Adventurer") {
 				DeleteBullet();
-				TriggerEffects(col);
-			}else if(pierce && pierceCount <= PierceAmount) {
-				Debug.Log("Trigger B. Pierce Count: " + pierceCount);
-				TriggerEffects(col);
-				pierceCount++;
+				TriggerAdventurerEffects(col);
 			}
 		}
-		if(col.gameObject.tag == "Wall" && adventurerClass._AdventurerClass == global::Adventurer.AdventurerClass.Ranger) {
+		if(col.gameObject.tag == "Wall") {
 		Debug.Log("A bullet has hit a wall");
 			Destroy(gameObject);
 		}
 	}
 
-	public void TriggerEffects(Collider col) {
+	private void TriggerAdventurerEffects(Collider col) {
+		Adventurer adventurer = col.gameObject.GetComponent<Adventurer>();
+		adventurer.TakeDamage(damage);
+		if (destroyed) {
+			Destroy(gameObject);
+		}
+	}
+
+	public void TriggerEnemyEffects(Collider col) {
 		Enemy enemy = col.gameObject.GetComponent<Enemy>();
 		if (aoe) {
-			Debug.Log("An AoE attack has triggered!");
 			Collider[] hitColliders = Physics.OverlapSphere(transform.position, aoeRadius);
 			foreach (Collider c in hitColliders) {
 				if (c.gameObject.tag == "Enemy") {
-					Debug.Log("An AoE attack has hit an enemy!" + stunTime);
 					enemy = c.gameObject.GetComponent<Enemy>();
-					enemy.Health -= damage;
-					enemy.CheckIfDead();
+					enemy.TakeDamage(damage);
 					if(knockback) { enemy.GetKnocked(transform.position, knockbackTime, knockbackForce); }
 					if(stun) { enemy.GetStunned(stunTime); }
 					if (slow) { enemy.GetSlowed(slowTime, slowForce); }
 				}
 			}
 		} else {
-			Debug.Log("A non-AoE attack has hit an enemy!");
-			enemy.Health -= damage;
-			enemy.CheckIfDead();
+			enemy.TakeDamage(damage);
 			if(knockback) { enemy.GetKnocked(transform.position, knockbackTime, knockbackForce); }
 			if(stun) { enemy.GetStunned(stunTime); }
 			if (slow) { enemy.GetSlowed(slowTime, slowForce); }
@@ -121,15 +137,6 @@ public class Bullet : MonoBehaviour {
 			Destroy(gameObject);
 		}
 	}
-
-		/*if(adventurerClass._AdventurerClass == global::Adventurer.AdventurerClass.Mage) {
-			if(!destroyed) {
-				Debug.Log("Destroyed");
-				//destroyed = true;
-				setAoe();
-			}
-		}*/
-
 
 	private void DeleteBullet() {
 		Destroy(gameObject.GetComponent<CapsuleCollider>());

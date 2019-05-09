@@ -1,4 +1,4 @@
-﻿using System;
+﻿//using System; - Was causing conflict for random.range
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +17,11 @@ public class Enemy : MonoBehaviour {
 	[SerializeField] float cooldown;
 	[SerializeField] bool onCooldown;
 	[SerializeField] float nextAttackTime;
+	[SerializeField] bool ranged;
+	[SerializeField] GameObject bulletPrefab;
+	[SerializeField] float thrust;
+	[SerializeField] bool skirmisher;
+	bool skirmishing;
 
 	[SerializeField] bool followAdventurers = true;
 	[SerializeField] GameObject target;
@@ -46,11 +51,16 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void SetData() {
+		ranged = enemyData.Ranged;
 		damage = enemyData.Damage;
 		speed = enemyData.Speed;
 		maxHealth = enemyData.Health;
 		currentHealth = maxHealth;
 		cooldown = enemyData.Cooldown;
+		thrust = enemyData.Thrust;
+		bulletPrefab = enemyData.BulletPrefab;
+		gameObject.GetComponent<Renderer>().material = enemyData.Colour;
+		skirmisher = enemyData.Skirmisher;
 	}
 
 	void FixedUpdate() {
@@ -98,8 +108,15 @@ public class Enemy : MonoBehaviour {
 		target = GetClosestEnemy(GameManager.instance.Adventurers).gameObject;
 		distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
 		transform.LookAt(GetClosestEnemy(GameManager.instance.Adventurers));
-		if(distanceToTarget >= attackDistance) {
-			//transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
+		if (skirmishing) {
+			Vector3 skirmishPosition = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
+			skirmishPosition = transform.position += skirmishPosition;
+			transform.Translate(skirmishPosition * step, Space.World);
+			//transform.position = Vector3.MoveTowards(transform.position, skirmishPosition, step);
+			//if(transform.position == skirmishPosition)
+				skirmishing = false;
+		} else if(distanceToTarget >= attackDistance) {
+			transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
 		} else {
 			Attack();
 		}	
@@ -107,40 +124,35 @@ public class Enemy : MonoBehaviour {
 
 	private void Attack() {
 		if (!onCooldown) {
-			Debug.Log("I am attacking!");
-			Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRadius);
-			Vector3 characterToCollider;
-			float dot;
-			float dotToDeg;
-			foreach (Collider c in hitColliders) {
-				characterToCollider = (c.transform.position - transform.position).normalized;
-				dot = Vector3.Dot (characterToCollider, transform.forward);
-				dotToDeg = Mathf.Acos(dot) * Mathf.Rad2Deg;
-				if (c == target.GetComponent<Collider>()) {
-					Debug.Log("My target is in range!");
-					if (dot >= Mathf.Cos((attackDegrees / 2) * Mathf.Deg2Rad)) {
-						Debug.Log("My target is in my attack radius!");
-						Adventurer adventurer = c.gameObject.GetComponent<Adventurer>();
-						adventurer.TakeDamage(damage);
-					} else {
-						Debug.Log("Target in sphere but not seen!");
+			if (ranged) {
+				Vector3 spawnPoint = transform.position + (transform.forward);
+				Bullet bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.Euler(0, 0, 0)).GetComponent<Bullet>();
+				bullet.Actor = gameObject;
+				bullet.Damage = damage;
+				bullet.Thrust = thrust;
+			} else {
+				Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRadius);
+				Vector3 characterToCollider;
+				float dot;
+				float dotToDeg;
+				foreach (Collider c in hitColliders) {
+					characterToCollider = (c.transform.position - transform.position).normalized;
+					dot = Vector3.Dot (characterToCollider, transform.forward);
+					dotToDeg = Mathf.Acos(dot) * Mathf.Rad2Deg;
+					if (c == target.GetComponent<Collider>()) {
+						if (dot >= Mathf.Cos((attackDegrees / 2) * Mathf.Deg2Rad)) {
+							Adventurer adventurer = c.gameObject.GetComponent<Adventurer>();
+							adventurer.TakeDamage(damage);
+						} else {
+						}
 					}
 				}
 			}
 			onCooldown = true;
 			nextAttackTime = GameManager.instance._Time + cooldown;
-		}
-	}
-
-	private void OnCollisionEnter(Collision col) {
-		if(col.gameObject.tag == "Adventurer" && GameManager.instance._Time >= lastHit + 2) {
-			DealDamage(col);
-		}
-	}
-
-	private void OnCollisionStay(Collision col) {
-		if (col.gameObject.tag == "Adventurer" && GameManager.instance._Time >= lastHit + 2) {
-			DealDamage(col);
+			if (skirmisher) {
+				skirmishing = true;
+			}
 		}
 	}
 
@@ -166,16 +178,11 @@ public class Enemy : MonoBehaviour {
 		slowForce = force;
 	}
 
-	public void CheckIfDead() {
+	public void TakeDamage(int dam) {
+		currentHealth -= dam;
 		if(currentHealth <= 0) {
 			ZombieDead();
 		}
-	}
-
-	private void DealDamage(Collision col) {
-		Debug.Log("Adventurer hit!");
-		col.gameObject.GetComponent<Adventurer>().TakeDamage(damage);
-		lastHit = GameManager.instance._Time;
 	}
 
 	//Simple function for now, designed as such for potential modular coding later

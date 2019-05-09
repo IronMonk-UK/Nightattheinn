@@ -12,10 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e95b8d527fe664baa76abbbc364c17, type: 3}
   m_Name: Zombie
   m_EditorClassIdentifier: 
+  colour: {fileID: 2100000, guid: a1b25fb60be59ee4fbf039f9dce76d8f, type: 2}
   enemyName: Zombie
   speed: 2
   health: 10
   damage: 3
-  cooldown: 0
+  cooldown: 1
+  skirmisher: 0
+  ranged: 0
+  thrust: 0
+  bulletPrefab: {fileID: 0}
   attackDegrees: 90
   attackRadius: 2
