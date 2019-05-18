@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
-
 	[SerializeField] EnemyData enemyData;
 	[SerializeField] float speed;
 	float lastHit;
@@ -45,6 +44,15 @@ public class Enemy : MonoBehaviour {
 
 	public int Health { get { return currentHealth; } set { currentHealth = value; } }
 	public bool FollowAdventurers { get { return followAdventurers; } set { followAdventurers = value; } }
+	public EnemyData _EnemyData {
+		get {
+			return enemyData;
+		} set {
+			if (enemyData == value) return;
+			enemyData = value;
+			SetData();
+		}
+	}
 
 	void Awake() {
 		SetData();

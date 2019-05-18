@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 65628370444363764}
   - component: {fileID: 665988111}
   m_Layer: 0
-  m_Name: Zombie
+  m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53f777521e8f3db4cb739fc5d6fdd448, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyData: {fileID: 11400000, guid: 2056eaf18ec6d5b48a1a63cb0cba1451, type: 2}
+  enemyData: {fileID: 11400000, guid: 64c8958fee6dc6a48b4d08b0a69c9057, type: 2}
   speed: 2
   maxHealth: 0
   currentHealth: 0
@@ -105,10 +105,11 @@ MonoBehaviour:
   ranged: 0
   bulletPrefab: {fileID: 0}
   thrust: 0
-  followAdventurers: 0
+  skirmisher: 0
+  followAdventurers: 1
   target: {fileID: 0}
   distanceToTarget: 0
-  attackDistance: 2
+  attackDistance: 6
   knocked: 0
   stunned: 0
   slowed: 0

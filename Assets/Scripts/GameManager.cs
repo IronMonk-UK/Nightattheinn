@@ -6,21 +6,21 @@ public class GameManager : MonoBehaviour {
 
 	[Header("Arrays")]
 	[SerializeField] List<GameObject> adventurers;
-	[SerializeField] Vector3[] zombieSpawns;
+	[SerializeField] Vector3[] enemySpawns;
 	[SerializeField] SkillData[] primarySkills;
 	//0 - Mage | 1 - Ranger | 2 - Warrior
 	[SerializeField] ClassData[] characters;
-	//0 - Zombie
-	//[SerializeField] EnemyData[] enemies;
+	//0 - Zombie | 1 - Skeleton
+	[SerializeField] EnemyData[] enemies;
 
 	[Header("Floats & Integers")]
 	[SerializeField] float time;
 
 	[Header("Prefabs")]
-	[SerializeField] GameObject zombie;
+	[SerializeField] GameObject enemy;
 
 	[Header("Debug Tools")]
-	[SerializeField] bool spawnZombies;
+	[SerializeField] bool spawnEnemies;
 	[SerializeField] bool freezeZombies;
 
 	public static GameManager instance;
@@ -43,15 +43,32 @@ public class GameManager : MonoBehaviour {
 	
 	void Update() {
 		time += Time.deltaTime;
-		if((time >= spawnTime) && spawnZombies) { SpawnZombie(); }
+		if((time >= spawnTime) && spawnEnemies) { SpawnZombie(); }
+		if (Input.GetKeyDown(KeyCode.Z)) {
+			SpawnZombie();
+		}
+		if (Input.GetKeyDown(KeyCode.X)) {
+			SpawnSkeleton();
+		}
 	}
 
 	void SpawnZombie() {
 		spawnTime = time + Random.Range(1, 10);
-		int i = Random.Range(0, zombieSpawns.Length);
-		Enemy zombieClass = Instantiate(zombie, zombieSpawns[i], Quaternion.identity).GetComponent<Enemy>();
+		int i = Random.Range(0, enemySpawns.Length);
+		Enemy enemyClass = Instantiate(enemy, enemySpawns[i], Quaternion.identity).GetComponent<Enemy>();
+		enemyClass._EnemyData = enemies[0];
 		if(freezeZombies) {
-			zombieClass.FollowAdventurers = false;
+			enemyClass.FollowAdventurers = false;
+		}
+	}
+
+	void SpawnSkeleton() {
+		spawnTime = time + Random.Range(1, 10);
+		int i = Random.Range(0, enemySpawns.Length);
+		Enemy enemyClass = Instantiate(enemy, enemySpawns[i], Quaternion.identity).GetComponent<Enemy>();
+		enemyClass._EnemyData = enemies[1];
+		if(freezeZombies) {
+			enemyClass.FollowAdventurers = false;
 		}
 	}
 }
