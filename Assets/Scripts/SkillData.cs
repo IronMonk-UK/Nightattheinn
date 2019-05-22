@@ -11,6 +11,8 @@ public class SkillData : ScriptableObject{
 	[SerializeField] int damage;
 	[SerializeField] float cooldown;
 	[SerializeField] int manaCost;
+	[Header("Particle Effect")]
+	[SerializeField] GameObject particleEffect;
 	[Header("-Statuses-")]
 	[Header("Knockback")]
 	[SerializeField] bool knockback;
@@ -41,6 +43,7 @@ public class SkillData : ScriptableObject{
 	public string SkillName { get { return skillName; } }
 	public int Damage { get { return damage; } }
 	public GameObject BulletPrefab { get { return bulletPrefab; } }
+	public GameObject ParticleEffect { get { return particleEffect; } }
 	public SkillType _SkillType { get { return skillType; } }
 	public Adventurer.AdventurerClass _AdventurerClass { get { return adventurerClass; } }
 	public float AttackDegrees { get { return attackDegrees; } }

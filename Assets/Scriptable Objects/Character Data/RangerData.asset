@@ -21,3 +21,4 @@ MonoBehaviour:
   secondarySkill: {fileID: 11400000, guid: a32d80d164abbc74baec02f0c8a1151f, type: 2}
   adventurerClass: 1
   weapon: {fileID: 0}
+  model: {fileID: -927199367670048503, guid: 2439bafcb7c4af741bba54ed1792ba38, type: 3}

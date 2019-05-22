@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f42ebb77e7f13b84e8f3269039f73894, type: 3}
   m_Name: Spike Net
   m_EditorClassIdentifier: 
-  skillType: 0
+  skillType: 1
   adventurerClass: 1
   skillName: Spike Net
   damage: 3
   cooldown: 1
   manaCost: 4
+  particleEffect: {fileID: 0}
   knockback: 0
   knockbackForce: 0
   knockbackTime: 0

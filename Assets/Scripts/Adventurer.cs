@@ -38,6 +38,17 @@ public class Adventurer : MonoBehaviour {
 	[Header("Animation")]
 	[SerializeField] Animator anim;
 
+	[Header("Adventurer Model")]
+	[SerializeField] GameObject modelHolder;
+	[SerializeField] GameObject model;
+
+	[Header("Particle System")]
+	[SerializeField] GameObject particleParent;
+	[SerializeField] ParticleSystem primParticleEffect;
+	[SerializeField] bool hasPrimParticleEffect;
+	[SerializeField] ParticleSystem secParticleEffect;
+	[SerializeField] bool hasSecParticleEffect;
+
 	[Header("UI")]
 	[SerializeField] Text healthText;
 	[SerializeField] Slider healthBar;
@@ -149,11 +160,40 @@ public class Adventurer : MonoBehaviour {
 		secondaryAttackData = characterClassData.SecondarySkill;
 		secCooldown = characterClassData.SecondarySkill.Cooldown;
 		adventurerClass = characterClassData._AdventurerClass;
+
+		if(primaryAttackData.ParticleEffect != null && primaryAttackData.BulletPrefab == null) {
+			primParticleEffect = Instantiate(primaryAttackData.ParticleEffect, transform.position, transform.rotation).GetComponent<ParticleSystem>();
+			primParticleEffect.gameObject.transform.parent = particleParent.transform;
+			hasPrimParticleEffect = true;
+		}else if(primaryAttackData.ParticleEffect == null) {
+			if(primParticleEffect != null) {
+				Destroy(primParticleEffect.gameObject);
+			}
+			primParticleEffect = null;
+			hasPrimParticleEffect = false;
+		}
+		if(secondaryAttackData.ParticleEffect != null && secondaryAttackData.BulletPrefab == null) {
+			secParticleEffect = Instantiate(secondaryAttackData.ParticleEffect, transform.position, transform.rotation).GetComponent<ParticleSystem>();
+			secParticleEffect.gameObject.transform.parent = particleParent.transform;
+			hasSecParticleEffect = true;
+		}else if(secondaryAttackData.ParticleEffect == null) {
+			if(secParticleEffect != null) {
+				Destroy(secParticleEffect.gameObject);
+			}
+			secParticleEffect = null;
+			hasSecParticleEffect = false;
+		}
+
+		if(model != null) {
+			Destroy(model);
+		}
+		model = Instantiate(characterClassData.Model, transform.position, modelHolder.transform.rotation);
+		model.transform.parent = modelHolder.transform;
 	}
 
 	private void Attack() {
 		if(Input.GetButton("Fire1") && !primOnCooldown) {
-			if(adventurerClass == AdventurerClass.Mage || adventurerClass == AdventurerClass.Ranger) {
+			if(primaryAttackData.BulletPrefab != null) {
 				primaryAttackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
 				primOnCooldown = true;
 				nextPrimAttackTime = GameManager.instance._Time + primCooldown;
@@ -165,7 +205,7 @@ public class Adventurer : MonoBehaviour {
 			}
 		}
 		if(Input.GetButton("Fire2") && currentMana >= secondaryAttackData.ManaCost && !secOnCooldown) {
-			if(adventurerClass == AdventurerClass.Mage || adventurerClass == AdventurerClass.Ranger) {
+			if(secondaryAttackData.BulletPrefab != null) {
 				secondaryAttackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
 				secOnCooldown = true;
 				nextSecAttackTime = GameManager.instance._Time + secCooldown;

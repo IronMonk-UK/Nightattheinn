@@ -47,7 +47,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1992177792}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -65,6 +65,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -110,6 +111,7 @@ Transform:
   - {fileID: 1992177793}
   - {fileID: 5334574374594248348}
   - {fileID: 59095982140231}
+  - {fileID: 5613126880008648296}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 1, z: 0}
@@ -128,26 +130,41 @@ MonoBehaviour:
   adventurerClass: 0
   className: 
   weapon: {fileID: 7011857233990093650}
-  primCooldown: 0
-  secCooldown: 0
   moveSpeed: 15
   maxHealth: 0
   currentHealth: 0
-  mana: 0
+  maxMana: 0
+  currentMana: 0
   primaryDamage: 0
+  primCooldown: 0
+  primOnCooldown: 0
   secondaryDamage: 0
+  secCooldown: 0
+  secOnCooldown: 0
   bullet: {fileID: 1237832826086430, guid: 0a056ba8c8d412d4b8de104a4a2d53e0, type: 3}
   characterClassData: {fileID: 11400000, guid: 28ac90205e6b53f439a3300dd7824d29, type: 2}
-  primaryAttackData: {fileID: 0}
-  secondaryAttackData: {fileID: 0}
+  primaryAttackData: {fileID: 11400000, guid: 1bec5ec5774825a40b24ff2155082ad0, type: 2}
+  secondaryAttackData: {fileID: 11400000, guid: 8e0a7b163d37c0e46a56a1d24ce78e3d,
+    type: 2}
   anim: {fileID: 0}
+  modelHolder: {fileID: 7567048501476307426}
+  model: {fileID: 0}
+  particleParent: {fileID: 2034991225519185158}
+  primParticleEffect: {fileID: 0}
+  hasPrimParticleEffect: 0
+  secParticleEffect: {fileID: 0}
+  hasSecParticleEffect: 0
+  healthText: {fileID: 0}
   healthBar: {fileID: 0}
   healthBarFill: {fileID: 0}
+  manaText: {fileID: 0}
+  manaBar: {fileID: 0}
+  manaBarFill: {fileID: 0}
   instance: {fileID: 0}
-  primLeftDot: 0
-  primRightDot: 0
-  secLeftDot: 0
-  secRightDot: 0
+  primLeftDot: 90
+  primRightDot: 90
+  secLeftDot: 90
+  secRightDot: 90
 --- !u!95 &6308960
 Animator:
   serializedVersion: 3
@@ -180,6 +197,36 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &2034991225519185158
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5613126880008648296}
+  m_Layer: 0
+  m_Name: ParticleSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5613126880008648296
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034991225519185158}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4431936539969852}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7011857233990093650
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,7 +270,7 @@ GameObject:
   - component: {fileID: 3789118886368651868}
   - component: {fileID: 4179519080825968695}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,13 +283,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7567048501476307426}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.92387956, z: 0, w: 0.38268343}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4431936539969852}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 135, z: 0}
 --- !u!33 &3789118886368651868
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -258,7 +305,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7567048501476307426}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -276,6 +323,7 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0

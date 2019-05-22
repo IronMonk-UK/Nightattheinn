@@ -27,6 +27,9 @@ public class Enemy : MonoBehaviour {
 	[SerializeField] float distanceToTarget;
 	[SerializeField] float attackDistance;
 
+	[SerializeField] GameObject modelHolder;
+	[SerializeField] GameObject model;
+
 	[SerializeField] bool knocked = false;
 	float knockedTime;
 	float kbForce; // 10
@@ -67,8 +70,17 @@ public class Enemy : MonoBehaviour {
 		cooldown = enemyData.Cooldown;
 		thrust = enemyData.Thrust;
 		bulletPrefab = enemyData.BulletPrefab;
-		gameObject.GetComponent<Renderer>().material = enemyData.Colour;
+		//gameObject.GetComponent<Renderer>().material = enemyData.Colour;
 		skirmisher = enemyData.Skirmisher;
+		attackDegrees = enemyData.AttackDegrees;
+		attackRadius = enemyData.AttackRadius;
+		attackDistance = attackRadius;
+
+		if(model != null) {
+			Destroy(model);
+		}
+		model = Instantiate(enemyData.Model, transform.position, modelHolder.transform.rotation);
+		model.transform.parent = modelHolder.transform;
 	}
 
 	void FixedUpdate() {
