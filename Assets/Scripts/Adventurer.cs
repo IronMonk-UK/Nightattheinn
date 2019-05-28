@@ -189,6 +189,7 @@ public class Adventurer : MonoBehaviour {
 		}
 		model = Instantiate(characterClassData.Model, transform.position, modelHolder.transform.rotation);
 		model.transform.parent = modelHolder.transform;
+		model.transform.localPosition = new Vector3(0, 0, 0);
 	}
 
 	private void Attack() {

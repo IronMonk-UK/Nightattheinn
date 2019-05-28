@@ -81,6 +81,7 @@ public class Enemy : MonoBehaviour {
 		}
 		model = Instantiate(enemyData.Model, transform.position, modelHolder.transform.rotation);
 		model.transform.parent = modelHolder.transform;
+		model.transform.localPosition = new Vector3(0, 0, 0);
 	}
 
 	void FixedUpdate() {
@@ -146,7 +147,7 @@ public class Enemy : MonoBehaviour {
 		if (!onCooldown) {
 			if (ranged) {
 				Vector3 spawnPoint = transform.position + (transform.forward);
-				Bullet bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.Euler(0, 0, 0)).GetComponent<Bullet>();
+				Bullet bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.Euler(0, transform.eulerAngles.y, 0)).GetComponent<Bullet>();
 				bullet.Actor = gameObject;
 				bullet.Damage = damage;
 				bullet.Thrust = thrust;

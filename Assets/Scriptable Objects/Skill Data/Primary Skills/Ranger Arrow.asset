@@ -29,7 +29,7 @@ MonoBehaviour:
   stunTime: 0
   useCone: 0
   thrust: 5
-  bulletPrefab: {fileID: 1237832826086430, guid: 0a056ba8c8d412d4b8de104a4a2d53e0,
+  bulletPrefab: {fileID: 7747884967033889033, guid: 27875480f7e147847b6e08806439a91f,
     type: 3}
   bulletDuration: 0
   aoe: 0

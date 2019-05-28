@@ -57,7 +57,7 @@ public class SkillData : ScriptableObject{
 	public void RangedAttack (Animator anim, Vector3 centre, Quaternion rotation, Vector3 right, float eulerY, GameObject adventurer) {
 		if (!useCone) {
 			Vector3 spawnPoint = centre + (rotation * new Vector3(0.75f, 0, -0.75f));
-			Bullet bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.Euler(90, eulerY - 45, 0)).GetComponent<Bullet>();
+			Bullet bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.Euler(0, eulerY - 45, 0)).GetComponent<Bullet>();
 			bullet.Actor = adventurer;
 			bullet.Damage = damage;
 			bullet.Thrust = thrust;

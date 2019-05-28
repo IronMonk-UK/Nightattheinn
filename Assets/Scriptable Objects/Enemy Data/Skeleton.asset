@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Skeleton
   m_EditorClassIdentifier: 
   colour: {fileID: 2100000, guid: 3357f54f4103710478bd4707b785ec6f, type: 2}
-  model: {fileID: -927199367670048503, guid: 500b85b782dcfdb498ea06446d0f35e3, type: 3}
+  model: {fileID: -927199367670048503, guid: 99e0dcdc55c650c48afb022bef4783c3, type: 3}
   enemyName: Skeleton
   speed: 3
   health: 6
@@ -22,7 +22,7 @@ MonoBehaviour:
   skirmisher: 1
   ranged: 1
   thrust: 3
-  bulletPrefab: {fileID: 1237832826086430, guid: 0a056ba8c8d412d4b8de104a4a2d53e0,
+  bulletPrefab: {fileID: 4569826558045817972, guid: acb33c1802d0a1446bd8764effc5224a,
     type: 3}
   attackDegrees: 45
   attackRadius: 6

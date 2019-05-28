@@ -139,6 +139,7 @@ public class Bullet : MonoBehaviour {
 	}
 
 	private void DeleteBullet() {
+		Debug.Log("Deleting Bullet!");
 		Destroy(gameObject.GetComponent<CapsuleCollider>());
 		Destroy(gameObject.GetComponent<MeshRenderer>());
 		Destroy(gameObject.GetComponent<Rigidbody>());
