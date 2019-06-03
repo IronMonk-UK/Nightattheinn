@@ -37,6 +37,7 @@ public class Adventurer : MonoBehaviour {
 
 	[Header("Animation")]
 	[SerializeField] Animator anim;
+	[SerializeField] GameObject fxCapsule;
 
 	[Header("Adventurer Model")]
 	[SerializeField] GameObject modelHolder;
@@ -269,7 +270,7 @@ public class Adventurer : MonoBehaviour {
 	private void OnDrawGizmos() {		
 		//Draw line in front of adventurer
 		Gizmos.color = Color.green;
-		Gizmos.DrawRay(transform.position, (transform.rotation * -right) * 2);
+		Gizmos.DrawRay(transform.position, (transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z))) * 2);
 		float primRayRange = 0;
 		if(primaryAttackData._AdventurerClass == AdventurerClass.Warrior || primaryAttackData.UseCone) {
 			primRayRange = primaryAttackData.AttackRadius;
@@ -295,17 +296,17 @@ public class Adventurer : MonoBehaviour {
 			//Draw primary left radian
 			Vector3 primLeftRayDirection;
 			Quaternion primLeftRayRotation = Quaternion.AngleAxis(-primHalfFOV, Vector3.up);
-			primLeftRayDirection = primLeftRayRotation * (transform.rotation * -right);
+			primLeftRayDirection = primLeftRayRotation * (transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z)));
 			Gizmos.color = Color.red;
 			Gizmos.DrawRay(transform.position, primLeftRayDirection * primRayRange);
-			primLeftDot = Vector3.Dot(primLeftRayDirection, transform.rotation * -right);
+			primLeftDot = Vector3.Dot(primLeftRayDirection, transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z)));
 			primLeftDot = Mathf.Acos(primLeftDot) * Mathf.Rad2Deg;
 			//Draw primary right radian
 			Vector3 primRightRayDirection;
 			Quaternion primRightRayRotation = Quaternion.AngleAxis(primHalfFOV, Vector3.up);
-			primRightRayDirection = primRightRayRotation * (transform.rotation * -right); ;
+			primRightRayDirection = primRightRayRotation * (transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z))); ;
 			Gizmos.DrawRay(transform.position, primRightRayDirection * primRayRange);
-			primRightDot = Vector3.Dot(primRightRayDirection, transform.rotation * -right);
+			primRightDot = Vector3.Dot(primRightRayDirection, transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z)));
 			primRightDot = Mathf.Acos(primRightDot) * Mathf.Rad2Deg;
 		}
 		if (secondaryAttackData._AdventurerClass == AdventurerClass.Warrior || secondaryAttackData.UseCone) {
@@ -335,17 +336,17 @@ public class Adventurer : MonoBehaviour {
 			//Draw secondary left radian
 			Vector3 leftRayDirection;
 			Quaternion leftRayRotation = Quaternion.AngleAxis(-secHalfFOV, Vector3.up);
-			leftRayDirection = leftRayRotation * (transform.rotation * -right);
+			leftRayDirection = leftRayRotation * (transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z)));
 			Gizmos.color = Color.yellow;
 			Gizmos.DrawRay(transform.position, leftRayDirection * secRayRange);
-			secLeftDot = Vector3.Dot(leftRayDirection, transform.rotation * -right);
+			secLeftDot = Vector3.Dot(leftRayDirection, transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z)));
 			secLeftDot = Mathf.Acos(secLeftDot) * Mathf.Rad2Deg;
 			//Draw secondary right radian
 			Vector3 rightRayDirection;
 			Quaternion rightRayRotation = Quaternion.AngleAxis(secHalfFOV, Vector3.up);
-			rightRayDirection = rightRayRotation * (transform.rotation * -right);
+			rightRayDirection = rightRayRotation * (transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z)));
 			Gizmos.DrawRay(transform.position, rightRayDirection * secRayRange);
-			secRightDot = Vector3.Dot(rightRayDirection, transform.rotation * -right);
+			secRightDot = Vector3.Dot(rightRayDirection, transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z)));
 			secRightDot = Mathf.Acos(secRightDot) * Mathf.Rad2Deg;
 		}	
 	}

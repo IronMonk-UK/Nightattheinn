@@ -70,7 +70,6 @@ public class SkillData : ScriptableObject{
 			MeleeAttack(anim, centre, rotation, right);
 		}
 	}
-
 	public void MeleeAttack (Animator anim, Vector3 centre, Quaternion rotation, Vector3 right) {
 		anim.SetTrigger ("Attack");
 		Collider[] hitColliders = Physics.OverlapSphere(centre, attackRadius);
@@ -79,15 +78,15 @@ public class SkillData : ScriptableObject{
 		float dotToDeg;
 		foreach (Collider c in hitColliders) {
 			characterToCollider = (c.transform.position - centre).normalized;
-			dot = Vector3.Dot (characterToCollider, rotation * -right);
+			dot = Vector3.Dot(characterToCollider, rotation * -right);
 			dotToDeg = Mathf.Acos(dot) * Mathf.Rad2Deg;
 			if (c.gameObject.tag == "Enemy") {
 				if (dot >= Mathf.Cos((attackDegrees / 2) * Mathf.Deg2Rad)) {
 					Enemy enemy = c.gameObject.GetComponent<Enemy>();
 					Debug.Log("Dealing " + damage + " Damage.");
 					enemy.TakeDamage(damage);
-					if(knockback) { enemy.GetKnocked(centre, knockbackTime, knockbackForce); }
-					if(stun) { enemy.GetStunned(stunTime); }
+					if (knockback) { enemy.GetKnocked(centre, knockbackTime, knockbackForce); }
+					if (stun) { enemy.GetStunned(stunTime); }
 					if (slow) { enemy.GetSlowed(slowTime, slowForce); }
 				} else {
 					Debug.Log("Target in sphere but not seen!");
