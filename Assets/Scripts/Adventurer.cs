@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 public class Adventurer : MonoBehaviour {
@@ -21,11 +22,17 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] int primaryDamage;
 	[SerializeField] float primCooldown;
 	[SerializeField] bool primOnCooldown;
+	[SerializeField] string primAnimTrigger;
+	[SerializeField] GameObject primTrail;
+	[SerializeField] AnimationClip primAnim;
 
 	[Header("Secondary Skill")]
 	[SerializeField] int secondaryDamage;
 	[SerializeField] float secCooldown;
 	[SerializeField] bool secOnCooldown;
+	[SerializeField] string secAnimTrigger;
+	[SerializeField] GameObject secTrail;
+	[SerializeField] AnimationClip secAnim;
 
 	[Header("Prefabs")]
 	[SerializeField] GameObject bullet;
@@ -37,7 +44,8 @@ public class Adventurer : MonoBehaviour {
 
 	[Header("Animation")]
 	[SerializeField] Animator anim;
-	[SerializeField] GameObject fxCapsule;
+	[SerializeField] GameObject vfx;
+	[SerializeField] GameObject trail;
 
 	[Header("Adventurer Model")]
 	[SerializeField] GameObject modelHolder;
@@ -61,6 +69,15 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] Image manaBarFill;
 	Color maxManaColour = Color.blue;
 	Color minManaColour = Color.cyan;
+
+	// Keeping for further development of the hit radius
+	// Currently takes centre of GO, want to change to far edges
+	// Will help debug later
+	[Header("Debug Variables")]
+	[SerializeField] float primLeftDot;
+	[SerializeField] float primRightDot;
+	[SerializeField] float secLeftDot;
+	[SerializeField] float secRightDot;
  
 	[SerializeField] GameManager instance;
 
@@ -162,6 +179,19 @@ public class Adventurer : MonoBehaviour {
 		secCooldown = characterClassData.SecondarySkill.Cooldown;
 		adventurerClass = characterClassData._AdventurerClass;
 
+		if(primaryAttackData.AnimTrigger != null) {
+			primAnimTrigger = primaryAttackData.AnimTrigger;
+			primTrail = primaryAttackData.Trail;
+			primAnim = primaryAttackData.Anim;
+			SetAnimationEvents(primAnim, "PrimaryAttack");
+		}
+		if(secondaryAttackData.AnimTrigger != null) {
+			secAnimTrigger = secondaryAttackData.AnimTrigger;
+			secTrail = secondaryAttackData.Trail;
+			secAnim = secondaryAttackData.Anim;
+			SetAnimationEvents(secAnim, "SecondaryAttack");
+		}
+
 		if(primaryAttackData.ParticleEffect != null && primaryAttackData.BulletPrefab == null) {
 			primParticleEffect = Instantiate(primaryAttackData.ParticleEffect, transform.position, transform.rotation).GetComponent<ParticleSystem>();
 			primParticleEffect.gameObject.transform.parent = particleParent.transform;
@@ -195,38 +225,87 @@ public class Adventurer : MonoBehaviour {
 
 	private void Attack() {
 		if(Input.GetButton("Fire1") && !primOnCooldown) {
-			if(primaryAttackData.BulletPrefab != null) {
-				primaryAttackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
-				primOnCooldown = true;
-				nextPrimAttackTime = GameManager.instance._Time + primCooldown;
+			if (primaryAttackData.HasAnim) {
+				AddTrail(primTrail);
+				anim.SetTrigger(primAnimTrigger);
 			} else {
-				anim.ResetTrigger("Attack");
-				primaryAttackData.MeleeAttack(anim, transform.position, transform.rotation, right);
-				primOnCooldown = true;
-				nextPrimAttackTime = GameManager.instance._Time + primCooldown;
+				PrimaryAttack();
 			}
 		}
-		if(Input.GetButton("Fire2") && currentMana >= secondaryAttackData.ManaCost && !secOnCooldown) {
-			if(secondaryAttackData.BulletPrefab != null) {
-				secondaryAttackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
-				secOnCooldown = true;
-				nextSecAttackTime = GameManager.instance._Time + secCooldown;
+		if (Input.GetButton("Fire2") && currentMana >= secondaryAttackData.ManaCost && !secOnCooldown) {
+			if (secondaryAttackData.HasAnim) {
+				AddTrail(secTrail);
+				anim.SetTrigger(secAnimTrigger);
 			} else {
-				anim.ResetTrigger("Attack");
-				secondaryAttackData.MeleeAttack(anim, transform.position, transform.rotation, right);
-				secOnCooldown = true;
-				nextSecAttackTime = GameManager.instance._Time + secCooldown;
-			}
-			currentMana -= secondaryAttackData.ManaCost;
-			manaText.text = currentMana + "/" + maxMana;
-			manaBar.value = currentMana;
-			if(currentMana <= maxMana / 2) {
-				manaBarFill.color = minManaColour;
+				SecondaryAttack();
 			}
 		}
-		if(Input.GetButton("Fire3")) {
+		if (Input.GetButton("Fire3")) {
 			Debug.Log("Fire 3");
+			DestroyTrail();
 		}
+	}
+
+	private void AddTrail(GameObject trailPrefab) {
+		TrailRenderer trP = trailPrefab.GetComponent<TrailRenderer>();
+		trail.AddComponent<TrailRenderer>().GetCopyOf(trP);
+		TrailRenderer tr = trail.GetComponent<TrailRenderer>();
+		tr.material = new Material(Shader.Find("Sprites/Default"));
+
+		GradientAlphaKey[] gak = trP.colorGradient.alphaKeys;
+		GradientColorKey[] gck = trP.colorGradient.colorKeys;
+
+		Gradient gradient = new Gradient();
+		gradient.SetKeys( gck, gak);
+		tr.colorGradient = gradient;
+	}
+
+	private void SetAnimationEvents(AnimationClip anim, String function) {
+		if (anim) {
+			AnimationEvent evtAtk = new AnimationEvent();
+			AnimationEvent evtTrl = new AnimationEvent();
+			evtAtk.time = anim.length / 2;
+			evtTrl.time = anim.length;
+			evtAtk.functionName = function;
+			evtTrl.functionName = "DestroyTrail";
+			anim.AddEvent(evtAtk);
+			anim.AddEvent(evtTrl);
+		}
+	}
+
+	private void DestroyTrail() {
+		Destroy(trail.GetComponent<TrailRenderer>());
+	}
+	private void PrimaryAttack() {
+		if (primaryAttackData.BulletPrefab != null) {
+			primaryAttackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
+			primOnCooldown = true;
+			nextPrimAttackTime = GameManager.instance._Time + primCooldown;
+		} else {
+			primaryAttackData.MeleeAttack(anim, transform.position, transform.rotation, right);
+			primOnCooldown = true;
+			nextPrimAttackTime = GameManager.instance._Time + primCooldown;
+		}
+		if(primAnimTrigger != "") anim.ResetTrigger(primAnimTrigger);
+	}
+
+	private void SecondaryAttack() {
+		if (secondaryAttackData.BulletPrefab != null) {
+			secondaryAttackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
+			secOnCooldown = true;
+			nextSecAttackTime = GameManager.instance._Time + secCooldown;
+		} else {
+			secondaryAttackData.MeleeAttack(anim, transform.position, transform.rotation, right);
+			secOnCooldown = true;
+			nextSecAttackTime = GameManager.instance._Time + secCooldown;
+		}
+		currentMana -= secondaryAttackData.ManaCost;
+		manaText.text = currentMana + "/" + maxMana;
+		manaBar.value = currentMana;
+		if (currentMana <= maxMana / 2) {
+			manaBarFill.color = minManaColour;
+		}
+		if(secAnimTrigger != "") anim.ResetTrigger(secAnimTrigger);
 	}
 	private void adventurerDowned() {
 		downed = true;
@@ -258,14 +337,6 @@ public class Adventurer : MonoBehaviour {
 	private float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
 		return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;
 	}
-
-	// Keeping for further development of the hit radius
-	// Currently takes centre of GO, want to change to far edges
-	// Will help debug later
-	[SerializeField] float primLeftDot;
-	[SerializeField] float primRightDot;
-	[SerializeField] float secLeftDot;
-	[SerializeField] float secRightDot;
 
 	private void OnDrawGizmos() {		
 		//Draw line in front of adventurer
@@ -349,5 +420,30 @@ public class Adventurer : MonoBehaviour {
 			secRightDot = Vector3.Dot(rightRayDirection, transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z)));
 			secRightDot = Mathf.Acos(secRightDot) * Mathf.Rad2Deg;
 		}	
+	}
+}
+
+public static class ExtensionMethods {
+
+	public static T GetCopyOf<T>(this Component comp, T other) where T : Component {
+		Type type = null;
+		try {
+			type = comp.GetType();
+		} catch { }
+		if (type != other.GetType()) return null; //type mismatch
+		BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Default | BindingFlags.DeclaredOnly;
+		PropertyInfo[] pinfos = type.GetProperties(flags);
+		foreach(var pinfo in pinfos) {
+			if (pinfo.CanWrite) {
+				try {
+					pinfo.SetValue(comp, pinfo.GetValue(other, null), null);
+				} catch { }
+			}
+		}
+		FieldInfo[] finfos = type.GetFields(flags);
+		foreach (var finfo in finfos) {
+			finfo.SetValue(comp, finfo.GetValue(other));
+		}
+		return comp as T;
 	}
 }

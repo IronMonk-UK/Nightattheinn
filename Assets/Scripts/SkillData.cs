@@ -13,6 +13,11 @@ public class SkillData : ScriptableObject{
 	[SerializeField] int manaCost;
 	[Header("Particle Effect")]
 	[SerializeField] GameObject particleEffect;
+	[Header("Animation")]
+	[SerializeField] bool hasAnim;
+	[SerializeField] string animTrigger;
+	[SerializeField] GameObject trail;
+	[SerializeField] AnimationClip anim;
 	[Header("-Statuses-")]
 	[Header("Knockback")]
 	[SerializeField] bool knockback;
@@ -51,6 +56,10 @@ public class SkillData : ScriptableObject{
 	public float Cooldown { get { return cooldown; } }
 	public int ManaCost { get { return manaCost; } }
 	public bool UseCone { get { return useCone; } }
+	public bool HasAnim { get { return hasAnim; } }
+	public string AnimTrigger { get { return animTrigger; } }
+	public GameObject Trail { get { return trail; } }
+	public AnimationClip Anim { get { return anim; } }
 
 	public enum SkillType { Primary, Secondary, CC }
 
@@ -71,7 +80,6 @@ public class SkillData : ScriptableObject{
 		}
 	}
 	public void MeleeAttack (Animator anim, Vector3 centre, Quaternion rotation, Vector3 right) {
-		anim.SetTrigger ("Attack");
 		Collider[] hitColliders = Physics.OverlapSphere(centre, attackRadius);
 		Vector3 characterToCollider;
 		float dot;

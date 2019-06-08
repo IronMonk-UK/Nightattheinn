@@ -17,13 +17,27 @@ MonoBehaviour:
   skillName: Shield Stun
   damage: 3
   cooldown: 3
-  onCooldown: 0
   manaCost: 4
+  particleEffect: {fileID: 0}
+  hasAnim: 1
+  animTrigger: Bash
+  trail: {fileID: 1419233382323933757, guid: 9cb01654801f028449f59bdfb4b6e6c3, type: 3}
+  anim: {fileID: 7400000, guid: ce390e79b0243b1428417e25873590c5, type: 2}
   knockback: 0
   knockbackForce: 0
   knockbackTime: 0
+  slow: 0
+  slowForce: 0
+  slowTime: 0
   stun: 1
   stunTime: 2
+  useCone: 0
+  thrust: 0
   bulletPrefab: {fileID: 0}
+  bulletDuration: 0
+  aoe: 0
+  aoeRadius: 0
+  pierce: 0
+  pierceAmount: 0
   attackDegrees: 90
   attackRadius: 2
