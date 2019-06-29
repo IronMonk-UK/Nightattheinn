@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actor: {fileID: 0}
   thrust: 0
+  bulletPrefab: {fileID: 30798023020085052}
 --- !u!54 &1512446097483545663
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -84,11 +85,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1463037408115454085}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: a662bf33905e77340978f08143e2dec7,
-        type: 3}
-      propertyPath: m_Name
-      value: magic_blast
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: a662bf33905e77340978f08143e2dec7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -144,8 +140,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: a662bf33905e77340978f08143e2dec7,
+        type: 3}
+      propertyPath: m_Name
+      value: magic_blast
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a662bf33905e77340978f08143e2dec7, type: 3}
+--- !u!1 &30798023020085052 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: a662bf33905e77340978f08143e2dec7,
+    type: 3}
+  m_PrefabInstance: {fileID: 8308164628008543797}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3906366331950435631 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: a662bf33905e77340978f08143e2dec7,

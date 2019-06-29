@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actor: {fileID: 0}
   thrust: 0
+  bulletPrefab: {fileID: 719439280724960000}
 --- !u!54 &7727535928633971655
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -85,11 +86,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7749905024745021309}
     m_Modifications:
-    - target: {fileID: -927199367670048503, guid: e6469605ce3adaf41b2ce467bfef4452,
-        type: 3}
-      propertyPath: m_Name
-      value: arrow_green
-      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: e6469605ce3adaf41b2ce467bfef4452,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -145,8 +141,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: e6469605ce3adaf41b2ce467bfef4452,
+        type: 3}
+      propertyPath: m_Name
+      value: arrow_green
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6469605ce3adaf41b2ce467bfef4452, type: 3}
+--- !u!1 &719439280724960000 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: e6469605ce3adaf41b2ce467bfef4452,
+    type: 3}
+  m_PrefabInstance: {fileID: 8852417844539669001}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4584857857979322643 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: e6469605ce3adaf41b2ce467bfef4452,

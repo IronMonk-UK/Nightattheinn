@@ -18,8 +18,13 @@ MonoBehaviour:
   damage: 2
   cooldown: 0.1
   manaCost: 1
+  continuousAttack: 0
   particleEffect: {fileID: 7831025571501848424, guid: 8f78d6b48e85fcc48ac5871926d1b5c6,
     type: 3}
+  hasAnim: 0
+  animTrigger: 
+  trail: {fileID: 0}
+  anim: {fileID: 0}
   knockback: 0
   knockbackForce: 0
   knockbackTime: 0
@@ -37,4 +42,4 @@ MonoBehaviour:
   pierce: 0
   pierceAmount: 0
   attackDegrees: 120
-  attackRadius: 5
+  attackRadius: 3

@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8044875158605257205
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8044875158605257207}
+  - component: {fileID: 8044875158605257206}
+  - component: {fileID: 1591992511}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8044875158605257207
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8044875158605257205}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -10, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8044875158605257206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8044875158605257205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cccb2cb2f1da8b4fb379f3e0fa507e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  adventurers: []
+  playerClasses: 
+  enemySpawns:
+  - {x: 35, y: 0, z: 5}
+  - {x: 5, y: 0, z: 35}
+  adventurerSpawns:
+  - {x: 5, y: 0, z: 5}
+  primarySkills: []
+  characters:
+  - {fileID: 11400000, guid: 28ac90205e6b53f439a3300dd7824d29, type: 2}
+  - {fileID: 11400000, guid: 091b543b154687c49ba3dd2331070629, type: 2}
+  - {fileID: 11400000, guid: 7b911ab5265533e498810937b294f887, type: 2}
+  enemies:
+  - {fileID: 11400000, guid: 2056eaf18ec6d5b48a1a63cb0cba1451, type: 2}
+  - {fileID: 11400000, guid: 64c8958fee6dc6a48b4d08b0a69c9057, type: 2}
+  time: 0
+  playerCount: 1
+  adventurer: {fileID: 756533685032950921, guid: 23a1ba58b88941a48927d802d7916b0b,
+    type: 3}
+  enemy: {fileID: 1751320589176948, guid: 14a50a8b77a80e84a8f09ec306091571, type: 3}
+  playerUI: {fileID: 7651415929436698026, guid: 377d07d787697dc4f81209a43fd92729,
+    type: 3}
+  canvas: {fileID: 0}
+  spawnEnemies: 1
+  freezeZombies: 0
+--- !u!114 &1591992511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8044875158605257205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 700509f416ac2bd4098485be4753f75c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  classPanel: {fileID: 0}

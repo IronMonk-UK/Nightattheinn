@@ -16,11 +16,18 @@ public class Bullet : MonoBehaviour {
 	int damage;
 	int enemiesHit;
 
+	[SerializeField] GameObject bulletPrefab;
 
 	bool aoe;
 	//int aoeDamage;
 	float aoeRadius;
-	//float aoeTime;
+	bool aoeTriggered;
+	float aoeStartTime;
+	float aoeTime;
+	bool aoeScale;
+	bool aoeRotate;
+	GameObject aoePrefab;
+	Vector3 aoePrefabScale;
 	bool pierce;
 	int pierceAmount;
 	int pierceCount = 0;
@@ -50,6 +57,9 @@ public class Bullet : MonoBehaviour {
 	public bool Aoe { get { return aoe; } set { aoe = value; } }
 	//public int AoeDamage { get { return aoeDamage; } set { aoeDamage = value; } }
 	public float AoeRadius { get { return aoeRadius; } set { aoeRadius = value; } }
+	public GameObject AoePrefab { get { return aoePrefab; } set { aoePrefab = value; } }
+	public bool AoeScale { get { return aoeScale; } set { aoeScale = value; } }
+	public bool AoeRotate { get { return aoeRotate; } set { aoeRotate = value; } }
 	//public float AoeTime { get { return aoeTime; } set { aoeTime = value; } }
 	public bool Knockback { get { return knockback; } set { knockback = value; } }
 	public float KnockbackForce { get { return knockbackForce; } set { knockbackForce = value; } }
@@ -66,13 +76,18 @@ public class Bullet : MonoBehaviour {
 		direction = new Vector3(0, transform.localPosition.y, 0);
 	}
 
-	void Start() {
-		//adventurerClass = adventurer.GetComponent<Adventurer>();
+	void Start() {	
 		forward = gameObject.transform.position - actor.transform.position;
 		if (actor.tag == "Adventurer") {
 			adventurer = true;
 		}else if(actor.tag == "Enemy") {
 			enemy = true;
+		}
+		if (aoe) {
+			aoePrefabScale = new Vector3(aoeRadius, aoeRadius, aoeRadius);
+			if (slow) {	aoeTime = slowTime;	}
+			else if (stun) { aoeTime = stunTime; }
+			else { aoeTime = 1; }
 		}
 	}
 
@@ -80,6 +95,18 @@ public class Bullet : MonoBehaviour {
 		time += Time.deltaTime;
 		if (!stop) {
 			transform.Translate(forward * (Time.deltaTime * thrust), Space.World);
+		}
+		if (aoeTriggered) {
+			if (aoeScale && aoePrefab.transform.localScale.x <= (aoePrefabScale.x * 4)) {
+				if (time < aoeStartTime + aoeTime) {
+					aoePrefab.transform.localScale = Vector3.Lerp(aoePrefab.transform.localScale, aoePrefabScale * 4, (aoeTime * Time.deltaTime) * 3);
+				}
+			} else if (aoeRotate) {
+				aoePrefab.transform.localScale = aoePrefabScale * 4;
+				Debug.Log("Rotating AoE Object!");
+				aoePrefab.transform.Rotate(0, 0.5f, 0);
+			}
+			if (time > aoeStartTime + aoeTime) { Destroy(gameObject); }
 		}
 	}
 
@@ -117,6 +144,10 @@ public class Bullet : MonoBehaviour {
 	public void TriggerEnemyEffects(Collider col) {
 		Enemy enemy = col.gameObject.GetComponent<Enemy>();
 		if (aoe) {
+			Debug.Log("AoE Effect Triggered!");
+			aoePrefab.SetActive(true);
+			aoeStartTime = time;
+			aoeTriggered = true;
 			Collider[] hitColliders = Physics.OverlapSphere(transform.position, aoeRadius);
 			foreach (Collider c in hitColliders) {
 				if (c.gameObject.tag == "Enemy") {
@@ -133,7 +164,7 @@ public class Bullet : MonoBehaviour {
 			if(stun) { enemy.GetStunned(stunTime); }
 			if (slow) { enemy.GetSlowed(slowTime, slowForce); }
 		}
-		if (destroyed) {
+		if (destroyed && !aoe) {
 			Destroy(gameObject);
 		}
 	}
@@ -141,8 +172,8 @@ public class Bullet : MonoBehaviour {
 	private void DeleteBullet() {
 		Debug.Log("Deleting Bullet!");
 		Destroy(gameObject.GetComponent<CapsuleCollider>());
-		Destroy(gameObject.GetComponent<MeshRenderer>());
 		Destroy(gameObject.GetComponent<Rigidbody>());
+		Destroy(bulletPrefab);
 		destroyed = true;
 		stop = true;
 	}

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5640485834752323406}
   m_Layer: 0
-  m_Name: Inn V2 1
+  m_Name: Inn V2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,6 +31,14 @@ Transform:
   - {fileID: 4240001431023475601}
   - {fileID: 888221537932763131}
   - {fileID: 6865007258847637537}
+  - {fileID: 5430888308977037031}
+  - {fileID: 5430888310459743844}
+  - {fileID: 8094630039452391647}
+  - {fileID: 8094630039049299735}
+  - {fileID: 70445420056656028}
+  - {fileID: 70445418363165376}
+  - {fileID: 70445419698103881}
+  - {fileID: 1134566313604149625}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -100,6 +108,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Floor Tile V2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2691635420039643835, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b9462b86ec05de4f88f8a578de181b9, type: 3}
@@ -176,6 +189,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall Tile Z V2
       objectReference: {fileID: 0}
+    - target: {fileID: 4877581967420704290, guid: 1d3dac7d86c260041989fdbe5684a50b,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d3dac7d86c260041989fdbe5684a50b, type: 3}
 --- !u!4 &888221537932763131 stripped
@@ -251,6 +269,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall Tile X V2
       objectReference: {fileID: 0}
+    - target: {fileID: 8211766299261148843, guid: 8f165bb5f60a4a342a381c0fe78556e7,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f165bb5f60a4a342a381c0fe78556e7, type: 3}
 --- !u!4 &4240001431023475601 stripped
@@ -258,6 +281,36 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 367434656232857195, guid: 8f165bb5f60a4a342a381c0fe78556e7,
     type: 3}
   m_PrefabInstance: {fileID: 4597859701678409210}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4684737889415994891
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5640485834752323406}
+    m_Modifications:
+    - target: {fileID: 5673763979140001650, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 5673763979140001650, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8852515804878059743, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_Name
+      value: Floor Tile V2 (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8b9462b86ec05de4f88f8a578de181b9, type: 3}
+--- !u!4 &1134566313604149625 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5673763979140001650, guid: 8b9462b86ec05de4f88f8a578de181b9,
+    type: 3}
+  m_PrefabInstance: {fileID: 4684737889415994891}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5469549743323403053
 PrefabInstance:
@@ -326,6 +379,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corner Tile V2
       objectReference: {fileID: 0}
+    - target: {fileID: 415210333478351288, guid: c8d46225bfdda674b999ef245eaf9d16,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c8d46225bfdda674b999ef245eaf9d16, type: 3}
 --- !u!4 &6144861896280652970 stripped
@@ -333,4 +391,224 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2207135268828016519, guid: c8d46225bfdda674b999ef245eaf9d16,
     type: 3}
   m_PrefabInstance: {fileID: 5469549743323403053}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5640485833284300940
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5640485834752323406}
+    m_Modifications:
+    - target: {fileID: 367434656232857195, guid: 8f165bb5f60a4a342a381c0fe78556e7,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 367434656232857195, guid: 8f165bb5f60a4a342a381c0fe78556e7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3550721629697964755, guid: 8f165bb5f60a4a342a381c0fe78556e7,
+        type: 3}
+      propertyPath: m_Name
+      value: Wall Tile X V2 (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8f165bb5f60a4a342a381c0fe78556e7, type: 3}
+--- !u!4 &5430888308977037031 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 367434656232857195, guid: 8f165bb5f60a4a342a381c0fe78556e7,
+    type: 3}
+  m_PrefabInstance: {fileID: 5640485833284300940}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5640485833688282546
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5640485834752323406}
+    m_Modifications:
+    - target: {fileID: 5673763979140001650, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5673763979140001650, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5673763979140001650, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8852515804878059743, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_Name
+      value: Floor Tile V2 (3)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8b9462b86ec05de4f88f8a578de181b9, type: 3}
+--- !u!4 &70445418363165376 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5673763979140001650, guid: 8b9462b86ec05de4f88f8a578de181b9,
+    type: 3}
+  m_PrefabInstance: {fileID: 5640485833688282546}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5640485834173732846
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5640485834752323406}
+    m_Modifications:
+    - target: {fileID: 5673763979140001650, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5673763979140001650, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8852515804878059743, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_Name
+      value: Floor Tile V2 (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8b9462b86ec05de4f88f8a578de181b9, type: 3}
+--- !u!4 &70445420056656028 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5673763979140001650, guid: 8b9462b86ec05de4f88f8a578de181b9,
+    type: 3}
+  m_PrefabInstance: {fileID: 5640485834173732846}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5640485834485614907
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5640485834752323406}
+    m_Modifications:
+    - target: {fileID: 5673763979140001650, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5673763979140001650, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5673763979140001650, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8852515804878059743, guid: 8b9462b86ec05de4f88f8a578de181b9,
+        type: 3}
+      propertyPath: m_Name
+      value: Floor Tile V2 (4)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8b9462b86ec05de4f88f8a578de181b9, type: 3}
+--- !u!4 &70445419698103881 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5673763979140001650, guid: 8b9462b86ec05de4f88f8a578de181b9,
+    type: 3}
+  m_PrefabInstance: {fileID: 5640485834485614907}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5640485834704565056
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5640485834752323406}
+    m_Modifications:
+    - target: {fileID: 4472884603812402263, guid: 1d3dac7d86c260041989fdbe5684a50b,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4472884603812402263, guid: 1d3dac7d86c260041989fdbe5684a50b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5813989547045584060, guid: 1d3dac7d86c260041989fdbe5684a50b,
+        type: 3}
+      propertyPath: m_Name
+      value: Wall Tile Z V2 (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1d3dac7d86c260041989fdbe5684a50b, type: 3}
+--- !u!4 &8094630039049299735 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4472884603812402263, guid: 1d3dac7d86c260041989fdbe5684a50b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5640485834704565056}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5640485834754580495
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5640485834752323406}
+    m_Modifications:
+    - target: {fileID: 367434656232857195, guid: 8f165bb5f60a4a342a381c0fe78556e7,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 367434656232857195, guid: 8f165bb5f60a4a342a381c0fe78556e7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3550721629697964755, guid: 8f165bb5f60a4a342a381c0fe78556e7,
+        type: 3}
+      propertyPath: m_Name
+      value: Wall Tile X V2 (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8f165bb5f60a4a342a381c0fe78556e7, type: 3}
+--- !u!4 &5430888310459743844 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 367434656232857195, guid: 8f165bb5f60a4a342a381c0fe78556e7,
+    type: 3}
+  m_PrefabInstance: {fileID: 5640485834754580495}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5640485834840427656
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 5640485834752323406}
+    m_Modifications:
+    - target: {fileID: 4472884603812402263, guid: 1d3dac7d86c260041989fdbe5684a50b,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4472884603812402263, guid: 1d3dac7d86c260041989fdbe5684a50b,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5813989547045584060, guid: 1d3dac7d86c260041989fdbe5684a50b,
+        type: 3}
+      propertyPath: m_Name
+      value: Wall Tile Z V2 (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 1d3dac7d86c260041989fdbe5684a50b, type: 3}
+--- !u!4 &8094630039452391647 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4472884603812402263, guid: 1d3dac7d86c260041989fdbe5684a50b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5640485834840427656}
   m_PrefabAsset: {fileID: 0}

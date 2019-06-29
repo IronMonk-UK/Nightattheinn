@@ -11,6 +11,7 @@ public class SkillData : ScriptableObject{
 	[SerializeField] int damage;
 	[SerializeField] float cooldown;
 	[SerializeField] int manaCost;
+	[SerializeField] bool continuousAttack;
 	[Header("Particle Effect")]
 	[SerializeField] GameObject particleEffect;
 	[Header("Animation")]
@@ -38,6 +39,9 @@ public class SkillData : ScriptableObject{
 	[Header("AoE")]
 	[SerializeField] bool aoe;
 	[SerializeField] float aoeRadius;
+	[SerializeField] GameObject aoePrefab;
+	[SerializeField] bool aoeScale;
+	[SerializeField] bool aoeRotate;
 	[Header("Pierce")]
 	[SerializeField] bool pierce;
 	[SerializeField] int pierceAmount; //Will pierce x amount of enemies, stop on following enemy (x + 1)
@@ -70,7 +74,15 @@ public class SkillData : ScriptableObject{
 			bullet.Actor = adventurer;
 			bullet.Damage = damage;
 			bullet.Thrust = thrust;
-			if (aoe) { bullet.Aoe = true; bullet.AoeRadius = aoeRadius; }
+			if (aoe) {
+				Vector3 aoeTransform = new Vector3(bullet.transform.position.x, 0, bullet.transform.position.z);
+				bullet.Aoe = true; bullet.AoeRadius = aoeRadius;
+				if (aoeScale) { bullet.AoeScale = true; }
+				if (aoeRotate) { bullet.AoeRotate = true; }
+				bullet.AoePrefab = Instantiate(aoePrefab, aoeTransform, bullet.transform.rotation, bullet.transform);
+				bullet.AoePrefab.SetActive(false);
+				bullet.AoePrefab.transform.localScale = new Vector3(0, 0, 0);
+			}
 			if(pierce) { bullet.Pierce = true; bullet.PierceAmount = pierceAmount; }
 			if (knockback) { bullet.Knockback = true; }
 			if (slow) { bullet.Slow = true; bullet.SlowForce = slowForce; bullet.SlowTime = slowTime; }

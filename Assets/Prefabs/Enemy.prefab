@@ -138,7 +138,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 0}
   thrust: 0
   skirmisher: 0
-  followAdventurers: 0
+  followAdventurers: 1
   target: {fileID: 0}
   distanceToTarget: 0
   attackDistance: 6

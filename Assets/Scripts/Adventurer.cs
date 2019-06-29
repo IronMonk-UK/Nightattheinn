@@ -12,6 +12,7 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] GameObject weapon;
 
 	[Header("Floats & Integers")]
+	[SerializeField] int playerNumber;
 	[SerializeField] float moveSpeed;
 	[SerializeField] int maxHealth;
 	[SerializeField] int currentHealth;
@@ -59,6 +60,7 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] bool hasSecParticleEffect;
 
 	[Header("UI")]
+	[SerializeField] PlayerUI ui;
 	[SerializeField] Text healthText;
 	[SerializeField] Slider healthBar;
 	[SerializeField] Image healthBarFill;
@@ -79,7 +81,7 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] float secLeftDot;
 	[SerializeField] float secRightDot;
  
-	[SerializeField] GameManager instance;
+	//[SerializeField] GameManager instance;
 
 	float nextPrimAttackTime;
 	float nextSecAttackTime;
@@ -88,20 +90,37 @@ public class Adventurer : MonoBehaviour {
 
 	Vector3 forward, right;
 	Vector3 cameraTransform;
+	public int PlayerNumber { get { return playerNumber; } set { playerNumber = value; } }
 	public bool Downed { get { return downed; } }
 	public enum AdventurerClass { Mage, Ranger, Warrior }
 	public AdventurerClass _AdventurerClass { get { return adventurerClass; } }
 	public Animator Anim { get { return anim; } }
 	public float PrimCooldown { get { return primCooldown; } }
 	public float SecCooldown { get { return secCooldown; } }
+	public Text HealthText { get { return healthText; } set { healthText = value; } }
+	public Slider HealthBar { get { return healthBar; } set { healthBar = value; } }
+	public Image HealthBarFill { get { return healthBarFill; } set { healthBarFill = value; } }
+	public Text ManaText { get { return manaText; } set { manaText = value; } }
+	public Slider ManaBar { get { return manaBar; } set { manaBar = value; } }
+	public Image ManaBarFill { get { return manaBarFill; } set { manaBarFill = value; } }
 
-	private ClassData CharacterClassData {
+	public ClassData CharacterClassData {
 		get {
 			return characterClassData;
 		} set {
 			if (characterClassData == value) return;
 			characterClassData = value;
 			ChangeClass();
+		}
+	}
+
+	public PlayerUI UI {
+		get {
+			return ui;
+		} set {
+			if (ui == value) return;
+			ui = value;
+			SetUI();
 		}
 	}
 
@@ -116,21 +135,22 @@ public class Adventurer : MonoBehaviour {
 		GameManager.instance.Adventurers.Add(gameObject);
 	}
 
-	private void FixedUpdate() {
+	private void Update() {
 		ChangeClassDebug();
 		if(!downed) {
 			Move();
 			Attack();
-			if(GameManager.instance._Time >= nextPrimAttackTime) {
-				primOnCooldown = false;
+			if(GameManager.instance._Time >= nextPrimAttackTime) { primOnCooldown = false; }
+			if(GameManager.instance._Time >= nextSecAttackTime) { secOnCooldown = false; }
+			if(Input.GetButtonUp("Fire2") && hasSecParticleEffect) {
+				Debug.Log("Disabling GO");
+				secParticleEffect.gameObject.SetActive(false);
 			}
-			if(GameManager.instance._Time >= nextSecAttackTime) {
-				secOnCooldown = false;
-			}
+		} else { Debug.Log("Adventurer is downed!"); }
+	}
 
-		} else {
-			Debug.Log("Adventurer is downed!");
-		}
+	private void FixedUpdate() {
+
 	}
 
 	private void ChangeClassDebug() {
@@ -160,17 +180,9 @@ public class Adventurer : MonoBehaviour {
 	private void ChangeClass() {
 		maxHealth = characterClassData.Health;
 		currentHealth = maxHealth;
-		healthText.text = currentHealth + "/" + maxHealth;
-		healthBar.maxValue = maxHealth;
-		healthBar.value = maxHealth;
-		healthBarFill.color = maxHealthColour;
-
 		maxMana = characterClassData.Mana;
 		currentMana = maxMana;
-		manaText.text = currentMana + "/" + maxMana;
-		manaBar.maxValue = maxMana;
-		manaBar.value = maxMana;
-		manaBarFill.color = maxManaColour;
+		
 		className = characterClassData.ClassName;
 		moveSpeed = characterClassData.MovementSpeed;
 		primaryAttackData = characterClassData.PrimarySkill;
@@ -193,9 +205,9 @@ public class Adventurer : MonoBehaviour {
 		}
 
 		if(primaryAttackData.ParticleEffect != null && primaryAttackData.BulletPrefab == null) {
+			hasPrimParticleEffect = true;
 			primParticleEffect = Instantiate(primaryAttackData.ParticleEffect, transform.position, transform.rotation).GetComponent<ParticleSystem>();
 			primParticleEffect.gameObject.transform.parent = particleParent.transform;
-			hasPrimParticleEffect = true;
 		}else if(primaryAttackData.ParticleEffect == null) {
 			if(primParticleEffect != null) {
 				Destroy(primParticleEffect.gameObject);
@@ -204,9 +216,9 @@ public class Adventurer : MonoBehaviour {
 			hasPrimParticleEffect = false;
 		}
 		if(secondaryAttackData.ParticleEffect != null && secondaryAttackData.BulletPrefab == null) {
+			hasSecParticleEffect = true;
 			secParticleEffect = Instantiate(secondaryAttackData.ParticleEffect, transform.position, transform.rotation).GetComponent<ParticleSystem>();
 			secParticleEffect.gameObject.transform.parent = particleParent.transform;
-			hasSecParticleEffect = true;
 		}else if(secondaryAttackData.ParticleEffect == null) {
 			if(secParticleEffect != null) {
 				Destroy(secParticleEffect.gameObject);
@@ -223,12 +235,34 @@ public class Adventurer : MonoBehaviour {
 		model.transform.localPosition = new Vector3(0, 0, 0);
 	}
 
+	public void SetUI() {
+		healthText = ui.HealthText;
+		healthBar = ui.HealthSlider;
+		healthBarFill = ui.HealthFill;
+		healthText.text = currentHealth + "/" + maxHealth;
+		healthBar.maxValue = maxHealth;
+		healthBar.value = maxHealth;
+		healthBarFill.color = maxHealthColour;
+
+		manaText = ui.ManaText;
+		manaBar = ui.ManaSlider;
+		manaBarFill = ui.ManaFill;
+		manaText.text = currentMana + "/" + maxMana;
+		manaBar.maxValue = maxMana;
+		manaBar.value = maxMana;
+		manaBarFill.color = maxManaColour;
+	}
+	
 	private void Attack() {
 		if(Input.GetButton("Fire1") && !primOnCooldown) {
 			if (primaryAttackData.HasAnim) {
 				AddTrail(primTrail);
 				anim.SetTrigger(primAnimTrigger);
 			} else {
+				if (hasPrimParticleEffect) {
+					primParticleEffect.gameObject.SetActive(true);
+					primParticleEffect.Play();
+				}
 				PrimaryAttack();
 			}
 		}
@@ -237,6 +271,10 @@ public class Adventurer : MonoBehaviour {
 				AddTrail(secTrail);
 				anim.SetTrigger(secAnimTrigger);
 			} else {
+				if (hasSecParticleEffect) {
+					secParticleEffect.gameObject.SetActive(true);
+					secParticleEffect.Play();
+				}
 				SecondaryAttack();
 			}
 		}
@@ -244,20 +282,7 @@ public class Adventurer : MonoBehaviour {
 			Debug.Log("Fire 3");
 			DestroyTrail();
 		}
-	}
-
-	private void AddTrail(GameObject trailPrefab) {
-		TrailRenderer trP = trailPrefab.GetComponent<TrailRenderer>();
-		trail.AddComponent<TrailRenderer>().GetCopyOf(trP);
-		TrailRenderer tr = trail.GetComponent<TrailRenderer>();
-		tr.material = new Material(Shader.Find("Sprites/Default"));
-
-		GradientAlphaKey[] gak = trP.colorGradient.alphaKeys;
-		GradientColorKey[] gck = trP.colorGradient.colorKeys;
-
-		Gradient gradient = new Gradient();
-		gradient.SetKeys( gck, gak);
-		tr.colorGradient = gradient;
+		if(Input.GetButtonUp("Fire1") && hasPrimParticleEffect) { primParticleEffect.gameObject.SetActive(false); }
 	}
 
 	private void SetAnimationEvents(AnimationClip anim, String function) {
@@ -273,39 +298,46 @@ public class Adventurer : MonoBehaviour {
 		}
 	}
 
+	private void AddTrail(GameObject trailPrefab) {
+		TrailRenderer trP = trailPrefab.GetComponent<TrailRenderer>();
+		if (!trail.GetComponent<TrailRenderer>()) {
+			trail.AddComponent<TrailRenderer>().GetCopyOf(trP);
+		}
+		TrailRenderer tr = trail.GetComponent<TrailRenderer>();
+		tr.material = new Material(Shader.Find("Sprites/Default"));
+
+		GradientAlphaKey[] gak = trP.colorGradient.alphaKeys;
+		GradientColorKey[] gck = trP.colorGradient.colorKeys;
+
+		Gradient gradient = new Gradient();
+		gradient.SetKeys( gck, gak);
+		tr.colorGradient = gradient;
+	}
+
 	private void DestroyTrail() {
 		Destroy(trail.GetComponent<TrailRenderer>());
 	}
-	private void PrimaryAttack() {
-		if (primaryAttackData.BulletPrefab != null) {
-			primaryAttackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
-			primOnCooldown = true;
-			nextPrimAttackTime = GameManager.instance._Time + primCooldown;
-		} else {
-			primaryAttackData.MeleeAttack(anim, transform.position, transform.rotation, right);
-			primOnCooldown = true;
-			nextPrimAttackTime = GameManager.instance._Time + primCooldown;
-		}
-		if(primAnimTrigger != "") anim.ResetTrigger(primAnimTrigger);
-	}
 
-	private void SecondaryAttack() {
-		if (secondaryAttackData.BulletPrefab != null) {
-			secondaryAttackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
-			secOnCooldown = true;
-			nextSecAttackTime = GameManager.instance._Time + secCooldown;
+	private void PrimaryAttack() { MakeAttack(primaryAttackData, primCooldown, primAnimTrigger, out primOnCooldown, out nextPrimAttackTime); }
+	private void SecondaryAttack() { MakeAttack(secondaryAttackData, secCooldown, secAnimTrigger, out secOnCooldown, out nextSecAttackTime); }
+
+	private void MakeAttack(SkillData attackData, float cooldown, string animTrigger, out bool onCooldown, out float nextAttackTime) {
+		if (attackData.BulletPrefab != null) {
+			attackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
 		} else {
-			secondaryAttackData.MeleeAttack(anim, transform.position, transform.rotation, right);
-			secOnCooldown = true;
-			nextSecAttackTime = GameManager.instance._Time + secCooldown;
+			attackData.MeleeAttack(anim, transform.position, transform.rotation, right);
 		}
-		currentMana -= secondaryAttackData.ManaCost;
-		manaText.text = currentMana + "/" + maxMana;
-		manaBar.value = currentMana;
-		if (currentMana <= maxMana / 2) {
-			manaBarFill.color = minManaColour;
-		}
-		if(secAnimTrigger != "") anim.ResetTrigger(secAnimTrigger);
+		onCooldown = true;
+		nextAttackTime = GameManager.instance._Time + cooldown;
+		if(attackData == secondaryAttackData) {
+			currentMana -= attackData.ManaCost;
+			manaText.text = currentMana + "/" + maxMana;
+			manaBar.value = currentMana;
+			if (currentMana <= maxMana / 2) {
+				manaBarFill.color = minManaColour;
+			}
+		}		
+		if(animTrigger != "") anim.ResetTrigger(animTrigger);
 	}
 	private void adventurerDowned() {
 		downed = true;

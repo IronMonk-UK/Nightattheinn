@@ -18,7 +18,12 @@ MonoBehaviour:
   damage: 3
   cooldown: 1
   manaCost: 4
+  continuousAttack: 0
   particleEffect: {fileID: 0}
+  hasAnim: 0
+  animTrigger: 
+  trail: {fileID: 0}
+  anim: {fileID: 0}
   knockback: 0
   knockbackForce: 0
   knockbackTime: 0
@@ -34,6 +39,10 @@ MonoBehaviour:
   bulletDuration: 0
   aoe: 1
   aoeRadius: 3
+  aoePrefab: {fileID: 3994763367390986536, guid: e34209ef393dcef4e8c1e3ab15fbd3b7,
+    type: 3}
+  aoeScale: 1
+  aoeRotate: 0
   pierce: 0
   pierceAmount: 0
   attackDegrees: 0
