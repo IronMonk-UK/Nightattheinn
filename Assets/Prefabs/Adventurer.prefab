@@ -131,11 +131,13 @@ MonoBehaviour:
   adventurerClass: 0
   className: 
   weapon: {fileID: 0}
+  playerNumber: 0
   moveSpeed: 15
   maxHealth: 0
   currentHealth: 0
   maxMana: 0
   currentMana: 0
+  killCount: 0
   primaryDamage: 0
   primCooldown: 0
   primOnCooldown: 0
@@ -148,11 +150,11 @@ MonoBehaviour:
   secAnimTrigger: 
   secTrail: {fileID: 0}
   secAnim: {fileID: 0}
+  secManaCost: 0
   bullet: {fileID: 1237832826086430, guid: 0a056ba8c8d412d4b8de104a4a2d53e0, type: 3}
-  characterClassData: {fileID: 11400000, guid: 28ac90205e6b53f439a3300dd7824d29, type: 2}
-  primaryAttackData: {fileID: 11400000, guid: 1bec5ec5774825a40b24ff2155082ad0, type: 2}
-  secondaryAttackData: {fileID: 11400000, guid: a060d00bf7a3c934e9c4c8e65677b28e,
-    type: 2}
+  characterClassData: {fileID: 0}
+  primaryAttackData: {fileID: 0}
+  secondaryAttackData: {fileID: 0}
   anim: {fileID: 0}
   vfx: {fileID: 2700701387930027909}
   trail: {fileID: 5969676624707202547}
@@ -163,12 +165,21 @@ MonoBehaviour:
   hasPrimParticleEffect: 0
   secParticleEffect: {fileID: 0}
   hasSecParticleEffect: 0
+  ui: {fileID: 0}
   healthText: {fileID: 0}
   healthBar: {fileID: 0}
   healthBarFill: {fileID: 0}
   manaText: {fileID: 0}
   manaBar: {fileID: 0}
   manaBarFill: {fileID: 0}
+  manaCostText: {fileID: 0}
+  primSkillText: {fileID: 0}
+  primSkillBar: {fileID: 0}
+  primSkillFill: {fileID: 0}
+  secSkillText: {fileID: 0}
+  secSkillBar: {fileID: 0}
+  secSkillFill: {fileID: 0}
+  killCountText: {fileID: 0}
   primLeftDot: 90
   primRightDot: 90
   secLeftDot: 45

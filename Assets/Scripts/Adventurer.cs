@@ -18,6 +18,7 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] int currentHealth;
 	[SerializeField] int maxMana;
 	[SerializeField] int currentMana;
+	[SerializeField] int killCount;
 
 	[Header("Primary Skill")]
 	[SerializeField] int primaryDamage;
@@ -34,6 +35,7 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] string secAnimTrigger;
 	[SerializeField] GameObject secTrail;
 	[SerializeField] AnimationClip secAnim;
+	[SerializeField] int secManaCost;
 
 	[Header("Prefabs")]
 	[SerializeField] GameObject bullet;
@@ -69,8 +71,16 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] Text manaText;
 	[SerializeField] Slider manaBar;
 	[SerializeField] Image manaBarFill;
+	[SerializeField] Text manaCostText;
 	Color maxManaColour = Color.blue;
 	Color minManaColour = Color.cyan;
+	[SerializeField] Text primSkillText;
+	[SerializeField] Slider primSkillBar;
+	[SerializeField] Image primSkillFill;
+	[SerializeField] Text secSkillText;
+	[SerializeField] Slider secSkillBar;
+	[SerializeField] Image secSkillFill;
+	[SerializeField] Text killCountText;
 
 	// Keeping for further development of the hit radius
 	// Currently takes centre of GO, want to change to far edges
@@ -124,11 +134,20 @@ public class Adventurer : MonoBehaviour {
 		}
 	}
 
+	public int KillCount {
+		get {
+			return killCount;
+		} set {
+			if (killCount == value) return;
+			killCount = value;
+			killCountText.text = "Kill Count: " + killCount;
+		}
+	}
+
 	private void Awake() {
 		anim = gameObject.GetComponent<Animator>();
 		SetMovementVectors();
 		cameraTransform = Camera.main.transform.position;
-		ChangeClass();
 	}
 
 	private void Start() {
@@ -136,12 +155,22 @@ public class Adventurer : MonoBehaviour {
 	}
 
 	private void Update() {
-		ChangeClassDebug();
+		DebugTools();
 		if(!downed) {
 			Move();
 			Attack();
-			if(GameManager.instance._Time >= nextPrimAttackTime) { primOnCooldown = false; }
-			if(GameManager.instance._Time >= nextSecAttackTime) { secOnCooldown = false; }
+			if(GameManager.instance._Time >= nextPrimAttackTime) {
+				primOnCooldown = false;
+				primSkillBar.value = primSkillBar.maxValue;
+			}else if(primSkillBar.value >= 0) {
+				primSkillBar.value -= Time.deltaTime;
+			}
+			if(GameManager.instance._Time >= nextSecAttackTime) {
+				secOnCooldown = false;
+				secSkillBar.value = secSkillBar.maxValue;
+			}else if (secSkillBar.value >= 0) {
+				secSkillBar.value -= Time.deltaTime;
+			}
 			if(Input.GetButtonUp("Fire2") && hasSecParticleEffect) {
 				Debug.Log("Disabling GO");
 				secParticleEffect.gameObject.SetActive(false);
@@ -153,15 +182,18 @@ public class Adventurer : MonoBehaviour {
 
 	}
 
-	private void ChangeClassDebug() {
+	private void DebugTools() {
 		if(Input.GetKeyDown(KeyCode.Alpha1)) {
-			CharacterClassData = GameManager.instance.Characters[0]; //Mage
+			CharacterClassData = GameManager.instance.Characters[0]; //Fighter
 		}
 		if(Input.GetKeyDown(KeyCode.Alpha2)) {
-			CharacterClassData = GameManager.instance.Characters[1]; //Ranger
+			CharacterClassData = GameManager.instance.Characters[1]; //Mage
 		}
 		if(Input.GetKeyDown(KeyCode.Alpha3)) {
-			CharacterClassData = GameManager.instance.Characters[2]; //Warrior
+			CharacterClassData = GameManager.instance.Characters[2]; //Ranger
+		}
+		if(Input.GetKeyDown(KeyCode.K)) {
+			adventurerDowned();
 		}
 	}
 
@@ -227,6 +259,8 @@ public class Adventurer : MonoBehaviour {
 			hasSecParticleEffect = false;
 		}
 
+		secManaCost = secondaryAttackData.ManaCost;
+
 		if(model != null) {
 			Destroy(model);
 		}
@@ -247,10 +281,29 @@ public class Adventurer : MonoBehaviour {
 		manaText = ui.ManaText;
 		manaBar = ui.ManaSlider;
 		manaBarFill = ui.ManaFill;
+		manaCostText = ui.ManaCostText;
 		manaText.text = currentMana + "/" + maxMana;
 		manaBar.maxValue = maxMana;
 		manaBar.value = maxMana;
 		manaBarFill.color = maxManaColour;
+		manaCostText.text = "Mana Cost: " + secManaCost;
+
+		primSkillText = ui.Skill01Text;
+		primSkillBar = ui.Skill01Slider;
+		primSkillFill = ui.Skill01Fill;
+		primSkillBar.maxValue = primCooldown;
+		primSkillBar.value = primSkillBar.maxValue;
+		primSkillText.text = primaryAttackData.SkillName;
+
+		secSkillText = ui.Skill02Text;
+		secSkillBar = ui.Skill02Slider;
+		secSkillFill = ui.Skill02Fill;
+		secSkillBar.maxValue = secCooldown;
+		secSkillBar.value = secSkillBar.maxValue;
+		secSkillText.text = secondaryAttackData.SkillName;
+
+		killCountText = ui.KillCount;
+		killCountText.text = "Kill Count: " + killCount;
 	}
 	
 	private void Attack() {
@@ -266,7 +319,7 @@ public class Adventurer : MonoBehaviour {
 				PrimaryAttack();
 			}
 		}
-		if (Input.GetButton("Fire2") && currentMana >= secondaryAttackData.ManaCost && !secOnCooldown) {
+		if (Input.GetButton("Fire2") && currentMana >= secManaCost && !secOnCooldown) {
 			if (secondaryAttackData.HasAnim) {
 				AddTrail(secTrail);
 				anim.SetTrigger(secAnimTrigger);
@@ -325,12 +378,12 @@ public class Adventurer : MonoBehaviour {
 		if (attackData.BulletPrefab != null) {
 			attackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
 		} else {
-			attackData.MeleeAttack(anim, transform.position, transform.rotation, right);
+			attackData.MeleeAttack(anim, transform.position, transform.rotation, right, gameObject);
 		}
 		onCooldown = true;
 		nextAttackTime = GameManager.instance._Time + cooldown;
 		if(attackData == secondaryAttackData) {
-			currentMana -= attackData.ManaCost;
+			currentMana -= secManaCost;
 			manaText.text = currentMana + "/" + maxMana;
 			manaBar.value = currentMana;
 			if (currentMana <= maxMana / 2) {
@@ -340,7 +393,8 @@ public class Adventurer : MonoBehaviour {
 		if(animTrigger != "") anim.ResetTrigger(animTrigger);
 	}
 	private void adventurerDowned() {
-		downed = true;
+		//downed = true;
+		GameManager.instance.GameOver();
 	}
 
 	private void SetMovementVectors() {

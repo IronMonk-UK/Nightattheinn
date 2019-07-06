@@ -8,8 +8,13 @@ public class MainMenu : MonoBehaviour
 {
 	[SerializeField] GameObject classPanel;
 
+	public static MainMenu mainMenu;
+
 	private void Awake() {
-		classPanel.SetActive(false);
+		if(mainMenu == null) { mainMenu = this; } else { Destroy(gameObject); }
+		if (classPanel) {
+			classPanel.SetActive(false);
+		}
 	}
 
 	public void OpenClassPanel() { classPanel.SetActive(true); }
@@ -17,6 +22,10 @@ public class MainMenu : MonoBehaviour
 	public void ChooseClass(int index) {
 		GameManager.instance.PlayerClasses.Add(index);
 	}
-	public void LoadGame() { SceneManager.LoadScene(1); }
+	public void LoadGame() {
+		SceneManager.LoadScene(1);
+		GameManager.instance._Time = 0;
+		classPanel = null;
+	}
 	public void ExitGame() { Application.Quit(); }
 }

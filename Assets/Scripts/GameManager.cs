@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
 	[Header("Arrays")]
 	[SerializeField] List<GameObject> adventurers;
 	[SerializeField] List<int> playerClasses;
+	[SerializeField] List<int> playerKills;
 	[SerializeField] Vector3[] enemySpawns;
 	[SerializeField] Vector3[] adventurerSpawns;
 	[SerializeField] SkillData[] primarySkills;
@@ -18,7 +19,12 @@ public class GameManager : MonoBehaviour {
 
 	[Header("Floats & Integers")]
 	[SerializeField] float time;
+	[SerializeField] float minutes;
+	[SerializeField] float seconds;
 	[SerializeField] int playerCount;
+
+	[Header("Strings")]
+	[SerializeField] string timeString;
 
 	[Header("Prefabs")]
 	[SerializeField] GameObject adventurer;
@@ -26,6 +32,7 @@ public class GameManager : MonoBehaviour {
 
 	[Header("UI")]
 	[SerializeField] GameObject playerUI;
+	[SerializeField] GameObject gameOverUI;
 	[SerializeField] Canvas canvas;
 
 	[Header("Debug Tools")]
@@ -37,13 +44,13 @@ public class GameManager : MonoBehaviour {
 
 	public List<GameObject> Adventurers { get { return adventurers; } set { adventurers = value; } }
 	public List<int> PlayerClasses { get { return playerClasses; } set { playerClasses = value; } }
-	public float _Time { get { return time; } }
+	public float _Time { get { return time; } set { time = value; } }
 	public SkillData[] PrimarySkills { get { return primarySkills; } }
 	public ClassData[] Characters { get { return characters; } }
 
 	void Awake() {
 		DontDestroyOnLoad(gameObject);
-		if(instance == null) { instance = this; }
+		if(instance == null) { instance = this; } else { Destroy(gameObject); }
 		spawnTime = Random.Range(1, 10);
 	}
 
@@ -65,6 +72,9 @@ public class GameManager : MonoBehaviour {
 				}
 			}
 			time += Time.deltaTime;
+			minutes = Mathf.FloorToInt(time / 60);
+			seconds = Mathf.FloorToInt(time - minutes / 60);
+			timeString = string.Format("{0:00}:{1:00}", minutes, seconds);
 			if ((time >= spawnTime) && spawnEnemies) { SpawnEnemy(); }
 			if (Input.GetKeyDown(KeyCode.Z)) {
 				SpawnZombie();
@@ -73,6 +83,22 @@ public class GameManager : MonoBehaviour {
 				SpawnSkeleton();
 			}
 		}
+		if (SceneManager.GetActiveScene().buildIndex == 2) {
+			if (!canvas) { canvas = Canvas.FindObjectOfType<Canvas>(); }
+			foreach (GameObject adventurer in adventurers) {
+				GameOverUI newUI = Instantiate(gameOverUI, canvas.transform, false).GetComponent<GameOverUI>();
+				newUI.PlayerText.text = "Player " + (adventurers.IndexOf(adventurer) + 1);
+				newUI.TimeText.text = "Time: " + timeString;
+				newUI.KillText.text = "Kills: " + playerKills[adventurers.IndexOf(adventurer)];
+			}
+			adventurers.Clear();
+		}
+	}
+
+	public void GameOver() {
+		foreach (GameObject adventurer in adventurers) { playerKills.Add(adventurer.GetComponent<Adventurer>().KillCount); }
+		SceneManager.LoadScene(2);
+		canvas = null;
 	}
 
 	void SpawnEnemy() {

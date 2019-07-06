@@ -199,9 +199,10 @@ public class Enemy : MonoBehaviour {
 		slowForce = force;
 	}
 
-	public void TakeDamage(int dam) {
+	public void TakeDamage(int dam, GameObject adventurer) {
 		currentHealth -= dam;
 		if(currentHealth <= 0) {
+			adventurer.GetComponent<Adventurer>().KillCount++;
 			ZombieDead();
 		}
 	}

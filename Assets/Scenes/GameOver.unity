@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 641576467}
   - component: {fileID: 641576466}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Restart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -276,7 +276,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 991728580}
+      - m_Target: {fileID: 0}
         m_MethodName: LoadGame
         m_Mode: 1
         m_Arguments:
@@ -337,7 +337,6 @@ GameObject:
   - component: {fileID: 991728582}
   - component: {fileID: 991728579}
   - component: {fileID: 991728581}
-  - component: {fileID: 991728580}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -388,18 +387,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &991728580
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 991728578}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 700509f416ac2bd4098485be4753f75c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!81 &991728581
 AudioListener:
   m_ObjectHideFlags: 0
@@ -434,7 +421,7 @@ GameObject:
   - component: {fileID: 1120004366}
   - component: {fileID: 1120004365}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Game Over
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -456,8 +443,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 0, y: 250}
+  m_SizeDelta: {x: 300, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1120004365
 MonoBehaviour:
@@ -481,10 +468,10 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 32
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 3
     m_MaxSize: 40
     m_Alignment: 1
     m_AlignByGeometry: 0
@@ -492,7 +479,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '[GameOver_Text01]'
+  m_Text: GAME OVER
 --- !u!222 &1120004366
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -670,7 +657,7 @@ GameObject:
   - component: {fileID: 1875323927}
   - component: {fileID: 1875323926}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Restart Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -728,7 +715,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Restart_Text01
+  m_Text: Restart
 --- !u!222 &1875323927
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -750,7 +737,7 @@ GameObject:
   - component: {fileID: 1892065797}
   - component: {fileID: 1892065796}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: Quit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -819,7 +806,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 991728580}
+      - m_Target: {fileID: 0}
         m_MethodName: ExitGame
         m_Mode: 1
         m_Arguments:
@@ -983,7 +970,7 @@ GameObject:
   - component: {fileID: 2080889406}
   - component: {fileID: 2080889405}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Quit Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1041,7 +1028,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Exit_Text01
+  m_Text: Quit
 --- !u!222 &2080889406
 CanvasRenderer:
   m_ObjectHideFlags: 0

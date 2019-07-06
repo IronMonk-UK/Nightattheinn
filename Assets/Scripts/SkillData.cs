@@ -88,10 +88,10 @@ public class SkillData : ScriptableObject{
 			if (slow) { bullet.Slow = true; bullet.SlowForce = slowForce; bullet.SlowTime = slowTime; }
 			if (stun) { bullet.Stun = true; bullet.StunTime = stunTime; }
 		} else {
-			MeleeAttack(anim, centre, rotation, right);
+			MeleeAttack(anim, centre, rotation, right, adventurer);
 		}
 	}
-	public void MeleeAttack (Animator anim, Vector3 centre, Quaternion rotation, Vector3 right) {
+	public void MeleeAttack (Animator anim, Vector3 centre, Quaternion rotation, Vector3 right, GameObject adventurer) {
 		Collider[] hitColliders = Physics.OverlapSphere(centre, attackRadius);
 		Vector3 characterToCollider;
 		float dot;
@@ -104,7 +104,7 @@ public class SkillData : ScriptableObject{
 				if (dot >= Mathf.Cos((attackDegrees / 2) * Mathf.Deg2Rad)) {
 					Enemy enemy = c.gameObject.GetComponent<Enemy>();
 					Debug.Log("Dealing " + damage + " Damage.");
-					enemy.TakeDamage(damage);
+					enemy.TakeDamage(damage, adventurer);
 					if (knockback) { enemy.GetKnocked(centre, knockbackTime, knockbackForce); }
 					if (stun) { enemy.GetStunned(stunTime); }
 					if (slow) { enemy.GetSlowed(slowTime, slowForce); }

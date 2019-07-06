@@ -24,4 +24,4 @@ MonoBehaviour:
   thrust: 0
   bulletPrefab: {fileID: 0}
   attackDegrees: 90
-  attackRadius: 2
+  attackRadius: 1.3

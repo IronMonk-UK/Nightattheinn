@@ -152,14 +152,14 @@ public class Bullet : MonoBehaviour {
 			foreach (Collider c in hitColliders) {
 				if (c.gameObject.tag == "Enemy") {
 					enemy = c.gameObject.GetComponent<Enemy>();
-					enemy.TakeDamage(damage);
+					enemy.TakeDamage(damage, actor);
 					if(knockback) { enemy.GetKnocked(transform.position, knockbackTime, knockbackForce); }
 					if(stun) { enemy.GetStunned(stunTime); }
 					if (slow) { enemy.GetSlowed(slowTime, slowForce); }
 				}
 			}
 		} else {
-			enemy.TakeDamage(damage);
+			enemy.TakeDamage(damage, actor);
 			if(knockback) { enemy.GetKnocked(transform.position, knockbackTime, knockbackForce); }
 			if(stun) { enemy.GetStunned(stunTime); }
 			if (slow) { enemy.GetSlowed(slowTime, slowForce); }
