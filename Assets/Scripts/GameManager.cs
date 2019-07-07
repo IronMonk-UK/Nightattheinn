@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -33,6 +34,8 @@ public class GameManager : MonoBehaviour {
 	[Header("UI")]
 	[SerializeField] GameObject playerUI;
 	[SerializeField] GameObject gameOverUI;
+	[SerializeField] GameObject clockUI;
+	[SerializeField] Text clock = null;
 	[SerializeField] Canvas canvas;
 
 	[Header("Debug Tools")]
@@ -75,6 +78,10 @@ public class GameManager : MonoBehaviour {
 			minutes = Mathf.FloorToInt(time / 60);
 			seconds = Mathf.FloorToInt(time - minutes / 60);
 			timeString = string.Format("{0:00}:{1:00}", minutes, seconds);
+			if (!clock) {
+				clock = Instantiate(clockUI, canvas.transform, false).GetComponent<Text>();
+			}
+			clock.text = timeString;
 			if ((time >= spawnTime) && spawnEnemies) { SpawnEnemy(); }
 			if (Input.GetKeyDown(KeyCode.Z)) {
 				SpawnZombie();

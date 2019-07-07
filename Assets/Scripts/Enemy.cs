@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour {
 	[SerializeField] GameObject target;
 	[SerializeField] float distanceToTarget;
 	[SerializeField] float attackDistance;
+	[SerializeField] Vector3 skirmishPosition;
 
 	[SerializeField] GameObject modelHolder;
 	[SerializeField] GameObject model;
@@ -57,8 +58,11 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 
-	void Awake() {
+	private void Awake() {
 		SetData();
+		if (skirmisher) {
+			skirmishPosition = new Vector3(0, 1, 0);
+		}
 	}
 
 	private void SetData() {
@@ -84,9 +88,11 @@ public class Enemy : MonoBehaviour {
 		model.transform.localPosition = new Vector3(0, 0, 0);
 	}
 
-	void FixedUpdate() {
+	private void Update() {
 		float step = speed * Time.deltaTime;
-		if (followAdventurers && !knocked) {
+		if (skirmishing) {
+			Skirmish(step);
+		}else if (followAdventurers && !knocked) {
 			Follow(step);
 		}
 		if(GameManager.instance._Time >= nextAttackTime) {
@@ -94,6 +100,8 @@ public class Enemy : MonoBehaviour {
 		}
 		CheckForStatuses();
 	}
+
+	private void FixedUpdate() { }
 
 	private void CheckForStatuses() {
 		if(knocked) {
@@ -125,18 +133,20 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 
+	private void Skirmish(float step) {
+		if (transform.position != skirmishPosition) {
+			transform.position = Vector3.MoveTowards(transform.position, skirmishPosition, step);
+		}
+		if (transform.position == skirmishPosition) {
+			skirmishing = false;
+		}
+	}
+
 	private void Follow(float step) {
 		target = GetClosestEnemy(GameManager.instance.Adventurers).gameObject;
 		distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
 		transform.LookAt(GetClosestEnemy(GameManager.instance.Adventurers));
-		if (skirmishing) {
-			Vector3 skirmishPosition = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
-			skirmishPosition = transform.position += skirmishPosition;
-			transform.Translate(skirmishPosition * step, Space.World);
-			//transform.position = Vector3.MoveTowards(transform.position, skirmishPosition, step);
-			//if(transform.position == skirmishPosition)
-				skirmishing = false;
-		} else if(distanceToTarget >= attackDistance) {
+		if (distanceToTarget >= attackDistance) {
 			transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
 		} else {
 			Attack();
@@ -173,6 +183,7 @@ public class Enemy : MonoBehaviour {
 			nextAttackTime = GameManager.instance._Time + cooldown;
 			if (skirmisher) {
 				skirmishing = true;
+				skirmishPosition = new Vector3(Random.Range(-2f, 2f) + transform.position.x, 0, Random.Range(-2f, 2f) + transform.position.z);
 			}
 		}
 	}

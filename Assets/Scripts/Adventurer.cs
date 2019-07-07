@@ -178,9 +178,7 @@ public class Adventurer : MonoBehaviour {
 		} else { Debug.Log("Adventurer is downed!"); }
 	}
 
-	private void FixedUpdate() {
-
-	}
+	private void FixedUpdate() { }
 
 	private void DebugTools() {
 		if(Input.GetKeyDown(KeyCode.Alpha1)) {
