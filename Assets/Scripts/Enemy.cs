@@ -31,6 +31,11 @@ public class Enemy : MonoBehaviour {
 	[SerializeField] GameObject modelHolder;
 	[SerializeField] GameObject model;
 
+	[SerializeField] AudioSource audioSource;
+	[SerializeField] AudioClip currentClip;
+	[SerializeField] List<AudioClip> audioClips;
+	[SerializeField] float audioPlayTime;
+
 	[SerializeField] bool knocked = false;
 	float knockedTime;
 	float kbForce; // 10
@@ -86,6 +91,14 @@ public class Enemy : MonoBehaviour {
 		model = Instantiate(enemyData.Model, transform.position, modelHolder.transform.rotation);
 		model.transform.parent = modelHolder.transform;
 		model.transform.localPosition = new Vector3(0, 0, 0);
+
+		audioClips.Clear();
+		audioClips.Capacity = enemyData._AudioClips.Length;
+		foreach(AudioClip clip in enemyData._AudioClips) {
+			audioClips.Add(clip);
+		}
+			PlayAudio(audioClips[0]);
+		audioPlayTime = GameManager.instance._Time + Random.Range(5, 20);
 	}
 
 	private void Update() {
@@ -97,6 +110,10 @@ public class Enemy : MonoBehaviour {
 		}
 		if(GameManager.instance._Time >= nextAttackTime) {
 			onCooldown = false;
+		}
+		if(audioPlayTime <= GameManager.instance._Time && !audioSource.isPlaying) {
+			PlayAudio(audioClips[2]);
+			audioPlayTime = GameManager.instance._Time + Random.Range(5, 20);
 		}
 		CheckForStatuses();
 	}
@@ -142,6 +159,15 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 
+	private void PlayAudio(AudioClip clip) {
+		if(currentClip != clip) {
+			currentClip = clip;
+			audioSource.PlayOneShot(currentClip);
+		} else {
+			if (!audioSource.isPlaying) { audioSource.PlayOneShot(currentClip); }
+		}
+	}
+
 	private void Follow(float step) {
 		target = GetClosestEnemy(GameManager.instance.Adventurers).gameObject;
 		distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
@@ -154,6 +180,7 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void Attack() {
+		PlayAudio(audioClips[1]);
 		if (!onCooldown) {
 			if (ranged) {
 				Vector3 spawnPoint = transform.position + (transform.forward);

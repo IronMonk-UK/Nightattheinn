@@ -26,3 +26,7 @@ MonoBehaviour:
     type: 3}
   attackDegrees: 45
   attackRadius: 6
+  audioClips:
+  - {fileID: 8300000, guid: f2bcaac36562d1c43a57247532d76a42, type: 3}
+  - {fileID: 8300000, guid: 519f204899f656b4299d3a3eb02e46b5, type: 3}
+  - {fileID: 8300000, guid: 8c577064d3c369d41b67d67fda11686d, type: 3}

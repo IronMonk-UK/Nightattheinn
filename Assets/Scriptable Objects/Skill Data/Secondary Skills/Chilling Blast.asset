@@ -25,6 +25,7 @@ MonoBehaviour:
   animTrigger: 
   trail: {fileID: 0}
   anim: {fileID: 0}
+  audioClip: {fileID: 8300000, guid: 7ec4a0be08d27e54fbc3ed69cd971dbd, type: 3}
   knockback: 0
   knockbackForce: 0
   knockbackTime: 0
@@ -39,6 +40,9 @@ MonoBehaviour:
   bulletDuration: 0
   aoe: 0
   aoeRadius: 0
+  aoePrefab: {fileID: 0}
+  aoeScale: 0
+  aoeRotate: 0
   pierce: 0
   pierceAmount: 0
   attackDegrees: 120

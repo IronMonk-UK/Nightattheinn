@@ -24,6 +24,7 @@ MonoBehaviour:
   animTrigger: 
   trail: {fileID: 0}
   anim: {fileID: 0}
+  audioClip: {fileID: 8300000, guid: 519f204899f656b4299d3a3eb02e46b5, type: 3}
   knockback: 0
   knockbackForce: 0
   knockbackTime: 0

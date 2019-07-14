@@ -20,6 +20,8 @@ public class EnemyData : ScriptableObject {
 
 	[SerializeField] float attackDegrees;
 	[SerializeField] float attackRadius;
+
+	[SerializeField] AudioClip[] audioClips;
 	
 	public string EnemyName { get { return enemyName; } }
 	public int Damage { get { return damage; } }
@@ -34,5 +36,6 @@ public class EnemyData : ScriptableObject {
 	public GameObject Model { get { return model; } }
 	public float AttackDegrees { get { return attackDegrees; } }
 	public float AttackRadius { get { return attackRadius; } }
+	public AudioClip[] _AudioClips { get { return audioClips; } }
 }
 

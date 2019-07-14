@@ -37,6 +37,12 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] AnimationClip secAnim;
 	[SerializeField] int secManaCost;
 
+	[Header("Audio")]
+	[SerializeField] AudioSource audioSource;
+	[SerializeField] AudioClip currentClip;
+	[SerializeField] AudioClip primAudio;
+	[SerializeField] AudioClip secAudio;
+
 	[Header("Prefabs")]
 	[SerializeField] GameObject bullet;
 
@@ -174,6 +180,7 @@ public class Adventurer : MonoBehaviour {
 			if(Input.GetButtonUp("Fire2") && hasSecParticleEffect) {
 				Debug.Log("Disabling GO");
 				secParticleEffect.gameObject.SetActive(false);
+				audioSource.Stop();
 			}
 		} else { Debug.Log("Adventurer is downed!"); }
 	}
@@ -259,6 +266,9 @@ public class Adventurer : MonoBehaviour {
 
 		secManaCost = secondaryAttackData.ManaCost;
 
+		primAudio = primaryAttackData._AudioClip;
+		secAudio = secondaryAttackData._AudioClip;
+
 		if(model != null) {
 			Destroy(model);
 		}
@@ -306,6 +316,7 @@ public class Adventurer : MonoBehaviour {
 	
 	private void Attack() {
 		if(Input.GetButton("Fire1") && !primOnCooldown) {
+			PlayAudio(primAudio);
 			if (primaryAttackData.HasAnim) {
 				AddTrail(primTrail);
 				anim.SetTrigger(primAnimTrigger);
@@ -318,6 +329,7 @@ public class Adventurer : MonoBehaviour {
 			}
 		}
 		if (Input.GetButton("Fire2") && currentMana >= secManaCost && !secOnCooldown) {
+			PlayAudio(secAudio);
 			if (secondaryAttackData.HasAnim) {
 				AddTrail(secTrail);
 				anim.SetTrigger(secAnimTrigger);
@@ -368,6 +380,16 @@ public class Adventurer : MonoBehaviour {
 	private void DestroyTrail() {
 		Destroy(trail.GetComponent<TrailRenderer>());
 	}
+
+	private void PlayAudio(AudioClip clip) {
+		if(currentClip != clip) {
+			currentClip = clip;
+			audioSource.PlayOneShot(currentClip);
+		} else {
+			if (!audioSource.isPlaying) { audioSource.PlayOneShot(currentClip); }
+		}
+	}
+
 
 	private void PrimaryAttack() { MakeAttack(primaryAttackData, primCooldown, primAnimTrigger, out primOnCooldown, out nextPrimAttackTime); }
 	private void SecondaryAttack() { MakeAttack(secondaryAttackData, secCooldown, secAnimTrigger, out secOnCooldown, out nextSecAttackTime); }

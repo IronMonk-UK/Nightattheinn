@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour {
 			}
 			time += Time.deltaTime;
 			minutes = Mathf.FloorToInt(time / 60);
-			seconds = Mathf.FloorToInt(time - minutes / 60);
+			seconds = Mathf.FloorToInt(time - minutes * 60);
 			timeString = string.Format("{0:00}:{1:00}", minutes, seconds);
 			if (!clock) {
 				clock = Instantiate(clockUI, canvas.transform, false).GetComponent<Text>();

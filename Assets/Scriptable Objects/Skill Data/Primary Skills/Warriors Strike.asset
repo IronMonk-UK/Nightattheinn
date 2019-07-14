@@ -18,11 +18,13 @@ MonoBehaviour:
   damage: 5
   cooldown: 2
   manaCost: 0
+  continuousAttack: 0
   particleEffect: {fileID: 0}
   hasAnim: 1
   animTrigger: Slash
   trail: {fileID: 210109052499139610, guid: 5bae384924a71d44881a2c83157e3f42, type: 3}
   anim: {fileID: 7400000, guid: e132d59a67061f849aea9c56258b10e1, type: 2}
+  audioClip: {fileID: 8300000, guid: 99fee513b271af840b326eca9618311b, type: 3}
   knockback: 1
   knockbackForce: 10
   knockbackTime: 0.3
@@ -37,6 +39,9 @@ MonoBehaviour:
   bulletDuration: 0
   aoe: 0
   aoeRadius: 0
+  aoePrefab: {fileID: 0}
+  aoeScale: 0
+  aoeRotate: 0
   pierce: 0
   pierceAmount: 0
   attackDegrees: 180

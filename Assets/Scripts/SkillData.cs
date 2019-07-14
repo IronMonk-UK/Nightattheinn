@@ -19,6 +19,8 @@ public class SkillData : ScriptableObject{
 	[SerializeField] string animTrigger;
 	[SerializeField] GameObject trail;
 	[SerializeField] AnimationClip anim;
+	[Header("Audio")]
+	[SerializeField] AudioClip audioClip;
 	[Header("-Statuses-")]
 	[Header("Knockback")]
 	[SerializeField] bool knockback;
@@ -64,6 +66,7 @@ public class SkillData : ScriptableObject{
 	public string AnimTrigger { get { return animTrigger; } }
 	public GameObject Trail { get { return trail; } }
 	public AnimationClip Anim { get { return anim; } }
+	public AudioClip _AudioClip { get { return audioClip; } }
 
 	public enum SkillType { Primary, Secondary, CC }
 
