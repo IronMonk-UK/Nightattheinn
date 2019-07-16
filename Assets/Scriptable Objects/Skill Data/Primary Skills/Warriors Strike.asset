@@ -45,4 +45,4 @@ MonoBehaviour:
   pierce: 0
   pierceAmount: 0
   attackDegrees: 180
-  attackRadius: 2
+  attackRadius: 2.5
