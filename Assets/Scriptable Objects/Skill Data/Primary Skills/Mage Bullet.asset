@@ -16,7 +16,7 @@ MonoBehaviour:
   adventurerClass: 0
   skillName: Mage Bullet
   damage: 5
-  cooldown: 3
+  cooldown: 2
   manaCost: 0
   continuousAttack: 0
   particleEffect: {fileID: 0}

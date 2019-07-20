@@ -15,8 +15,8 @@ MonoBehaviour:
   skillType: 0
   adventurerClass: 2
   skillName: Warrior's Strike
-  damage: 5
-  cooldown: 2
+  damage: 4
+  cooldown: 1
   manaCost: 0
   continuousAttack: 0
   particleEffect: {fileID: 0}

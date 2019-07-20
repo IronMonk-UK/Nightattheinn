@@ -27,6 +27,7 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] string primAnimTrigger;
 	[SerializeField] GameObject primTrail;
 	[SerializeField] AnimationClip primAnim;
+	[SerializeField] bool primIgnoreAudio;
 
 	[Header("Secondary Skill")]
 	[SerializeField] int secondaryDamage;
@@ -36,6 +37,7 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] GameObject secTrail;
 	[SerializeField] AnimationClip secAnim;
 	[SerializeField] int secManaCost;
+	[SerializeField] bool secIgnoreAudio;
 
 	[Header("Audio")]
 	[SerializeField] AudioSource audioSource;
@@ -232,13 +234,13 @@ public class Adventurer : MonoBehaviour {
 			primAnimTrigger = primaryAttackData.AnimTrigger;
 			primTrail = primaryAttackData.Trail;
 			primAnim = primaryAttackData.Anim;
-			SetAnimationEvents(primAnim, "PrimaryAttack");
+			SetAnimationEvents(primAnim, "PrimaryAttack", "PrimDestroyTrail");
 		}
 		if(secondaryAttackData.AnimTrigger != null) {
 			secAnimTrigger = secondaryAttackData.AnimTrigger;
 			secTrail = secondaryAttackData.Trail;
 			secAnim = secondaryAttackData.Anim;
-			SetAnimationEvents(secAnim, "SecondaryAttack");
+			SetAnimationEvents(secAnim, "SecondaryAttack", "SecDestroyTrail");
 		}
 
 		if(primaryAttackData.ParticleEffect != null && primaryAttackData.BulletPrefab == null) {
@@ -316,7 +318,7 @@ public class Adventurer : MonoBehaviour {
 	
 	private void Attack() {
 		if(Input.GetButton("Fire1") && !primOnCooldown) {
-			PlayAudio(primAudio);
+			PlayAudio(primAudio, primIgnoreAudio, out primIgnoreAudio);
 			if (primaryAttackData.HasAnim) {
 				AddTrail(primTrail);
 				anim.SetTrigger(primAnimTrigger);
@@ -329,7 +331,7 @@ public class Adventurer : MonoBehaviour {
 			}
 		}
 		if (Input.GetButton("Fire2") && currentMana >= secManaCost && !secOnCooldown) {
-			PlayAudio(secAudio);
+			PlayAudio(secAudio, secIgnoreAudio, out secIgnoreAudio);
 			if (secondaryAttackData.HasAnim) {
 				AddTrail(secTrail);
 				anim.SetTrigger(secAnimTrigger);
@@ -343,19 +345,19 @@ public class Adventurer : MonoBehaviour {
 		}
 		if (Input.GetButton("Fire3")) {
 			Debug.Log("Fire 3");
-			DestroyTrail();
+			//DestroyTrail();
 		}
 		if(Input.GetButtonUp("Fire1") && hasPrimParticleEffect) { primParticleEffect.gameObject.SetActive(false); }
 	}
 
-	private void SetAnimationEvents(AnimationClip anim, String function) {
+	private void SetAnimationEvents(AnimationClip anim, string atkFunction, string destroyFunction) {
 		if (anim) {
 			AnimationEvent evtAtk = new AnimationEvent();
 			AnimationEvent evtTrl = new AnimationEvent();
 			evtAtk.time = anim.length / 2;
 			evtTrl.time = anim.length;
-			evtAtk.functionName = function;
-			evtTrl.functionName = "DestroyTrail";
+			evtAtk.functionName = atkFunction;
+			evtTrl.functionName = destroyFunction;
 			anim.AddEvent(evtAtk);
 			anim.AddEvent(evtTrl);
 		}
@@ -377,17 +379,26 @@ public class Adventurer : MonoBehaviour {
 		tr.colorGradient = gradient;
 	}
 
-	private void DestroyTrail() {
+	private void PrimDestroyTrail() { DestroyTrail(out primIgnoreAudio); }
+	private void SecDestroyTrail() { DestroyTrail(out secIgnoreAudio); }
+
+	private void DestroyTrail(out bool ignoreAudio) {
 		Destroy(trail.GetComponent<TrailRenderer>());
+		ignoreAudio = false;
 	}
 
-	private void PlayAudio(AudioClip clip) {
+	private void PlayAudio(AudioClip clip, bool ignoreAudio, out bool outIgnoreAudio) {
 		if(currentClip != clip) {
+			outIgnoreAudio = true;
 			currentClip = clip;
 			audioSource.PlayOneShot(currentClip);
 		} else {
-			if (!audioSource.isPlaying) { audioSource.PlayOneShot(currentClip); }
+			if (!audioSource.isPlaying || !ignoreAudio) {
+				outIgnoreAudio = true;
+				audioSource.PlayOneShot(currentClip);
+			}
 		}
+		outIgnoreAudio = true;
 	}
 
 

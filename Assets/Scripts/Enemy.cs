@@ -152,7 +152,7 @@ public class Enemy : MonoBehaviour {
 
 	private void Skirmish(float step) {
 		if (transform.position != skirmishPosition) {
-			transform.position = Vector3.MoveTowards(transform.position, skirmishPosition, step);
+			transform.position = Vector3.MoveTowards(transform.position, skirmishPosition, step * 2);
 		}
 		if (transform.position == skirmishPosition) {
 			skirmishing = false;
@@ -180,8 +180,8 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void Attack() {
-		PlayAudio(audioClips[1]);
 		if (!onCooldown) {
+			PlayAudio(audioClips[1]);
 			if (ranged) {
 				Vector3 spawnPoint = transform.position + (transform.forward);
 				Bullet bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.Euler(0, transform.eulerAngles.y, 0)).GetComponent<Bullet>();
@@ -231,7 +231,9 @@ public class Enemy : MonoBehaviour {
 	public void GetSlowed(float time, float force) {
 		slowTime = time;
 		if (!slowed) {
+			Debug.Log("Speed Before Slow: " + speed);
 			speed -= force;
+			Debug.Log("Speed After Slow: " + speed);
 			slowed = true;
 		}
 		slowForce = force;
