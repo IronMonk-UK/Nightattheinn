@@ -16,8 +16,8 @@ MonoBehaviour:
   model: {fileID: -927199367670048503, guid: 572cf98dcc306d64e93b559649071d35, type: 3}
   enemyName: Zombie
   speed: 2
-  health: 10
-  damage: 3
+  health: 100
+  damage: 30
   cooldown: 1
   skirmisher: 0
   ranged: 0

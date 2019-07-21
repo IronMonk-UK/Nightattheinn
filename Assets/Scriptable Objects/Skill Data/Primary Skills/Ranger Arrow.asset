@@ -15,7 +15,7 @@ MonoBehaviour:
   skillType: 0
   adventurerClass: 1
   skillName: Ranger Arrow
-  damage: 3
+  damage: 30
   cooldown: 1.5
   manaCost: 0
   continuousAttack: 0

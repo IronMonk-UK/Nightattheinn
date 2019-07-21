@@ -16,8 +16,8 @@ MonoBehaviour:
   model: {fileID: -927199367670048503, guid: 99e0dcdc55c650c48afb022bef4783c3, type: 3}
   enemyName: Skeleton
   speed: 3
-  health: 6
-  damage: 2
+  health: 60
+  damage: 20
   cooldown: 2
   skirmisher: 1
   ranged: 1

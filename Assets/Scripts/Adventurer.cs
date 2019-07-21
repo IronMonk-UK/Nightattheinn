@@ -18,6 +18,8 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] int currentHealth;
 	[SerializeField] int maxMana;
 	[SerializeField] int currentMana;
+	[SerializeField] int manaRegen;
+	[SerializeField] int manaDelay;
 	[SerializeField] int killCount;
 
 	[Header("Primary Skill")]
@@ -167,6 +169,8 @@ public class Adventurer : MonoBehaviour {
 		if(!downed) {
 			Move();
 			Attack();
+			RefreshMana();
+			UpdateUI();
 			if(GameManager.instance._Time >= nextPrimAttackTime) {
 				primOnCooldown = false;
 				primSkillBar.value = primSkillBar.maxValue;
@@ -187,7 +191,28 @@ public class Adventurer : MonoBehaviour {
 		} else { Debug.Log("Adventurer is downed!"); }
 	}
 
-	private void FixedUpdate() { }
+	private void RefreshMana() {
+		if(currentMana < maxMana) {
+			if (manaDelay == 0) { manaDelay = Mathf.RoundToInt(GameManager.instance._Time + 1); }
+			if(manaDelay < GameManager.instance._Time) {
+				currentMana += manaRegen;
+				manaDelay = Mathf.RoundToInt(GameManager.instance._Time + 1);
+			}
+		}
+	}
+
+	private void UpdateUI() {
+		healthText.text = currentHealth + "/" + maxHealth;
+		healthBar.value = currentHealth;
+		if(currentHealth <= maxHealth / 2) {
+			healthBarFill.color = minHealthColour;
+		}
+		manaText.text  = currentMana + "/" + maxMana;
+		manaBar.value = currentMana;
+		if (currentMana <= maxMana / 2) {
+			manaBarFill.color = minManaColour;
+		}
+	}
 
 	private void DebugTools() {
 		if(Input.GetKeyDown(KeyCode.Alpha1)) {
@@ -206,11 +231,6 @@ public class Adventurer : MonoBehaviour {
 
 	public void TakeDamage(int dam) {
 		currentHealth -= dam;
-		healthText.text = currentHealth + "/" + maxHealth;
-		healthBar.value = currentHealth;
-		if(currentHealth <= maxHealth / 2) {
-			healthBarFill.color = minHealthColour;
-		}
 		if(currentHealth <= 0) {
 			adventurerDowned();
 		}
@@ -221,6 +241,7 @@ public class Adventurer : MonoBehaviour {
 		currentHealth = maxHealth;
 		maxMana = characterClassData.Mana;
 		currentMana = maxMana;
+		manaRegen = characterClassData.ManaRegen;
 		
 		className = characterClassData.ClassName;
 		moveSpeed = characterClassData.MovementSpeed;
@@ -415,11 +436,6 @@ public class Adventurer : MonoBehaviour {
 		nextAttackTime = GameManager.instance._Time + cooldown;
 		if(attackData == secondaryAttackData) {
 			currentMana -= secManaCost;
-			manaText.text = currentMana + "/" + maxMana;
-			manaBar.value = currentMana;
-			if (currentMana <= maxMana / 2) {
-				manaBarFill.color = minManaColour;
-			}
 		}		
 		if(animTrigger != "") anim.ResetTrigger(animTrigger);
 	}

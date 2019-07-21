@@ -12,6 +12,7 @@ public class ClassData : ScriptableObject
 	[SerializeField] float attackSpeed;
 	[SerializeField] int health;
 	[SerializeField] int mana;
+	[SerializeField] int manaRegen;
 	[Header("Skills")]
 	[SerializeField] SkillData primarySkill;
 	[SerializeField] SkillData secondarySkill;
@@ -24,6 +25,7 @@ public class ClassData : ScriptableObject
 	public float AttackSpeed { get { return attackSpeed; } }
 	public int Health { get { return health; } }
 	public int Mana { get { return mana; } }
+	public int ManaRegen { get { return manaRegen; } }
 	public SkillData PrimarySkill { get { return primarySkill; } }
 	public SkillData SecondarySkill { get { return secondarySkill; } }
 	public Adventurer.AdventurerClass _AdventurerClass { get { return adventurerClass; } }

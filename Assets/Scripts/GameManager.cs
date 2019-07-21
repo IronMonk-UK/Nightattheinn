@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] GameObject clockUI;
 	[SerializeField] Text clock = null;
 	[SerializeField] Canvas canvas;
+	[SerializeField] Button restartBtn, mainMenuBtn, quitBtn;
 
 	[Header("Debug Tools")]
 	[SerializeField] bool spawnEnemies;
@@ -66,6 +67,7 @@ public class GameManager : MonoBehaviour {
 			if (!canvas) { canvas = Canvas.FindObjectOfType<Canvas>(); }
 			if(adventurers.Count < playerCount) {
 				for(int i = 0; i < playerCount; i++) {
+					Debug.Log("Player Classes Count" + playerClasses.Count);
 					Adventurer newAd = Instantiate(adventurer, adventurerSpawns[i], Quaternion.identity).GetComponent<Adventurer>();
 					PlayerUI newUI = Instantiate(playerUI, canvas.transform, false).GetComponent<PlayerUI>();
 					newAd.CharacterClassData = characters[playerClasses[i]];
@@ -92,6 +94,18 @@ public class GameManager : MonoBehaviour {
 		}
 		if (SceneManager.GetActiveScene().buildIndex == 2) {
 			if (!canvas) { canvas = Canvas.FindObjectOfType<Canvas>(); }
+			if (!restartBtn) {
+				restartBtn = GameObject.FindGameObjectWithTag("RestartBtn").GetComponent<Button>();
+				restartBtn.onClick.AddListener(MenuOptions.menuOptions.LoadGame);
+			}
+			if (!mainMenuBtn) {
+				mainMenuBtn = GameObject.FindGameObjectWithTag("MainMenuBtn").GetComponent<Button>();
+				mainMenuBtn.onClick.AddListener(MenuOptions.menuOptions.Menu);
+			}
+			if (!quitBtn) {
+				quitBtn = GameObject.FindGameObjectWithTag("QuitBtn").GetComponent<Button>();
+				quitBtn.onClick.AddListener(MenuOptions.menuOptions.QuitGame);
+			}
 			foreach (GameObject adventurer in adventurers) {
 				GameOverUI newUI = Instantiate(gameOverUI, canvas.transform, false).GetComponent<GameOverUI>();
 				newUI.PlayerText.text = "Player " + (adventurers.IndexOf(adventurer) + 1);
@@ -99,6 +113,7 @@ public class GameManager : MonoBehaviour {
 				newUI.KillText.text = "Kills: " + playerKills[adventurers.IndexOf(adventurer)];
 			}
 			adventurers.Clear();
+			playerClasses.Clear();
 		}
 	}
 

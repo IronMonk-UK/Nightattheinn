@@ -15,7 +15,7 @@ MonoBehaviour:
   skillType: 0
   adventurerClass: 0
   skillName: Mage Bullet
-  damage: 5
+  damage: 50
   cooldown: 2
   manaCost: 0
   continuousAttack: 0

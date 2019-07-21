@@ -15,8 +15,9 @@ MonoBehaviour:
   className: Warrior
   movementSpeed: 5
   attackSpeed: 5
-  health: 30
-  mana: 10
+  health: 300
+  mana: 100
+  manaRegen: 3
   primarySkill: {fileID: 11400000, guid: 1bec5ec5774825a40b24ff2155082ad0, type: 2}
   secondarySkill: {fileID: 11400000, guid: a060d00bf7a3c934e9c4c8e65677b28e, type: 2}
   adventurerClass: 2

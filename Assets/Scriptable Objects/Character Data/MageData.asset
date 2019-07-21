@@ -15,8 +15,9 @@ MonoBehaviour:
   className: Mage
   movementSpeed: 5
   attackSpeed: 5
-  health: 10
-  mana: 30
+  health: 100
+  mana: 300
+  manaRegen: 5
   primarySkill: {fileID: 11400000, guid: cdd9f09ef81b4e24fafc7a2ddfb72c24, type: 2}
   secondarySkill: {fileID: 11400000, guid: 8e0a7b163d37c0e46a56a1d24ce78e3d, type: 2}
   adventurerClass: 0

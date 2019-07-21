@@ -11,6 +11,10 @@ TagManager:
   - AdventurerWeapon
   - Sword
   - Canvas
+  - ClassPanel
+  - RestartBtn
+  - MainMenuBtn
+  - QuitBtn
   layers:
   - Default
   - TransparentFX

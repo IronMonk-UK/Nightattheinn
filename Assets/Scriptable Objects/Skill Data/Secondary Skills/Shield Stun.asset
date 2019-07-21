@@ -15,9 +15,9 @@ MonoBehaviour:
   skillType: 1
   adventurerClass: 2
   skillName: Shield Stun
-  damage: 3
+  damage: 30
   cooldown: 3
-  manaCost: 4
+  manaCost: 40
   continuousAttack: 0
   particleEffect: {fileID: 0}
   hasAnim: 1

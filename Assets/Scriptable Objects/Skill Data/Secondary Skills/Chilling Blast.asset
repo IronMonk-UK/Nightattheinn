@@ -15,9 +15,9 @@ MonoBehaviour:
   skillType: 0
   adventurerClass: 0
   skillName: Chilling Blast
-  damage: 1
+  damage: 10
   cooldown: 0.1
-  manaCost: 1
+  manaCost: 10
   continuousAttack: 1
   particleEffect: {fileID: 7831025571501848424, guid: 8f78d6b48e85fcc48ac5871926d1b5c6,
     type: 3}

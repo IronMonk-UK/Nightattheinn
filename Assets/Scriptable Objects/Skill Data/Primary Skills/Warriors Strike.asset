@@ -15,7 +15,7 @@ MonoBehaviour:
   skillType: 0
   adventurerClass: 2
   skillName: Warrior's Strike
-  damage: 4
+  damage: 40
   cooldown: 1
   manaCost: 0
   continuousAttack: 0
