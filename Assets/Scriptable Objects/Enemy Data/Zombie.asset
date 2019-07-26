@@ -24,7 +24,7 @@ MonoBehaviour:
   thrust: 0
   bulletPrefab: {fileID: 0}
   attackDegrees: 90
-  attackRadius: 1.3
+  attackRadius: 1.5
   audioClips:
   - {fileID: 8300000, guid: c1b65bc66799be54799ec9eaf8508203, type: 3}
   - {fileID: 8300000, guid: 76a4e473e38a6694bb461674700c4f2d, type: 3}

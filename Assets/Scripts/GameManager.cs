@@ -114,6 +114,7 @@ public class GameManager : MonoBehaviour {
 				newUI.TimeText.text = "Time: " + timeString;
 				newUI.KillText.text = "Kills: " + playerKills[adventurers.IndexOf(adventurer)];
 			}
+			playerKills.Clear();
 			adventurers.Clear();
 			spawnTime = Random.Range(1, 6);
 		}

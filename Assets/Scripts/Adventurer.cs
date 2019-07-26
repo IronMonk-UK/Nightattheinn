@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 public class Adventurer : MonoBehaviour {
 
@@ -70,6 +71,9 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] bool hasPrimParticleEffect;
 	[SerializeField] ParticleSystem secParticleEffect;
 	[SerializeField] bool hasSecParticleEffect;
+
+	[Header("NavMesh Agent")]
+	[SerializeField] NavMeshAgent navMeshAgent;
 
 	[Header("UI")]
 	[SerializeField] PlayerUI ui;
@@ -158,6 +162,7 @@ public class Adventurer : MonoBehaviour {
 		anim = gameObject.GetComponent<Animator>();
 		SetMovementVectors();
 		cameraTransform = Camera.main.transform.position;
+		navMeshAgent.avoidancePriority = 99;
 	}
 
 	private void Start() {
@@ -477,7 +482,7 @@ public class Adventurer : MonoBehaviour {
 		Gizmos.color = Color.green;
 		Gizmos.DrawRay(transform.position, (transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z))) * 2);
 		float primRayRange = 0;
-		if(primaryAttackData._AdventurerClass == AdventurerClass.Warrior || primaryAttackData.UseCone) {
+		if(primaryAttackData && (primaryAttackData._AdventurerClass == AdventurerClass.Warrior || primaryAttackData.UseCone)) {
 			primRayRange = primaryAttackData.AttackRadius;
 			float primTotalFOV = primaryAttackData.AttackDegrees;
 			float primHalfFOV = primTotalFOV / 2;
@@ -514,7 +519,7 @@ public class Adventurer : MonoBehaviour {
 			primRightDot = Vector3.Dot(primRightRayDirection, transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z)));
 			primRightDot = Mathf.Acos(primRightDot) * Mathf.Rad2Deg;
 		}
-		if (secondaryAttackData._AdventurerClass == AdventurerClass.Warrior || secondaryAttackData.UseCone) {
+		if (secondaryAttackData && (secondaryAttackData._AdventurerClass == AdventurerClass.Warrior || secondaryAttackData.UseCone)) {
 			float secTotalFOV = secondaryAttackData.AttackDegrees;
 			float secRayRange = secondaryAttackData.AttackRadius;
 			float secHalfFOV = secTotalFOV / 2;

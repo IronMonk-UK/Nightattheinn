@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour {
 	[SerializeField] EnemyData enemyData;
+	[SerializeField] NavMeshAgent navMeshAgent;
 	[SerializeField] float speed;
 	float lastHit;
 
@@ -68,6 +70,8 @@ public class Enemy : MonoBehaviour {
 		if (skirmisher) {
 			skirmishPosition = new Vector3(0, 1, 0);
 		}
+		navMeshAgent.updateUpAxis = true;
+		navMeshAgent.updateRotation = true;
 	}
 
 	private void SetData() {
@@ -99,6 +103,8 @@ public class Enemy : MonoBehaviour {
 		}
 			PlayAudio(audioClips[0]);
 		audioPlayTime = GameManager.instance._Time + Random.Range(5, 20);
+
+		navMeshAgent.stoppingDistance = attackDistance - 0.5f;
 	}
 
 	private void Update() {
@@ -170,6 +176,28 @@ public class Enemy : MonoBehaviour {
 
 	private void Follow(float step) {
 		target = GetClosestEnemy(GameManager.instance.Adventurers).gameObject;
+		//navMeshAgent.destination = target.transform.position;
+		navMeshAgent.SetDestination(target.transform.position);
+		distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+		transform.LookAt(GetClosestEnemy(GameManager.instance.Adventurers));
+		if (navMeshAgent.remainingDistance <= attackDistance && !navMeshAgent.pathPending) {
+			Attack();
+		}
+		/*
+		if(distanceToTarget <= attackDistance) {
+			Debug.Log("Should be attacking!");
+			Attack();
+		}
+		if (distanceToTarget >= attackDistance) {
+			//transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
+		} else {
+			Attack();
+		}
+		*/
+	}
+	/*
+	private void Follow(float step) {
+		target = GetClosestEnemy(GameManager.instance.Adventurers).gameObject;
 		distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
 		transform.LookAt(GetClosestEnemy(GameManager.instance.Adventurers));
 		if (distanceToTarget >= attackDistance) {
@@ -178,7 +206,7 @@ public class Enemy : MonoBehaviour {
 			Attack();
 		}	
 	}
-
+	*/
 	private void Attack() {
 		if (!onCooldown) {
 			PlayAudio(audioClips[1]);
@@ -243,6 +271,7 @@ public class Enemy : MonoBehaviour {
 		currentHealth -= dam;
 		if(currentHealth <= 0) {
 			adventurer.GetComponent<Adventurer>().KillCount++;
+			Debug.Log("Adventurer Kills: " + adventurer.GetComponent<Adventurer>().KillCount);
 			ZombieDead();
 		}
 	}
