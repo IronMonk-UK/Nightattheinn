@@ -139,6 +139,7 @@ public class Enemy : MonoBehaviour {
 		}
 		if(stunned) {
 			followAdventurers = false;
+			navMeshAgent.SetDestination(transform.position);
 			stunnedTime += Time.deltaTime;
 			if(stunnedTime >= stunTime) {
 				stunned = false;

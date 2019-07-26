@@ -115,9 +115,9 @@ public class Bullet : MonoBehaviour {
 			if(col.gameObject.tag == "Enemy") {
 				if(!pierce || (pierce && pierceCount == pierceAmount)) {
 					DeleteBullet();
-					TriggerEnemyEffects(col);
+					TriggerEffects(col);
 				}else if(pierce && pierceCount <= PierceAmount) {
-					TriggerEnemyEffects(col);
+					TriggerEffects(col);
 					pierceCount++;
 				}
 			}
@@ -129,7 +129,8 @@ public class Bullet : MonoBehaviour {
 		}
 		if(col.gameObject.tag == "Wall") {
 		Debug.Log("A bullet has hit a wall");
-			Destroy(gameObject);
+			DeleteBullet();
+			TriggerEffects(col);
 		}
 	}
 
@@ -141,8 +142,8 @@ public class Bullet : MonoBehaviour {
 		}
 	}
 
-	public void TriggerEnemyEffects(Collider col) {
-		Enemy enemy = col.gameObject.GetComponent<Enemy>();
+	public void TriggerEffects(Collider col) {
+		Enemy enemy;
 		if (aoe) {
 			Debug.Log("AoE Effect Triggered!");
 			aoePrefab.SetActive(true);
@@ -158,7 +159,8 @@ public class Bullet : MonoBehaviour {
 					if (slow) { enemy.GetSlowed(slowTime, slowForce); }
 				}
 			}
-		} else {
+		} else if(col.gameObject.tag == "Enemy") {
+			enemy = col.gameObject.GetComponent<Enemy>();
 			enemy.TakeDamage(damage, actor);
 			if(knockback) { enemy.GetKnocked(transform.position, knockbackTime, knockbackForce); }
 			if(stun) { enemy.GetStunned(stunTime); }
