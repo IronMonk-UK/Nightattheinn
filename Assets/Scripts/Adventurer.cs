@@ -372,7 +372,7 @@ public class Adventurer : MonoBehaviour {
 	}
 
 	private void SetAnimationEvents(AnimationClip anim, string atkFunction, string destroyFunction) {
-		if (anim) {
+		if (anim && anim.events.Length == 0) {
 			AnimationEvent evtAtk = new AnimationEvent();
 			AnimationEvent evtTrl = new AnimationEvent();
 			evtAtk.time = anim.length / 2;
@@ -435,6 +435,7 @@ public class Adventurer : MonoBehaviour {
 		onCooldown = true;
 		nextAttackTime = GameManager.instance._Time + cooldown;
 		if(attackData == secondaryAttackData) {
+			Debug.Log("Making Secondary Attack!");
 			currentMana -= secManaCost;
 		}		
 		if(animTrigger != "") anim.ResetTrigger(animTrigger);

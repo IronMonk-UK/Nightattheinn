@@ -147,6 +147,9 @@ MonoBehaviour:
   modelHolder: {fileID: 1893871701}
   model: {fileID: 0}
   audioSource: {fileID: 7995477075220071266}
+  currentClip: {fileID: 0}
+  audioClips: []
+  audioPlayTime: 0
   knocked: 0
   stunned: 0
   slowed: 0
@@ -161,8 +164,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.5, y: 2, z: 1}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!54 &665988111
 Rigidbody:
   m_ObjectHideFlags: 0

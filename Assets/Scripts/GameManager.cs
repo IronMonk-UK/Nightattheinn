@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour {
 
 	[Header("Debug Tools")]
 	[SerializeField] bool spawnEnemies;
-	[SerializeField] bool freezeZombies;
+	[SerializeField] bool freezeEnemies;
 
 	public static GameManager instance;
 	float spawnTime;
@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour {
 	void Awake() {
 		DontDestroyOnLoad(gameObject);
 		if(instance == null) { instance = this; } else { Destroy(gameObject); }
-		spawnTime = Random.Range(1, 10);
+		spawnTime = Random.Range(1, 6);
 	}
 
 	void Start() {
@@ -85,12 +85,14 @@ public class GameManager : MonoBehaviour {
 			}
 			clock.text = timeString;
 			if ((time >= spawnTime) && spawnEnemies) { SpawnEnemy(); }
+			/*
 			if (Input.GetKeyDown(KeyCode.Z)) {
 				SpawnZombie();
 			}
 			if (Input.GetKeyDown(KeyCode.X)) {
 				SpawnSkeleton();
 			}
+			*/
 		}
 		if (SceneManager.GetActiveScene().buildIndex == 2) {
 			if (!canvas) { canvas = Canvas.FindObjectOfType<Canvas>(); }
@@ -113,7 +115,7 @@ public class GameManager : MonoBehaviour {
 				newUI.KillText.text = "Kills: " + playerKills[adventurers.IndexOf(adventurer)];
 			}
 			adventurers.Clear();
-			playerClasses.Clear();
+			spawnTime = Random.Range(1, 6);
 		}
 	}
 
@@ -123,6 +125,18 @@ public class GameManager : MonoBehaviour {
 		canvas = null;
 	}
 
+	private void SpawnEnemy() {
+		int enemyIndex = Random.Range(0, 2);
+		spawnTime = time + Random.Range(1, 10);
+		int i = Random.Range(0, enemySpawns.Length);
+		Enemy enemyClass = Instantiate(enemy, enemySpawns[i], Quaternion.identity).GetComponent<Enemy>();
+		enemyClass._EnemyData = enemies[enemyIndex];
+		if(freezeEnemies) {
+			enemyClass.FollowAdventurers = false;
+		}
+
+	}
+	/*
 	void SpawnEnemy() {
 		float enemySwitch = Random.Range(0, 2);
 		Debug.Log("Enemy Switch: " + enemySwitch);
@@ -153,4 +167,5 @@ public class GameManager : MonoBehaviour {
 			enemyClass.FollowAdventurers = false;
 		}
 	}
+	*/
 }

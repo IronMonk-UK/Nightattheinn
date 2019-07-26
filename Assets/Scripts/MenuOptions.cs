@@ -40,6 +40,7 @@ public class MenuOptions : MonoBehaviour
 
 	public void Menu() {
 		StartCoroutine(MenuCoroutine());
+		GameManager.instance.PlayerClasses.Clear();
 	}
 
 	private IEnumerator MenuCoroutine() {

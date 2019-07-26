@@ -138,6 +138,8 @@ MonoBehaviour:
   currentHealth: 0
   maxMana: 0
   currentMana: 0
+  manaRegen: 0
+  manaDelay: 0
   killCount: 0
   primaryDamage: 0
   primCooldown: 0
@@ -145,6 +147,7 @@ MonoBehaviour:
   primAnimTrigger: 
   primTrail: {fileID: 0}
   primAnim: {fileID: 0}
+  primIgnoreAudio: 0
   secondaryDamage: 0
   secCooldown: 0
   secOnCooldown: 0
@@ -152,7 +155,9 @@ MonoBehaviour:
   secTrail: {fileID: 0}
   secAnim: {fileID: 0}
   secManaCost: 0
+  secIgnoreAudio: 0
   audioSource: {fileID: 4559351176573061566}
+  currentClip: {fileID: 0}
   primAudio: {fileID: 0}
   secAudio: {fileID: 0}
   bullet: {fileID: 1237832826086430, guid: 0a056ba8c8d412d4b8de104a4a2d53e0, type: 3}
@@ -218,8 +223,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1.5, y: 2, z: 1.5}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!195 &754561087340875732
 NavMeshAgent:
   m_ObjectHideFlags: 0
