@@ -34,7 +34,7 @@ MonoBehaviour:
   stun: 1
   stunTime: 2
   useCone: 0
-  thrust: 5
+  thrust: 10
   bulletPrefab: {fileID: 7747884967033889033, guid: 27875480f7e147847b6e08806439a91f,
     type: 3}
   bulletDuration: 0

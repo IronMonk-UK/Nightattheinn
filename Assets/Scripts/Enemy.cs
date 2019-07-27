@@ -13,8 +13,8 @@ public class Enemy : MonoBehaviour {
 	[SerializeField] int maxHealth;
 	[SerializeField] int currentHealth;
 	[SerializeField] int damage;
-	[SerializeField] float attackDegrees;
 	[SerializeField] float attackRadius;
+	[SerializeField] float attackRange;
 	[SerializeField] float cooldown;
 	[SerializeField] bool onCooldown;
 	[SerializeField] float nextAttackTime;
@@ -29,6 +29,7 @@ public class Enemy : MonoBehaviour {
 	[SerializeField] float distanceToTarget;
 	[SerializeField] float attackDistance;
 	[SerializeField] Vector3 skirmishPosition;
+	[SerializeField] int skirmishDistance;
 
 	[SerializeField] GameObject modelHolder;
 	[SerializeField] GameObject model;
@@ -85,9 +86,10 @@ public class Enemy : MonoBehaviour {
 		bulletPrefab = enemyData.BulletPrefab;
 		//gameObject.GetComponent<Renderer>().material = enemyData.Colour;
 		skirmisher = enemyData.Skirmisher;
-		attackDegrees = enemyData.AttackDegrees;
+		skirmishDistance = enemyData.SkirmishDistance;
 		attackRadius = enemyData.AttackRadius;
-		attackDistance = attackRadius;
+		attackRange = enemyData.AttackRange;
+		attackDistance = attackRange;
 
 		if(model != null) {
 			Destroy(model);
@@ -176,38 +178,15 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void Follow(float step) {
+		navMeshAgent.speed = speed;
 		target = GetClosestEnemy(GameManager.instance.Adventurers).gameObject;
-		//navMeshAgent.destination = target.transform.position;
 		navMeshAgent.SetDestination(target.transform.position);
 		distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
 		transform.LookAt(GetClosestEnemy(GameManager.instance.Adventurers));
 		if (navMeshAgent.remainingDistance <= attackDistance && !navMeshAgent.pathPending) {
 			Attack();
 		}
-		/*
-		if(distanceToTarget <= attackDistance) {
-			Debug.Log("Should be attacking!");
-			Attack();
-		}
-		if (distanceToTarget >= attackDistance) {
-			//transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
-		} else {
-			Attack();
-		}
-		*/
 	}
-	/*
-	private void Follow(float step) {
-		target = GetClosestEnemy(GameManager.instance.Adventurers).gameObject;
-		distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
-		transform.LookAt(GetClosestEnemy(GameManager.instance.Adventurers));
-		if (distanceToTarget >= attackDistance) {
-			transform.position = Vector3.MoveTowards(transform.position, GetClosestEnemy(GameManager.instance.Adventurers).position, step);
-		} else {
-			Attack();
-		}	
-	}
-	*/
 	private void Attack() {
 		if (!onCooldown) {
 			PlayAudio(audioClips[1]);
@@ -218,7 +197,7 @@ public class Enemy : MonoBehaviour {
 				bullet.Damage = damage;
 				bullet.Thrust = thrust;
 			} else {
-				Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRadius);
+				Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
 				Vector3 characterToCollider;
 				float dot;
 				float dotToDeg;
@@ -227,7 +206,7 @@ public class Enemy : MonoBehaviour {
 					dot = Vector3.Dot (characterToCollider, transform.forward);
 					dotToDeg = Mathf.Acos(dot) * Mathf.Rad2Deg;
 					if (c == target.GetComponent<Collider>()) {
-						if (dot >= Mathf.Cos((attackDegrees / 2) * Mathf.Deg2Rad)) {
+						if (dot >= Mathf.Cos((attackRadius / 2) * Mathf.Deg2Rad)) {
 							Adventurer adventurer = c.gameObject.GetComponent<Adventurer>();
 							adventurer.TakeDamage(damage);
 						} else {
@@ -239,7 +218,7 @@ public class Enemy : MonoBehaviour {
 			nextAttackTime = GameManager.instance._Time + cooldown;
 			if (skirmisher) {
 				skirmishing = true;
-				skirmishPosition = new Vector3(Random.Range(-2f, 2f) + transform.position.x, 0, Random.Range(-2f, 2f) + transform.position.z);
+				skirmishPosition = new Vector3(Random.Range(-skirmishDistance, skirmishDistance) + transform.position.x, 0, Random.Range(-skirmishDistance, skirmishDistance) + transform.position.z);
 			}
 		}
 	}
@@ -303,10 +282,10 @@ public class Enemy : MonoBehaviour {
 	private void OnDrawGizmos() {
 		Gizmos.color = Color.blue;
 		//Gizmos.DrawRay(transform.position, knockback);
-		Gizmos.DrawRay(transform.position, transform.forward * attackRadius);
-		float rayRange = attackRadius;
+		Gizmos.DrawRay(transform.position, transform.forward * attackRange);
+		float rayRange = attackRange;
 		Gizmos.color = Color.red;
-		float primTotalFOV = attackDegrees;
+		float primTotalFOV = attackRadius;
 		float primHalfFOV = primTotalFOV / 2;
 		float primTheta = 0;
 		float primX = rayRange * Mathf.Cos(primTheta);

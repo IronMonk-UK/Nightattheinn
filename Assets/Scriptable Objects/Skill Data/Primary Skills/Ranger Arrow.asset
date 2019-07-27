@@ -15,8 +15,8 @@ MonoBehaviour:
   skillType: 0
   adventurerClass: 1
   skillName: Ranger Arrow
-  damage: 30
-  cooldown: 1.5
+  damage: 15
+  cooldown: 1
   manaCost: 0
   continuousAttack: 0
   particleEffect: {fileID: 0}
@@ -34,7 +34,7 @@ MonoBehaviour:
   stun: 0
   stunTime: 0
   useCone: 0
-  thrust: 5
+  thrust: 10
   bulletPrefab: {fileID: 7747884967033889033, guid: 27875480f7e147847b6e08806439a91f,
     type: 3}
   bulletDuration: 0
@@ -45,5 +45,6 @@ MonoBehaviour:
   aoeRotate: 0
   pierce: 1
   pierceAmount: 1
-  attackDegrees: 0
   attackRadius: 0
+  attackRange: 0
+  destroyProjectiles: 0

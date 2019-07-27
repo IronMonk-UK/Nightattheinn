@@ -15,7 +15,7 @@ MonoBehaviour:
   skillType: 0
   adventurerClass: 0
   skillName: Mage Bullet
-  damage: 50
+  damage: 40
   cooldown: 2
   manaCost: 0
   continuousAttack: 0
@@ -34,7 +34,7 @@ MonoBehaviour:
   stun: 0
   stunTime: 0
   useCone: 0
-  thrust: 3
+  thrust: 6
   bulletPrefab: {fileID: 1461124619359588081, guid: 337bb1422fa3ba14eb46ba82c216dbed,
     type: 3}
   bulletDuration: 0
@@ -46,5 +46,6 @@ MonoBehaviour:
   aoeRotate: 1
   pierce: 0
   pierceAmount: 0
-  attackDegrees: 0
   attackRadius: 0
+  attackRange: 0
+  destroyProjectiles: 0

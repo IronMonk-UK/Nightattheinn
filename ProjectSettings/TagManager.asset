@@ -15,6 +15,7 @@ TagManager:
   - RestartBtn
   - MainMenuBtn
   - QuitBtn
+  - EnemyProjectile
   layers:
   - Default
   - TransparentFX

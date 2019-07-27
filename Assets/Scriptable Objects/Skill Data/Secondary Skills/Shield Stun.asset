@@ -17,7 +17,7 @@ MonoBehaviour:
   skillName: Shield Stun
   damage: 30
   cooldown: 3
-  manaCost: 40
+  manaCost: 30
   continuousAttack: 0
   particleEffect: {fileID: 0}
   hasAnim: 1
@@ -44,5 +44,6 @@ MonoBehaviour:
   aoeRotate: 0
   pierce: 0
   pierceAmount: 0
-  attackDegrees: 90
-  attackRadius: 2
+  attackRadius: 180
+  attackRange: 3
+  destroyProjectiles: 1

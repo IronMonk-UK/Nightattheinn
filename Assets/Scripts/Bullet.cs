@@ -41,6 +41,7 @@ public class Bullet : MonoBehaviour {
 	bool stun;
 	float stunTime;
 
+	bool triggered;
 	bool destroyed = false;
 	bool stop;
 	
@@ -111,26 +112,32 @@ public class Bullet : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter(Collider col) {
-		if(adventurer) {		
-			if(col.gameObject.tag == "Enemy") {
-				if(!pierce || (pierce && pierceCount == pierceAmount)) {
+		if (!triggered) {
+			if(adventurer) {		
+				if(col.gameObject.tag == "Enemy") {
+					if(!pierce || (pierce && pierceCount == pierceAmount)) {
+						Debug.Log("Enemy Hit");
+						DeleteBullet();
+						TriggerEffects(col);
+						triggered = true;
+					}else if(pierce && pierceCount <= PierceAmount) {
+						TriggerEffects(col);
+						pierceCount++;
+					}
+				}
+			} else if(enemy) {
+				if(col.gameObject.tag == "Adventurer") {
 					DeleteBullet();
-					TriggerEffects(col);
-				}else if(pierce && pierceCount <= PierceAmount) {
-					TriggerEffects(col);
-					pierceCount++;
+					TriggerAdventurerEffects(col);
+					triggered = true;
 				}
 			}
-		} else if(enemy) {
-			if(col.gameObject.tag == "Adventurer") {
+			if(col.gameObject.tag == "Wall") {
+			Debug.Log("A bullet has hit a wall");
 				DeleteBullet();
-				TriggerAdventurerEffects(col);
+				TriggerEffects(col);
+				triggered = true;
 			}
-		}
-		if(col.gameObject.tag == "Wall") {
-		Debug.Log("A bullet has hit a wall");
-			DeleteBullet();
-			TriggerEffects(col);
 		}
 	}
 

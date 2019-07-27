@@ -13,13 +13,14 @@ public class EnemyData : ScriptableObject {
 	[SerializeField] int damage;
 	[SerializeField] float cooldown;
 	[SerializeField] bool skirmisher;
+	[SerializeField] int skirmishDistance;
 
 	[SerializeField] bool ranged; //True - Ranged unit | False - Melee unit
 	[SerializeField] float thrust;
 	[SerializeField] GameObject bulletPrefab;
 
-	[SerializeField] float attackDegrees;
 	[SerializeField] float attackRadius;
+	[SerializeField] float attackRange;
 
 	[SerializeField] AudioClip[] audioClips;
 	
@@ -30,12 +31,13 @@ public class EnemyData : ScriptableObject {
 	public float Cooldown { get { return cooldown; } }
 	public bool Ranged { get { return ranged; } }
 	public bool Skirmisher { get { return skirmisher; } }
+	public int SkirmishDistance { get { return skirmishDistance; } }
 	public float Thrust { get { return thrust; } }
 	public GameObject BulletPrefab { get { return bulletPrefab; } }
 	public Material Colour { get { return colour; } }
 	public GameObject Model { get { return model; } }
-	public float AttackDegrees { get { return attackDegrees; } }
 	public float AttackRadius { get { return attackRadius; } }
+	public float AttackRange { get { return attackRange; } }
 	public AudioClip[] _AudioClips { get { return audioClips; } }
 }
 

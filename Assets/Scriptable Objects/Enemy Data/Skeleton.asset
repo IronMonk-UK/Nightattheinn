@@ -15,17 +15,18 @@ MonoBehaviour:
   colour: {fileID: 2100000, guid: 3357f54f4103710478bd4707b785ec6f, type: 2}
   model: {fileID: -927199367670048503, guid: 99e0dcdc55c650c48afb022bef4783c3, type: 3}
   enemyName: Skeleton
-  speed: 3
+  speed: 3.5
   health: 60
-  damage: 20
+  damage: 15
   cooldown: 2
   skirmisher: 1
+  skirmishDistance: 3
   ranged: 1
-  thrust: 3
+  thrust: 6
   bulletPrefab: {fileID: 4569826558045817972, guid: acb33c1802d0a1446bd8764effc5224a,
     type: 3}
-  attackDegrees: 45
-  attackRadius: 6
+  attackRadius: 45
+  attackRange: 7
   audioClips:
   - {fileID: 8300000, guid: f2bcaac36562d1c43a57247532d76a42, type: 3}
   - {fileID: 8300000, guid: 519f204899f656b4299d3a3eb02e46b5, type: 3}

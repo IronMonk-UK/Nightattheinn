@@ -15,16 +15,17 @@ MonoBehaviour:
   colour: {fileID: 2100000, guid: a1b25fb60be59ee4fbf039f9dce76d8f, type: 2}
   model: {fileID: -927199367670048503, guid: 572cf98dcc306d64e93b559649071d35, type: 3}
   enemyName: Zombie
-  speed: 2
-  health: 100
+  speed: 3
+  health: 150
   damage: 30
   cooldown: 1
   skirmisher: 0
+  skirmishDistance: 0
   ranged: 0
   thrust: 0
   bulletPrefab: {fileID: 0}
-  attackDegrees: 90
   attackRadius: 1.5
+  attackRange: 0
   audioClips:
   - {fileID: 8300000, guid: c1b65bc66799be54799ec9eaf8508203, type: 3}
   - {fileID: 8300000, guid: 76a4e473e38a6694bb461674700c4f2d, type: 3}
