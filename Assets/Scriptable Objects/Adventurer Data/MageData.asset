@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bf703122c43eb942a9c469b6461a48e, type: 3}
+  m_Name: MageData
+  m_EditorClassIdentifier: 
+  className: Mage
+  movementSpeed: 5
+  attackSpeed: 5
+  health: 100
+  mana: 300
+  manaRegen: 5
+  primarySkill: {fileID: 11400000, guid: cdd9f09ef81b4e24fafc7a2ddfb72c24, type: 2}
+  secondarySkill: {fileID: 11400000, guid: 8e0a7b163d37c0e46a56a1d24ce78e3d, type: 2}
+  adventurerClass: 0
+  weapon: {fileID: 0}
+  model: {fileID: -927199367670048503, guid: 660215257c33d1c4a829993ec2641f92, type: 3}

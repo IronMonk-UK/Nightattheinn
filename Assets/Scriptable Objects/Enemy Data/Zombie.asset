@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e95b8d527fe664baa76abbbc364c17, type: 3}
   m_Name: Zombie
   m_EditorClassIdentifier: 
-  material: {fileID: 0}
+  material: {fileID: 2100000, guid: bd8407f37eec17a4f997d087cb654797, type: 2}
   model: {fileID: -927199367670048503, guid: 572cf98dcc306d64e93b559649071d35, type: 3}
   enemyName: Zombie
   speed: 3

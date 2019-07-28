@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e95b8d527fe664baa76abbbc364c17, type: 3}
   m_Name: Skeleton
   m_EditorClassIdentifier: 
-  colour: {fileID: 2100000, guid: 3357f54f4103710478bd4707b785ec6f, type: 2}
+  material: {fileID: 2100000, guid: d88b9df1406a0d0449b3ab85c8174aba, type: 2}
   model: {fileID: -927199367670048503, guid: 99e0dcdc55c650c48afb022bef4783c3, type: 3}
   enemyName: Skeleton
   speed: 3.5

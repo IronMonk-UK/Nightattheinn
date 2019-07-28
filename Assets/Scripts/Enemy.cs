@@ -33,6 +33,10 @@ public class Enemy : MonoBehaviour {
 
 	[SerializeField] GameObject modelHolder;
 	[SerializeField] GameObject model;
+	[SerializeField] Material originalMaterial;
+	[SerializeField] Material modelMaterial;
+	[SerializeField] Color currentColor;
+	[SerializeField] float flashTime;
 
 	[SerializeField] AudioSource audioSource;
 	[SerializeField] AudioClip currentClip;
@@ -90,6 +94,7 @@ public class Enemy : MonoBehaviour {
 		attackRadius = enemyData.AttackRadius;
 		attackRange = enemyData.AttackRange;
 		attackDistance = attackRange;
+		originalMaterial = enemyData._Material;
 
 		if(model != null) {
 			Destroy(model);
@@ -97,6 +102,7 @@ public class Enemy : MonoBehaviour {
 		model = Instantiate(enemyData.Model, transform.position, modelHolder.transform.rotation);
 		model.transform.parent = modelHolder.transform;
 		model.transform.localPosition = new Vector3(0, 0, 0);
+		modelMaterial = model.GetComponentInChildren<MeshRenderer>().material;
 
 		audioClips.Clear();
 		audioClips.Capacity = enemyData._AudioClips.Length;
@@ -249,16 +255,27 @@ public class Enemy : MonoBehaviour {
 
 	public void TakeDamage(int dam, GameObject adventurer) {
 		currentHealth -= dam;
+		PlayAudio(audioClips[2]);
+		//currentColor = Color.red;
+		//model.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+		modelMaterial.color = Color.red;
+		Invoke("ResetMaterial", flashTime);
 		if(currentHealth <= 0) {
 			adventurer.GetComponent<Adventurer>().KillCount++;
 			Debug.Log("Adventurer Kills: " + adventurer.GetComponent<Adventurer>().KillCount);
-			ZombieDead();
+			EnemyDead();
 		}
 	}
 
 	//Simple function for now, designed as such for potential modular coding later
-	private void ZombieDead() {
+	private void EnemyDead() {
 		Destroy(gameObject);
+	}
+
+	private void ResetMaterial() {
+		//model.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+		//currentColor = Color.white;
+		modelMaterial.color = Color.white;
 	}
 
 	//Transform takes the adventurers array from GameManager and looks at each of them, determining the closest, non-downed adventurer to them using the magic of maths

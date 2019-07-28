@@ -84,8 +84,8 @@ MonoBehaviour:
   maxHealth: 0
   currentHealth: 0
   damage: 20
-  attackDegrees: 90
   attackRadius: 2
+  attackRange: 0
   cooldown: 0
   onCooldown: 0
   nextAttackTime: 0
@@ -98,8 +98,12 @@ MonoBehaviour:
   distanceToTarget: 0
   attackDistance: 6
   skirmishPosition: {x: 0, y: 0, z: 0}
+  skirmishDistance: 0
   modelHolder: {fileID: 1893871701}
   model: {fileID: 0}
+  originalMaterial: {fileID: 0}
+  currentColor: {r: 0, g: 0, b: 0, a: 0}
+  flashTime: 1
   audioSource: {fileID: 7995477075220071266}
   currentClip: {fileID: 0}
   audioClips: []
