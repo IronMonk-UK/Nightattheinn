@@ -47,9 +47,6 @@ MonoBehaviour:
   adventurers: []
   playerClasses: 
   playerKills: 
-  enemySpawns:
-  - {x: 35, y: 0, z: 5}
-  - {x: 5, y: 0, z: 35}
   adventurerSpawns:
   - {x: 5, y: 0, z: 5}
   primarySkills: []
@@ -57,13 +54,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 28ac90205e6b53f439a3300dd7824d29, type: 2}
   - {fileID: 11400000, guid: 091b543b154687c49ba3dd2331070629, type: 2}
   - {fileID: 11400000, guid: 7b911ab5265533e498810937b294f887, type: 2}
-  enemies:
-  - {fileID: 11400000, guid: 2056eaf18ec6d5b48a1a63cb0cba1451, type: 2}
-  - {fileID: 11400000, guid: 64c8958fee6dc6a48b4d08b0a69c9057, type: 2}
+  waves:
+  - {fileID: 11400000, guid: 5d11f7218d5bbfc4e82e39714d18de65, type: 2}
   time: 0
   minutes: 0
   seconds: 0
   playerCount: 1
+  minSpawnTime: 2
+  maxSpawnTime: 6
+  currentWave: 0
+  waveProgress: 0
   timeString: 
   adventurer: {fileID: 756533685032950921, guid: 23a1ba58b88941a48927d802d7916b0b,
     type: 3}
@@ -75,8 +75,11 @@ MonoBehaviour:
   clockUI: {fileID: 2464170480188026872, guid: 8311df31477ec0047bdb41745aa2436f, type: 3}
   clock: {fileID: 0}
   canvas: {fileID: 0}
-  spawnEnemies: 0
-  freezeZombies: 0
+  restartBtn: {fileID: 0}
+  mainMenuBtn: {fileID: 0}
+  quitBtn: {fileID: 0}
+  spawnEnemies: 1
+  freezeEnemies: 0
 --- !u!114 &1591992511
 MonoBehaviour:
   m_ObjectHideFlags: 0

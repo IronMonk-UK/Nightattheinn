@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95e95b8d527fe664baa76abbbc364c17, type: 3}
   m_Name: Zombie
   m_EditorClassIdentifier: 
-  colour: {fileID: 2100000, guid: a1b25fb60be59ee4fbf039f9dce76d8f, type: 2}
+  material: {fileID: 0}
   model: {fileID: -927199367670048503, guid: 572cf98dcc306d64e93b559649071d35, type: 3}
   enemyName: Zombie
   speed: 3
@@ -24,8 +24,8 @@ MonoBehaviour:
   ranged: 0
   thrust: 0
   bulletPrefab: {fileID: 0}
-  attackRadius: 1.5
-  attackRange: 0
+  attackRadius: 90
+  attackRange: 1.5
   audioClips:
   - {fileID: 8300000, guid: c1b65bc66799be54799ec9eaf8508203, type: 3}
   - {fileID: 8300000, guid: 76a4e473e38a6694bb461674700c4f2d, type: 3}

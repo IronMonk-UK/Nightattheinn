@@ -33,7 +33,6 @@ public class MenuOptions : MonoBehaviour
 	public void LoadGame() {
 		classPanel = null;
 		SceneManager.LoadScene(1);
-		GameManager.instance._Time = 0;
 	}
 
 	public void QuitGame() { Application.Quit(); }
