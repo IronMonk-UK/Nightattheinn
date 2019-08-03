@@ -459,6 +459,25 @@ public class Adventurer : MonoBehaviour {
 		right = Vector3.Normalize(right);
 	}
 
+	// You CAN break this version of Move() - NOT THE ONE BELOW
+	private void Move() {
+		float rh = Input.GetAxis("RStick Horizontal") * 45;
+		float rv = Input.GetAxis("RStick Vertical") * 45;
+		//Vector3 direction = new Vector3(rh, 0, rv);
+		Vector3 direction = new Vector3(rv, 0, rh);
+		transform.LookAt(transform.position + direction);
+		//transform.rotation = Quaternion.Euler(new Vector3(0, rh + rv, 0));
+
+		Vector3 moveRight = right * moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
+		Vector3 moveForward = forward * moveSpeed * Time.deltaTime * Input.GetAxis("Vertical");
+		Vector3 cameraPos = new Vector3(cameraTransform.x + transform.position.x, cameraTransform.y, cameraTransform.z + transform.position.z);
+		transform.position += moveRight;
+		transform.position += moveForward;
+		Camera.main.transform.position = cameraPos;
+	}
+
+	/*
+	 * DO NOT TOUCH - THIS IS YOUR WORKING MOVEMENT/ROTATION SCRIPT - DO NOT FUCKING BREAK THIS YOU FUCKNUGGET
 	private void Move() {
 		Vector2 posOnScreen = Camera.main.WorldToViewportPoint(transform.position);
 		Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
@@ -472,6 +491,7 @@ public class Adventurer : MonoBehaviour {
 		transform.position += moveForward;
 		Camera.main.transform.position = cameraPos;
 	}
+	*/
 
 	private float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
 		return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;

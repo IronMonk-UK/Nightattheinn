@@ -68,6 +68,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update() {
+		Debug.Log("RH: " + Input.GetAxis("RStick Horizontal"));
+		Debug.Log("RV: " + Input.GetAxis("RStick Vertical"));
 		if (SceneManager.GetActiveScene().buildIndex == 1) {
 			if (!canvas) { canvas = Canvas.FindObjectOfType<Canvas>(); }
 			if(adventurers.Count < playerCount) {
