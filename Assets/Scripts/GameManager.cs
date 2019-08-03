@@ -144,21 +144,25 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void SpawnEnemy() {
-		Debug.Log("Current Wave - 1: " + (currentWave - 1));
-		Debug.Log("Wave Progress: " + waveProgress);
-		EnemyData currentEnemy = waves[currentWave - 1].EnemyOrder[waveProgress];
-		GameObject spawnLocation = waves[currentWave - 1].SpawnOrder[waveProgress];
-		Enemy enemyClass = Instantiate(enemy, spawnLocation.transform.position, Quaternion.identity).GetComponent<Enemy>();
-		enemyClass._EnemyData = currentEnemy;
-		if(freezeEnemies) {
-			enemyClass.FollowAdventurers = false;
-		}
-		spawnTime = time + Random.Range(minSpawnTime, maxSpawnTime);
-		waveProgress++;
-		Debug.Log("Wave Progress: " + waveProgress + " Wave Length: " + waves[currentWave - 1].EnemyOrder.Length);
-		if(waveProgress >= waves[currentWave - 1].EnemyOrder.Length) {
-			Debug.Log("Progressing to next wave");
-			currentWave++;
+		if(currentWave - 1 < waves.Length && spawnEnemies) {
+			if(waveProgress < waves[currentWave - 1].EnemyOrder.Length) {
+				EnemyData currentEnemy = waves[currentWave - 1].EnemyOrder[waveProgress];
+				GameObject spawnLocation = waves[currentWave - 1].SpawnOrder[waveProgress];
+				Enemy enemyClass = Instantiate(enemy, spawnLocation.transform.position, Quaternion.identity).GetComponent<Enemy>();
+				enemyClass._EnemyData = currentEnemy;
+				if(freezeEnemies) {
+					enemyClass.FollowAdventurers = false;
+				}
+				spawnTime = time + Random.Range(minSpawnTime, maxSpawnTime);
+				waveProgress++;
+				Debug.Log("Wave Progress: " + waveProgress + " Wave Length: " + waves[currentWave - 1].EnemyOrder.Length);
+				if(waveProgress >= waves[currentWave - 1].EnemyOrder.Length) {
+					currentWave++;
+					Debug.Log("Current Wave: " + currentWave);
+				}
+			} else {
+				Debug.Log("Wave Finished Spawning");
+			}
 		}
 	}
 

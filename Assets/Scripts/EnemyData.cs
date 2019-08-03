@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyData : ScriptableObject {
 	[Header("-Generic Variables-")]
 	[SerializeField] Material material;
-	[SerializeField] GameObject model;
+	[SerializeField] GameObject[] models;
 	[SerializeField] string enemyName;
 	[SerializeField] float speed;
 	[SerializeField] int health;
@@ -35,7 +35,7 @@ public class EnemyData : ScriptableObject {
 	public float Thrust { get { return thrust; } }
 	public GameObject BulletPrefab { get { return bulletPrefab; } }
 	public Material _Material { get { return material; } }
-	public GameObject Model { get { return model; } }
+	public GameObject[] Models { get { return models; } }
 	public float AttackRadius { get { return attackRadius; } }
 	public float AttackRange { get { return attackRange; } }
 	public AudioClip[] _AudioClips { get { return audioClips; } }

@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Zombie
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: bd8407f37eec17a4f997d087cb654797, type: 2}
-  model: {fileID: -927199367670048503, guid: 572cf98dcc306d64e93b559649071d35, type: 3}
+  models:
+  - {fileID: -927199367670048503, guid: 572cf98dcc306d64e93b559649071d35, type: 3}
+  - {fileID: -927199367670048503, guid: a91430698d278484a82b7feca491cc0f, type: 3}
   enemyName: Zombie
   speed: 3
   health: 150

@@ -44,6 +44,7 @@ public class Enemy : MonoBehaviour {
 	[SerializeField] float audioPlayTime;
 
 	[SerializeField] bool knocked = false;
+
 	float knockedTime;
 	float kbForce; // 10
 	float kbTime; // 1
@@ -99,7 +100,8 @@ public class Enemy : MonoBehaviour {
 		if(model != null) {
 			Destroy(model);
 		}
-		model = Instantiate(enemyData.Model, transform.position, modelHolder.transform.rotation);
+		int i = Random.Range(0, enemyData.Models.Length);
+		model = Instantiate(enemyData.Models[i], transform.position, modelHolder.transform.rotation);
 		model.transform.parent = modelHolder.transform;
 		model.transform.localPosition = new Vector3(0, 0, 0);
 		modelMaterial = model.GetComponentInChildren<MeshRenderer>().material;
@@ -200,7 +202,7 @@ public class Enemy : MonoBehaviour {
 				Vector3 spawnPoint = transform.position + (transform.forward);
 				Bullet bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.Euler(0, transform.eulerAngles.y, 0)).GetComponent<Bullet>();
 				bullet.Actor = gameObject;
-				bullet.Damage = damage;
+				//bullet.Damage = damage;
 				bullet.Thrust = thrust;
 			} else {
 				Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
@@ -214,7 +216,7 @@ public class Enemy : MonoBehaviour {
 					if (c == target.GetComponent<Collider>()) {
 						if (dot >= Mathf.Cos((attackRadius / 2) * Mathf.Deg2Rad)) {
 							Adventurer adventurer = c.gameObject.GetComponent<Adventurer>();
-							adventurer.TakeDamage(damage);
+							//adventurer.TakeDamage(damage);
 						} else {
 						}
 					}
@@ -223,16 +225,29 @@ public class Enemy : MonoBehaviour {
 			onCooldown = true;
 			nextAttackTime = GameManager.instance._Time + cooldown;
 			if (skirmisher) {
-				skirmishing = true;
-				skirmishPosition = new Vector3(Random.Range(-skirmishDistance, skirmishDistance) + transform.position.x, 0, Random.Range(-skirmishDistance, skirmishDistance) + transform.position.z);
+				//skirmishing = true;
+				//skirmishPosition = new Vector3(Random.Range(-skirmishDistance, skirmishDistance) + transform.position.x, 0, Random.Range(-skirmishDistance, skirmishDistance) + transform.position.z);
+				GetSkirmishPosition();
 			}
+		}
+	}
+
+	private void GetSkirmishPosition() {
+		Vector3 possiblePos = new Vector3(Random.Range(-skirmishDistance, skirmishDistance) + transform.position.x, 0, Random.Range(-skirmishDistance, skirmishDistance) + transform.position.z);
+		NavMeshHit hit;
+		bool blocked = NavMesh.Raycast(transform.position, possiblePos, out hit, NavMesh.AllAreas);
+        //Debug.DrawLine(transform.position, possiblePos, blocked ? Color.red : Color.green, 5);
+		if (!blocked) {
+			skirmishPosition = possiblePos;
+			skirmishing = true;
+		} else {
+			GetSkirmishPosition();
 		}
 	}
 
 	public void GetKnocked(Vector3 centre, float time, float force) {
 		kbTime = time;
 		knockback = gameObject.transform.position - centre;
-		Debug.Log(knockback);
 		knocked = true;
 		kbForce = force;
 	}
@@ -245,9 +260,7 @@ public class Enemy : MonoBehaviour {
 	public void GetSlowed(float time, float force) {
 		slowTime = time;
 		if (!slowed) {
-			Debug.Log("Speed Before Slow: " + speed);
 			speed -= force;
-			Debug.Log("Speed After Slow: " + speed);
 			slowed = true;
 		}
 		slowForce = force;
@@ -256,8 +269,6 @@ public class Enemy : MonoBehaviour {
 	public void TakeDamage(int dam, GameObject adventurer) {
 		currentHealth -= dam;
 		PlayAudio(audioClips[2]);
-		//currentColor = Color.red;
-		//model.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
 		modelMaterial.color = Color.red;
 		Invoke("ResetMaterial", flashTime);
 		if(currentHealth <= 0) {
@@ -273,8 +284,6 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void ResetMaterial() {
-		//model.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-		//currentColor = Color.white;
 		modelMaterial.color = Color.white;
 	}
 

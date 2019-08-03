@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: Skeleton
   m_EditorClassIdentifier: 
   material: {fileID: 2100000, guid: d88b9df1406a0d0449b3ab85c8174aba, type: 2}
-  model: {fileID: -927199367670048503, guid: 99e0dcdc55c650c48afb022bef4783c3, type: 3}
+  models:
+  - {fileID: -927199367670048503, guid: 99e0dcdc55c650c48afb022bef4783c3, type: 3}
+  - {fileID: -927199367670048503, guid: ff8fb69f8110db4479efadead76ccd66, type: 3}
   enemyName: Skeleton
   speed: 3.5
   health: 60
