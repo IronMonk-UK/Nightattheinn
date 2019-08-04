@@ -26,7 +26,6 @@ public class MenuOptions : MonoBehaviour
 	}
 
 	public void ChooseClass(int index) {
-		Debug.Log(index);
 		GameManager.instance.PlayerClasses.Add(index);
 	}
 

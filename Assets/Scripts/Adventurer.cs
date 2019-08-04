@@ -459,14 +459,9 @@ public class Adventurer : MonoBehaviour {
 		right = Vector3.Normalize(right);
 	}
 
-	// You CAN break this version of Move() - NOT THE ONE BELOW
 	private void Move() {
-		float rh = Input.GetAxis("RStick Horizontal") * 45;
-		float rv = Input.GetAxis("RStick Vertical") * 45;
-		//Vector3 direction = new Vector3(rh, 0, rv);
-		Vector3 direction = new Vector3(rv, 0, rh);
-		transform.LookAt(transform.position + direction);
-		//transform.rotation = Quaternion.Euler(new Vector3(0, rh + rv, 0));
+		JoystickRotation();
+		KeyboardRotation();
 
 		Vector3 moveRight = right * moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
 		Vector3 moveForward = forward * moveSpeed * Time.deltaTime * Input.GetAxis("Vertical");
@@ -474,6 +469,20 @@ public class Adventurer : MonoBehaviour {
 		transform.position += moveRight;
 		transform.position += moveForward;
 		Camera.main.transform.position = cameraPos;
+	}
+
+	private void JoystickRotation() {
+		float rh = Input.GetAxis("RStick Horizontal") * 45;
+		float rv = Input.GetAxis("RStick Vertical") * 45;
+		Vector3 direction = new Vector3(rv, 0, rh);
+		transform.LookAt(transform.position + direction);
+	}
+
+	private void KeyboardRotation() {
+		Vector2 posOnScreen = Camera.main.WorldToViewportPoint(transform.position);
+		Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
+		float angle = AngleBetweenTwoPoints(posOnScreen, mouseOnScreen);
+		transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
 	}
 
 	/*
