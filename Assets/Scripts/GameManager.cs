@@ -10,13 +10,10 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] List<GameObject> adventurers;
 	[SerializeField] List<int> playerClasses;
 	[SerializeField] List<int> playerKills;
-	//[SerializeField] Vector3[] enemySpawns;
 	[SerializeField] Vector3[] adventurerSpawns;
 	[SerializeField] SkillData[] primarySkills;
 	//0 - Fighter | 1 - Mage | 2 - Ranger
 	[SerializeField] ClassData[] characters;
-	//0 - Zombie | 1 - Skeleton
-	//[SerializeField] EnemyData[] enemies;
 	[SerializeField] EnemyWaveData[] waves;
 
 	[Header("Floats & Integers")]
@@ -70,6 +67,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update() {
+		Debug.Log(playerClasses.Capacity);
+		if(playerClasses.Capacity < playerCount) { playerClasses.Capacity = playerCount; }
 		if (SceneManager.GetActiveScene().buildIndex == 1) {
 			if (!canvas) { canvas = Canvas.FindObjectOfType<Canvas>(); }
 			if (adventurers.Count < playerCount) {

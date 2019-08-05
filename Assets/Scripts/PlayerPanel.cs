@@ -22,6 +22,14 @@ public class PlayerPanel : MonoBehaviour
 	[SerializeField] Button nextClass;
 	[SerializeField] Button prevClass;
 	[SerializeField] Button selectClass;
+	[SerializeField] MainMenu menuScript;
+	[SerializeField] bool ready;
+	[SerializeField] int startRotation;
+	[SerializeField] int rotateSpeed;
+
+	public bool Ready { get { return ready; } }
+	public bool Keyboard { get { return keyboard; } }
+	public int ClassIndex { get { return classIndex; } }
     // Start is called before the first frame update
     void Start() {
 		classSelectPanel.SetActive(false);
@@ -31,19 +39,20 @@ public class PlayerPanel : MonoBehaviour
     void Update()
     {
 		if (startText.enabled) {
-			if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("joystick button 0")) && !activePlayer) {
+			if (((Input.GetKeyDown(KeyCode.Space) && !menuScript.KeyboardTaken) || Input.GetKeyDown("joystick button 0")) && !activePlayer) {
 				activePlayer = true;
 				GameManager.instance.PlayerCount++;
 				playerID = GameManager.instance.PlayerCount;
 				startText.enabled = false;
 				classSelectPanel.SetActive(true);
+				menuScript.Players.Add(this);
 
 				if (Input.GetKeyDown(KeyCode.Space)) {
 					keyboard = true;
 				}
 				if (Input.GetKeyDown("joystick button 0")) {
 					controller = true;
-					for(int i = 0; i < 1; i++) {
+					for(int i = 0; i < 3; i++) {
 						if(Input.GetButtonDown("Joy" + i + "_A")) {
 							Debug.Log("Joystick " + i + " detected");
 							controllerID = i;
@@ -61,8 +70,9 @@ public class PlayerPanel : MonoBehaviour
 				prevClass.onClick = new Button.ButtonClickedEvent();
 				prevClass.onClick.AddListener(PreviousClass);
 				selectClass.onClick = new Button.ButtonClickedEvent();
-				selectClass.onClick.AddListener(delegate { MenuOptions.menuOptions.ChooseClass(classIndex); });
-				selectClass.onClick.AddListener(MenuOptions.menuOptions.LoadGame);
+				selectClass.onClick.AddListener(SetReady);
+			} else if (currentClass) {
+				currentClass.transform.Rotate(new Vector3(0, rotateSpeed * Time.deltaTime, 0));
 			}
 		}
     }
@@ -72,6 +82,7 @@ public class PlayerPanel : MonoBehaviour
 		currentName = adventurerNames[classIndex];
 		adventurerModels[classIndex].SetActive(true);
 		nameText.text = currentName;
+		currentClass.transform.rotation = Quaternion.Euler(0, startRotation, 0);
 		foreach(GameObject model in adventurerModels) {
 			if(model != currentClass && model.activeInHierarchy) {
 				model.SetActive(false);
@@ -96,6 +107,16 @@ public class PlayerPanel : MonoBehaviour
 		} else {
 			classIndex--;
 			ChangeClass();
+		}
+	}
+
+	private void SetReady() {
+		if (!ready) {
+			ready = true;
+			selectClass.GetComponentInChildren<Text>().text = "Ready!";
+		} else {
+			ready = false;
+			selectClass.GetComponentInChildren<Text>().text = "Select";
 		}
 	}
 }

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
@@ -11,11 +12,32 @@ public class MainMenu : MonoBehaviour
 	[SerializeField] Button fighterButton;
 	[SerializeField] Button mageButton;
 	[SerializeField] Button rangerButton;
-
+	
+	[SerializeField] List<PlayerPanel> players;
 	[SerializeField] GameObject innSign;
 	[SerializeField] GameObject classPanel2;
 	[SerializeField] GameObject[] playerPanels;
 	[SerializeField] int openPanels;
+
+	public List<PlayerPanel> Players { get { return players; } set { players = value; } }
+
+	private bool allPlayersReady() {
+		if(GameManager.instance.PlayerCount == 0) { return false; }
+		foreach(PlayerPanel player in players) {
+			if (!player.Ready) { return false; }
+		}
+		return true;
+	}
+
+	private bool keyboardTaken() {
+		if(GameManager.instance.PlayerCount == 0) { return false; }
+		foreach(PlayerPanel player in players) {
+			if (!player.Keyboard) { return false; }
+		}
+		return true;
+	}
+
+	public bool KeyboardTaken { get { return keyboardTaken(); } }
 
 	private void Start() {
 		MenuOptions.menuOptions.ClassPanel = classPanel;
@@ -25,9 +47,11 @@ public class MainMenu : MonoBehaviour
 		openPanels = 0;
 		innSign.SetActive(true);
 		SetStartButton();
+		/*
 		SetFighterButton();
 		SetMageButton();
 		SetRangerButton();
+		*/
 	}
 
 	public void Update() {
@@ -46,9 +70,16 @@ public class MainMenu : MonoBehaviour
 		if (Input.GetButtonDown("Joy1_Fire3")) { Debug.Log("Joy1_Fire3"); }
 		*/
 		if (classPanel2.activeInHierarchy) {
-			if(openPanels <= GameManager.instance.PlayerCount && openPanels < 1) {
+			if(openPanels <= GameManager.instance.PlayerCount && openPanels < 2) {
 				OpenPlayerPanel(openPanels);
 			}
+		}
+
+		if (allPlayersReady()) {
+			foreach(PlayerPanel player in players) {
+				ChooseClass(player.ClassIndex);
+			}
+			MenuOptions.menuOptions.LoadGame();
 		}
 	}
 
@@ -58,6 +89,7 @@ public class MainMenu : MonoBehaviour
 		startButton.onClick.AddListener(SetClassPanel2Active);
 	}
 
+	/*
 	private void SetFighterButton() {
 		fighterButton.onClick = new Button.ButtonClickedEvent();
 		fighterButton.onClick.AddListener(delegate { MenuOptions.menuOptions.ChooseClass(0); });
@@ -75,6 +107,7 @@ public class MainMenu : MonoBehaviour
 		rangerButton.onClick.AddListener(delegate { MenuOptions.menuOptions.ChooseClass(2); });
 		rangerButton.onClick.AddListener(MenuOptions.menuOptions.LoadGame);
 	}
+	*/
 
 	private void SetClassPanel2Active() {
 		if (!classPanel2.activeInHierarchy) {
@@ -92,5 +125,9 @@ public class MainMenu : MonoBehaviour
 		innSign.SetActive(false);
 		playerPanels[index].SetActive(true);
 		openPanels++;
+	}
+
+	public void ChooseClass(int index) {
+		GameManager.instance.PlayerClasses.Add(index);
 	}
 }

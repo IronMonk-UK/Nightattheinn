@@ -49,6 +49,7 @@ MonoBehaviour:
   playerKills: 
   adventurerSpawns:
   - {x: 5, y: 0, z: 5}
+  - {x: 5, y: 0, z: 0}
   primarySkills: []
   characters:
   - {fileID: 11400000, guid: 28ac90205e6b53f439a3300dd7824d29, type: 2}
@@ -78,7 +79,7 @@ MonoBehaviour:
   restartBtn: {fileID: 0}
   mainMenuBtn: {fileID: 0}
   quitBtn: {fileID: 0}
-  spawnEnemies: 1
+  spawnEnemies: 0
   freezeEnemies: 0
 --- !u!114 &1591992511
 MonoBehaviour:

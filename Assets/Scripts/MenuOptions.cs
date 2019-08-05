@@ -24,10 +24,11 @@ public class MenuOptions : MonoBehaviour
 			classPanel.SetActive(false);
 		}
 	}
-
+	/*
 	public void ChooseClass(int index) {
 		GameManager.instance.PlayerClasses.Add(index);
 	}
+	*/
 
 	public void LoadGame() {
 		classPanel = null;
