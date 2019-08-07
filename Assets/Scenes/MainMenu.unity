@@ -240,6 +240,13 @@ MonoBehaviour:
   - {fileID: 1983896217}
   - {fileID: 73961562}
   openPanels: 0
+  keyboard: {fileID: 11400000, guid: 47b6caee0b767bc42b8c376e19b7f73e, type: 2}
+  joysticks:
+  - {fileID: 11400000, guid: 6412cc97fedd148419c0816ec2a881c4, type: 2}
+  - {fileID: 11400000, guid: 24b7435b1df8d074e803df0ceaa39243, type: 2}
+  - {fileID: 11400000, guid: 2fa3749767b4ad04d9e3f512ec97848d, type: 2}
+  - {fileID: 11400000, guid: b721df51907fe5547b4b61780daa8ba6, type: 2}
+  joysticksTaken: 00000000
 --- !u!1 &545280246
 GameObject:
   m_ObjectHideFlags: 0

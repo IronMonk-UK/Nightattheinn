@@ -460,7 +460,7 @@ public class Adventurer : MonoBehaviour {
 	}
 
 	private void Move() {
-		JoystickRotation();
+		//JoystickRotation();
 		KeyboardRotation();
 
 		Vector3 moveRight = right * moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal");

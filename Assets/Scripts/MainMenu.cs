@@ -18,8 +18,14 @@ public class MainMenu : MonoBehaviour
 	[SerializeField] GameObject classPanel2;
 	[SerializeField] GameObject[] playerPanels;
 	[SerializeField] int openPanels;
+	[SerializeField] InputData keyboard;
+	[SerializeField] InputData[] joysticks;
+	[SerializeField] bool[] joysticksTaken;
 
 	public List<PlayerPanel> Players { get { return players; } set { players = value; } }
+	public InputData Keyboard { get { return keyboard; } }
+	public InputData[] Joysticks { get { return joysticks; } }
+	public bool[] JoysticksTaken { get { return joysticksTaken; } set { JoysticksTaken = value; } }
 
 	private bool allPlayersReady() {
 		if(GameManager.instance.PlayerCount == 0) { return false; }
@@ -55,20 +61,25 @@ public class MainMenu : MonoBehaviour
 	}
 
 	public void Update() {
-		/*
+		
 		if (Input.GetButtonDown("Horizontal")) { Debug.Log("Horizontal"); }
 		if (Input.GetButtonDown("Vertical")) { Debug.Log("Vertical"); }
 		if (Input.GetButtonDown("Fire1")) { Debug.Log("Fire1"); }
 		if (Input.GetButtonDown("Fire2")) { Debug.Log("Fire2"); }
 		if (Input.GetButtonDown("Fire3")) { Debug.Log("Fire3"); }
+		if (Input.GetAxis("Joy0_L_Horizontal") != 0) { Debug.Log("Joy0_L_Horizontal"); }
 		if (Input.GetAxis("Joy1_L_Horizontal") != 0) { Debug.Log("Joy1_L_Horizontal"); }
-		if (Input.GetAxis("Joy1_L_Vertical") != 0) { Debug.Log("Joy1_L_Vertical"); }
-		if (Input.GetAxis("Joy1_R_Horizontal") != 0) { Debug.Log("Joy1_R_Horizontal"); }
-		if (Input.GetAxis("Joy1_R_Vertical") != 0) { Debug.Log("Joy1_R_Vertical"); }
+		if (Input.GetAxis("Joy0_L_Vertical") != 0) { Debug.Log("Joy0_L_Vertical"); }
+		if (Input.GetAxis("Joy0_R_Horizontal") != 0) { Debug.Log("Joy0_R_Horizontal"); }
+		if (Input.GetAxis("Joy0_R_Vertical") != 0) { Debug.Log("Joy0_R_Vertical"); }
+		if (Input.GetAxis("Joy0_Fire1") != 0) { Debug.Log("Joy0_Fire1"); }
 		if (Input.GetAxis("Joy1_Fire1") != 0) { Debug.Log("Joy1_Fire1"); }
-		if (Input.GetAxis("Joy1_Fire2") != 0) { Debug.Log("Joy1_Fire2"); }
-		if (Input.GetButtonDown("Joy1_Fire3")) { Debug.Log("Joy1_Fire3"); }
-		*/
+		if (Input.GetAxis("Joy0_Fire2") != 0) { Debug.Log("Joy0_Fire2"); }
+		if (Input.GetButtonDown("Joy0_Fire3")) { Debug.Log("Joy0_Fire3"); }
+		if (Input.GetButtonDown("Joy0_Submit")) { Debug.Log("Joy0_Submit"); }
+		if (Input.GetButtonDown("Joy1_Submit")) { Debug.Log("Joy1_Submit"); }
+		if (Input.GetButtonDown("Joy0_Cancel")) { Debug.Log("Joy0_Cancel"); }
+		
 		if (classPanel2.activeInHierarchy) {
 			if(openPanels <= GameManager.instance.PlayerCount && openPanels < 2) {
 				OpenPlayerPanel(openPanels);

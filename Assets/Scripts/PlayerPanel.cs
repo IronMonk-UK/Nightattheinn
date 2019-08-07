@@ -26,6 +26,7 @@ public class PlayerPanel : MonoBehaviour
 	[SerializeField] bool ready;
 	[SerializeField] int startRotation;
 	[SerializeField] int rotateSpeed;
+	[SerializeField] InputData input;
 
 	public bool Ready { get { return ready; } }
 	public bool Keyboard { get { return keyboard; } }
@@ -49,13 +50,16 @@ public class PlayerPanel : MonoBehaviour
 
 				if (Input.GetKeyDown(KeyCode.Space)) {
 					keyboard = true;
+					input = menuScript.Keyboard;
 				}
 				if (Input.GetKeyDown("joystick button 0")) {
 					controller = true;
 					for(int i = 0; i < 3; i++) {
-						if(Input.GetButtonDown("Joy" + i + "_A")) {
+						if(Input.GetButtonDown("Joy" + i + "_Submit")) {
 							Debug.Log("Joystick " + i + " detected");
 							controllerID = i;
+							input = menuScript.Joysticks[i];
+							menuScript.JoysticksTaken[i] = true;
 						}
 					}
 				}
