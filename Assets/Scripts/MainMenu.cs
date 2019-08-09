@@ -88,7 +88,7 @@ public class MainMenu : MonoBehaviour
 
 		if (allPlayersReady()) {
 			foreach(PlayerPanel player in players) {
-				ChooseClass(player.ClassIndex);
+				ChooseClass(player.ClassIndex, player._Input);
 			}
 			MenuOptions.menuOptions.LoadGame();
 		}
@@ -138,7 +138,8 @@ public class MainMenu : MonoBehaviour
 		openPanels++;
 	}
 
-	public void ChooseClass(int index) {
+	public void ChooseClass(int index, InputData input) {
 		GameManager.instance.PlayerClasses.Add(index);
+		GameManager.instance.PlayerInputs.Add(input);
 	}
 }

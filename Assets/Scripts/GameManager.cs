@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
 	[Header("Arrays")]
 	[SerializeField] List<GameObject> adventurers;
 	[SerializeField] List<int> playerClasses;
+	[SerializeField] List<InputData> playerInputs;
 	[SerializeField] List<int> playerKills;
 	[SerializeField] Vector3[] adventurerSpawns;
 	[SerializeField] SkillData[] primarySkills;
@@ -50,6 +51,7 @@ public class GameManager : MonoBehaviour {
 
 	public List<GameObject> Adventurers { get { return adventurers; } set { adventurers = value; } }
 	public List<int> PlayerClasses { get { return playerClasses; } set { playerClasses = value; } }
+	public List<InputData> PlayerInputs { get { return playerInputs; } set { playerInputs = value; } }
 	public float _Time { get { return time; } set { time = value; } }
 	public SkillData[] PrimarySkills { get { return primarySkills; } }
 	public ClassData[] Characters { get { return characters; } }
@@ -67,7 +69,6 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update() {
-		Debug.Log(playerClasses.Capacity);
 		if(playerClasses.Capacity < playerCount) { playerClasses.Capacity = playerCount; }
 		if (SceneManager.GetActiveScene().buildIndex == 1) {
 			if (!canvas) { canvas = Canvas.FindObjectOfType<Canvas>(); }
@@ -77,6 +78,10 @@ public class GameManager : MonoBehaviour {
 					Adventurer newAd = Instantiate(adventurer, adventurerSpawns[i], Quaternion.identity).GetComponent<Adventurer>();
 					PlayerUI newUI = Instantiate(playerUI, canvas.transform, false).GetComponent<PlayerUI>();
 					newAd.CharacterClassData = characters[playerClasses[i]];
+					newAd.InputData = playerInputs[i];
+					if(playerInputs[i].AButton != "Submit") {
+						newAd.Joystick = true;
+					}
 					newAd.PlayerNumber = i + 1;
 					newUI.Player = newAd;
 					newUI.SetToPlayer();

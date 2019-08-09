@@ -11,6 +11,8 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] AdventurerClass adventurerClass;
 	[SerializeField] string className;
 	[SerializeField] GameObject weapon;
+	[SerializeField] bool joyStick;
+	[SerializeField] InputData inputData;
 
 	[Header("Floats & Integers")]
 	[SerializeField] int playerNumber;
@@ -118,6 +120,8 @@ public class Adventurer : MonoBehaviour {
 	public bool Downed { get { return downed; } }
 	public enum AdventurerClass { Mage, Ranger, Warrior }
 	public AdventurerClass _AdventurerClass { get { return adventurerClass; } }
+	public bool Joystick { get { return joyStick; } set { joyStick = value; } }
+	public InputData InputData { get { return inputData; } set { inputData = value; } }
 	public Animator Anim { get { return anim; } }
 	public float PrimCooldown { get { return primCooldown; } }
 	public float SecCooldown { get { return secCooldown; } }
@@ -188,7 +192,8 @@ public class Adventurer : MonoBehaviour {
 			}else if (secSkillBar.value >= 0) {
 				secSkillBar.value -= Time.deltaTime;
 			}
-			if(Input.GetButtonUp("Fire2") && hasSecParticleEffect) {
+			//if(Input.GetButtonUp("Fire2") && hasSecParticleEffect) {
+			if(hasSecParticleEffect && (((joyStick && Input.GetAxis(inputData.Fire2) == 0 && secParticleEffect.gameObject.activeInHierarchy)) || (!joyStick && Input.GetButtonUp(inputData.Fire2)))) { 
 				Debug.Log("Disabling GO");
 				secParticleEffect.gameObject.SetActive(false);
 				audioSource.Stop();
@@ -343,7 +348,8 @@ public class Adventurer : MonoBehaviour {
 	}
 	
 	private void Attack() {
-		if(Input.GetButton("Fire1") && !primOnCooldown) {
+		//if(Input.GetButton("Fire1") && !primOnCooldown) {
+		if (((joyStick && Input.GetAxis(inputData.Fire1) > 0) || (!joyStick && Input.GetButton(inputData.Fire1))) && !primOnCooldown) { 
 			PlayAudio(primAudio, primIgnoreAudio, out primIgnoreAudio);
 			if (primaryAttackData.HasAnim) {
 				AddTrail(primTrail);
@@ -356,7 +362,8 @@ public class Adventurer : MonoBehaviour {
 				PrimaryAttack();
 			}
 		}
-		if (Input.GetButton("Fire2") && currentMana >= secManaCost && !secOnCooldown) {
+		//if (Input.GetButton("Fire2") && currentMana >= secManaCost && !secOnCooldown) {
+		if (((joyStick && Input.GetAxis(inputData.Fire2) > 0) || (!joyStick && Input.GetButton(inputData.Fire2))) && !secOnCooldown) { 
 			PlayAudio(secAudio, secIgnoreAudio, out secIgnoreAudio);
 			if (secondaryAttackData.HasAnim) {
 				AddTrail(secTrail);
@@ -369,11 +376,14 @@ public class Adventurer : MonoBehaviour {
 				SecondaryAttack();
 			}
 		}
-		if (Input.GetButton("Fire3")) {
+		//if (Input.GetButton("Fire3")) {
+		if (Input.GetButton(inputData.Fire3)) { 
 			Debug.Log("Fire 3");
 			//DestroyTrail();
 		}
-		if(Input.GetButtonUp("Fire1") && hasPrimParticleEffect) { primParticleEffect.gameObject.SetActive(false); }
+		//if(Input.GetButtonUp("Fire1") && hasPrimParticleEffect) { primParticleEffect.gameObject.SetActive(false); }
+		if (hasPrimParticleEffect && (((joyStick && Input.GetAxis(inputData.Fire1) == 0 && primParticleEffect.gameObject.activeInHierarchy)) || (!joyStick && Input.GetButtonUp(inputData.Fire1)))) { primParticleEffect.gameObject.SetActive(false); }
+
 	}
 
 	private void SetAnimationEvents(AnimationClip anim, string atkFunction, string destroyFunction) {
@@ -460,11 +470,17 @@ public class Adventurer : MonoBehaviour {
 	}
 
 	private void Move() {
-		//JoystickRotation();
-		KeyboardRotation();
+		Vector3 moveForward;
+		if (joyStick) {
+			JoystickRotation();
+			moveForward = forward * moveSpeed * Time.deltaTime * -Input.GetAxis(inputData.LeftVertical);
+		} else {
+			KeyboardRotation();
+			moveForward = forward * moveSpeed * Time.deltaTime * Input.GetAxis(inputData.LeftVertical);
+		}
 
-		Vector3 moveRight = right * moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
-		Vector3 moveForward = forward * moveSpeed * Time.deltaTime * Input.GetAxis("Vertical");
+		Vector3 moveRight = right * moveSpeed * Time.deltaTime * Input.GetAxis(inputData.LeftHorizontal);
+		//Vector3 moveForward = forward * moveSpeed * Time.deltaTime * Input.GetAxis(inputData.LeftVertical);
 		Vector3 cameraPos = new Vector3(cameraTransform.x + transform.position.x, cameraTransform.y, cameraTransform.z + transform.position.z);
 		transform.position += moveRight;
 		transform.position += moveForward;
@@ -472,8 +488,8 @@ public class Adventurer : MonoBehaviour {
 	}
 
 	private void JoystickRotation() {
-		float rh = Input.GetAxis("RStick Horizontal") * 45;
-		float rv = Input.GetAxis("RStick Vertical") * 45;
+		float rh = Input.GetAxis(inputData.RightHorizontal) * 45;
+		float rv = Input.GetAxis(inputData.RightVertical) * 45;
 		Vector3 direction = new Vector3(rv, 0, rh);
 		transform.LookAt(transform.position + direction);
 	}

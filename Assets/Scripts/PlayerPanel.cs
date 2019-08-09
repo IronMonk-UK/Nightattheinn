@@ -31,6 +31,7 @@ public class PlayerPanel : MonoBehaviour
 	public bool Ready { get { return ready; } }
 	public bool Keyboard { get { return keyboard; } }
 	public int ClassIndex { get { return classIndex; } }
+	public InputData _Input { get { return input; } }
     // Start is called before the first frame update
     void Start() {
 		classSelectPanel.SetActive(false);

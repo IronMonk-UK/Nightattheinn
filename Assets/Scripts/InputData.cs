@@ -14,4 +14,14 @@ public class InputData : ScriptableObject
 	[SerializeField] string fire3;
 	[SerializeField] string aButton;
 	[SerializeField] string bButton;
+
+	public string LeftHorizontal { get { return leftHorizontal; } }
+	public string LeftVertical { get { return leftVertical; } }
+	public string RightHorizontal { get { return rightHorizontal; } }
+	public string RightVertical { get { return rightVertical; } }
+	public string Fire1 { get { return fire1; } }
+	public string Fire2 { get { return fire2; } }
+	public string Fire3 { get { return fire3; } }
+	public string AButton { get { return aButton; } }
+	public string BButton { get { return bButton; } }
 }
