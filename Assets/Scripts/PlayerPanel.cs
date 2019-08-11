@@ -41,7 +41,8 @@ public class PlayerPanel : MonoBehaviour
     void Update()
     {
 		if (startText.enabled) {
-			if (((Input.GetKeyDown(KeyCode.Space) && !menuScript.KeyboardTaken) || Input.GetKeyDown("joystick button 0")) && !activePlayer) {
+			SetInput();
+			/*if (((Input.GetKeyDown(KeyCode.Space) && !menuScript.KeyboardTaken) || Input.GetKeyDown("joystick button 0")) && !activePlayer) {
 				activePlayer = true;
 				GameManager.instance.PlayerCount++;
 				playerID = GameManager.instance.PlayerCount;
@@ -64,7 +65,7 @@ public class PlayerPanel : MonoBehaviour
 						}
 					}
 				}
-			}
+			}*/
 		}
 		if (classSelectPanel.activeInHierarchy == true) {
 			if (!currentClass) {
@@ -81,6 +82,40 @@ public class PlayerPanel : MonoBehaviour
 			}
 		}
     }
+
+	private void SetInput() {		
+		if (((Input.GetKeyDown(KeyCode.Space) && !menuScript.KeyboardTaken) || Input.GetKeyDown("joystick button 0")) && !activePlayer) {
+			bool controllerTaken = false;			
+			if (Input.GetKeyDown("joystick button 0")) {
+				for (int i = 0; i < 3; i++) {
+					if (menuScript.JoysticksTaken[i]) {
+						Debug.Log("Controller taken");
+						controllerTaken = true;
+					}
+					if (Input.GetButtonDown("Joy" + i + "_Submit") && !menuScript.JoysticksTaken[i]) {
+						Debug.Log("Joystick " + i + " detected");
+						controller = true;
+						controllerID = i;
+						input = menuScript.Joysticks[i];
+						menuScript.JoysticksTaken[i] = true;
+						Debug.Log("Joystick Taken: " + menuScript.JoysticksTaken[i]);
+					}
+				}
+			}
+			if (Input.GetKeyDown(KeyCode.Space)) {
+				keyboard = true;
+				input = menuScript.Keyboard;
+			}
+			if (!controllerTaken) {
+				activePlayer = true;
+				GameManager.instance.PlayerCount++;
+				playerID = GameManager.instance.PlayerCount;
+				startText.enabled = false;
+				classSelectPanel.SetActive(true);
+				menuScript.Players.Add(this);
+			}
+		}
+	}
 
 	private void ChangeClass() {
 		currentClass = adventurerModels[classIndex];

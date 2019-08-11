@@ -27,6 +27,10 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] int currentWave;
 	[SerializeField] int waveProgress;
 
+	[Header("Camera")]
+	[SerializeField] bool cameraTransSet;
+	[SerializeField] Vector3 cameraTransform;
+
 	[Header("Strings")]
 	[SerializeField] string timeString;
 
@@ -35,7 +39,8 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] GameObject enemy;
 
 	[Header("UI")]
-	[SerializeField] GameObject playerUI;
+	//[SerializeField] GameObject playerUI;
+	[SerializeField] GameObject[] playerUis;
 	[SerializeField] GameObject gameOverUI;
 	[SerializeField] GameObject clockUI;
 	[SerializeField] Text clock = null;
@@ -71,12 +76,17 @@ public class GameManager : MonoBehaviour {
 	void Update() {
 		if(playerClasses.Capacity < playerCount) { playerClasses.Capacity = playerCount; }
 		if (SceneManager.GetActiveScene().buildIndex == 1) {
+			if(!cameraTransSet) {
+				cameraTransform = Camera.main.transform.position;
+				cameraTransSet = true;
+			}
 			if (!canvas) { canvas = Canvas.FindObjectOfType<Canvas>(); }
 			if (adventurers.Count < playerCount) {
 				for(int i = 0; i < playerCount; i++) {
 					Debug.Log("Player Classes Count" + playerClasses.Count);
 					Adventurer newAd = Instantiate(adventurer, adventurerSpawns[i], Quaternion.identity).GetComponent<Adventurer>();
-					PlayerUI newUI = Instantiate(playerUI, canvas.transform, false).GetComponent<PlayerUI>();
+					//PlayerUI newUI = Instantiate(playerUI, canvas.transform, false).GetComponent<PlayerUI>();
+					PlayerUI newUI = Instantiate(playerUis[i], canvas.transform, false).GetComponent<PlayerUI>();
 					newAd.CharacterClassData = characters[playerClasses[i]];
 					newAd.InputData = playerInputs[i];
 					if(playerInputs[i].AButton != "Submit") {
@@ -87,6 +97,8 @@ public class GameManager : MonoBehaviour {
 					newUI.SetToPlayer();
 				}
 			}
+			SetCameraPos();
+
 			time += Time.deltaTime;
 			minutes = Mathf.FloorToInt(time / 60);
 			seconds = Mathf.FloorToInt(time - minutes * 60);
@@ -95,7 +107,6 @@ public class GameManager : MonoBehaviour {
 				clock = Instantiate(clockUI, canvas.transform, false).GetComponent<Text>();
 			}
 			clock.text = timeString;
-			//if ((time >= spawnTime) && spawnEnemies) { SpawnEnemy(); }
 			if ((time >= spawnTime) && (currentWave >= waves.Length)) {
 				Debug.Log("Spawning Enemy");
 				SpawnEnemy();
@@ -131,6 +142,18 @@ public class GameManager : MonoBehaviour {
 				newUI.KillText.text = "Kills: " + playerKills[adventurers.IndexOf(adventurer)];
 			}
 			ResetVariables();
+		}
+	}
+
+	private void SetCameraPos() {
+		Vector3 cameraPos = Vector3.zero;
+		foreach(GameObject adventurer in adventurers) {
+			Vector3 adPos = new Vector3(cameraTransform.x + adventurer.transform.position.x, cameraTransform.y, cameraTransform.z + adventurer.transform.position.z);
+			cameraPos += adPos;
+		}
+		cameraPos /= adventurers.Count;
+		if (cameraPos != Vector3.zero && cameraPos.y > 1) {
+			Camera.main.transform.position = cameraPos;
 		}
 	}
 
@@ -184,8 +207,7 @@ public class GameManager : MonoBehaviour {
 		}
 
 	}
-	*/
-	/*
+
 	void SpawnEnemy() {
 		float enemySwitch = Random.Range(0, 2);
 		Debug.Log("Enemy Switch: " + enemySwitch);

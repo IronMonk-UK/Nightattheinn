@@ -469,22 +469,20 @@ public class Adventurer : MonoBehaviour {
 		right = Vector3.Normalize(right);
 	}
 
-	private void Move() {
-		Vector3 moveForward;
-		if (joyStick) {
-			JoystickRotation();
-			moveForward = forward * moveSpeed * Time.deltaTime * -Input.GetAxis(inputData.LeftVertical);
-		} else {
-			KeyboardRotation();
-			moveForward = forward * moveSpeed * Time.deltaTime * Input.GetAxis(inputData.LeftVertical);
-		}
+	private void Move() {	
+		Vector3 screenPos = Camera.main.WorldToViewportPoint(gameObject.transform.position);
+		if(screenPos.x <= 0.05 || screenPos.x >= 0.95) { Debug.Log("X too far"); }
+		if(screenPos.y <= 0.05 || screenPos.y >= 0.95) { Debug.Log("Y too far"); }
+		screenPos.x = Mathf.Clamp(screenPos.x, 0.05f, 0.95f);
+		screenPos.y = Mathf.Clamp(screenPos.y, 0.05f, 0.95f);
+		transform.position = Camera.main.ViewportToWorldPoint(screenPos);
+
+		if (joyStick) { JoystickRotation(); } else { KeyboardRotation(); }
 
 		Vector3 moveRight = right * moveSpeed * Time.deltaTime * Input.GetAxis(inputData.LeftHorizontal);
-		//Vector3 moveForward = forward * moveSpeed * Time.deltaTime * Input.GetAxis(inputData.LeftVertical);
-		Vector3 cameraPos = new Vector3(cameraTransform.x + transform.position.x, cameraTransform.y, cameraTransform.z + transform.position.z);
+		Vector3 moveForward = forward * moveSpeed * Time.deltaTime * Input.GetAxis(inputData.LeftVertical);
 		transform.position += moveRight;
 		transform.position += moveForward;
-		Camera.main.transform.position = cameraPos;
 	}
 
 	private void JoystickRotation() {
@@ -500,23 +498,6 @@ public class Adventurer : MonoBehaviour {
 		float angle = AngleBetweenTwoPoints(posOnScreen, mouseOnScreen);
 		transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
 	}
-
-	/*
-	 * DO NOT TOUCH - THIS IS YOUR WORKING MOVEMENT/ROTATION SCRIPT - DO NOT FUCKING BREAK THIS YOU FUCKNUGGET
-	private void Move() {
-		Vector2 posOnScreen = Camera.main.WorldToViewportPoint(transform.position);
-		Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
-		float angle = AngleBetweenTwoPoints(posOnScreen, mouseOnScreen);
-		transform.rotation = Quaternion.Euler(new Vector3(0, -angle, 0));
-		
-		Vector3 moveRight = right * moveSpeed * Time.deltaTime * Input.GetAxis("Horizontal");
-		Vector3 moveForward = forward * moveSpeed * Time.deltaTime * Input.GetAxis("Vertical");
-		Vector3 cameraPos = new Vector3(cameraTransform.x + transform.position.x, cameraTransform.y, cameraTransform.z + transform.position.z);
-		transform.position += moveRight;
-		transform.position += moveForward;
-		Camera.main.transform.position = cameraPos;
-	}
-	*/
 
 	private float AngleBetweenTwoPoints(Vector3 a, Vector3 b) {
 		return Mathf.Atan2(a.y - b.y, a.x - b.x) * Mathf.Rad2Deg;

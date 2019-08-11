@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   adventurers: []
   playerClasses: 
+  playerInputs: []
   playerKills: 
   adventurerSpawns:
   - {x: 5, y: 0, z: 5}
@@ -65,12 +66,17 @@ MonoBehaviour:
   maxSpawnTime: 6
   currentWave: 0
   waveProgress: 0
+  cameraTransSet: 0
+  cameraTransform: {x: 0, y: 0, z: 0}
   timeString: 
   adventurer: {fileID: 756533685032950921, guid: 23a1ba58b88941a48927d802d7916b0b,
     type: 3}
   enemy: {fileID: 1751320589176948, guid: 14a50a8b77a80e84a8f09ec306091571, type: 3}
-  playerUI: {fileID: 7651415929436698026, guid: 377d07d787697dc4f81209a43fd92729,
-    type: 3}
+  playerUis:
+  - {fileID: 7651415929436698026, guid: 50891822ea8d6784987e0933fc7afa88, type: 3}
+  - {fileID: 7651415929436698026, guid: d0b383819961a5a44bdf3e1dab80a7ea, type: 3}
+  - {fileID: 7651415929436698026, guid: ab50a93a03c73e2488e2dddf5cd605a1, type: 3}
+  - {fileID: 7651415929436698026, guid: 2293b88345d56704780db9151af07dbf, type: 3}
   gameOverUI: {fileID: 8703760292878234705, guid: 3c235bad9426edc4182b0d746667d98e,
     type: 3}
   clockUI: {fileID: 2464170480188026872, guid: 8311df31477ec0047bdb41745aa2436f, type: 3}
