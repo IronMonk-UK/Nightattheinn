@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class PlayerPanel : MonoBehaviour
@@ -42,46 +43,27 @@ public class PlayerPanel : MonoBehaviour
     {
 		if (startText.enabled) {
 			SetInput();
-			/*if (((Input.GetKeyDown(KeyCode.Space) && !menuScript.KeyboardTaken) || Input.GetKeyDown("joystick button 0")) && !activePlayer) {
-				activePlayer = true;
-				GameManager.instance.PlayerCount++;
-				playerID = GameManager.instance.PlayerCount;
-				startText.enabled = false;
-				classSelectPanel.SetActive(true);
-				menuScript.Players.Add(this);
-
-				if (Input.GetKeyDown(KeyCode.Space)) {
-					keyboard = true;
-					input = menuScript.Keyboard;
-				}
-				if (Input.GetKeyDown("joystick button 0")) {
-					controller = true;
-					for(int i = 0; i < 3; i++) {
-						if(Input.GetButtonDown("Joy" + i + "_Submit")) {
-							Debug.Log("Joystick " + i + " detected");
-							controllerID = i;
-							input = menuScript.Joysticks[i];
-							menuScript.JoysticksTaken[i] = true;
-						}
-					}
-				}
-			}*/
 		}
 		if (classSelectPanel.activeInHierarchy == true) {
-			if (!currentClass) {
-				classIndex = 0;
-				ChangeClass();
-				nextClass.onClick = new Button.ButtonClickedEvent();
-				nextClass.onClick.AddListener(NextClass);
-				prevClass.onClick = new Button.ButtonClickedEvent();
-				prevClass.onClick.AddListener(PreviousClass);
-				selectClass.onClick = new Button.ButtonClickedEvent();
-				selectClass.onClick.AddListener(SetReady);
-			} else if (currentClass) {
-				currentClass.transform.Rotate(new Vector3(0, rotateSpeed * Time.deltaTime, 0));
-			}
+			ClassSelectPanel();
 		}
-    }
+	}
+
+	private void ClassSelectPanel() {
+		if (!currentClass) {
+			classIndex = 0;
+			EventSystem.current.SetSelectedGameObject(selectClass.gameObject);
+			ChangeClass();
+			nextClass.onClick = new Button.ButtonClickedEvent();
+			nextClass.onClick.AddListener(NextClass);
+			prevClass.onClick = new Button.ButtonClickedEvent();
+			prevClass.onClick.AddListener(PreviousClass);
+			selectClass.onClick = new Button.ButtonClickedEvent();
+			selectClass.onClick.AddListener(SetReady);
+		} else if (currentClass) {
+			currentClass.transform.Rotate(new Vector3(0, rotateSpeed * Time.deltaTime, 0));
+		}
+	}
 
 	private void SetInput() {		
 		if (((Input.GetKeyDown(KeyCode.Space) && !menuScript.KeyboardTaken) || Input.GetKeyDown("joystick button 0")) && !activePlayer) {
