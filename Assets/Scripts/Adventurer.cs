@@ -456,8 +456,8 @@ public class Adventurer : MonoBehaviour {
 		if(animTrigger != "") anim.ResetTrigger(animTrigger);
 	}
 	private void adventurerDowned() {
-		//downed = true;
-		GameManager.instance.GameOver();
+		downed = true;
+		//GameManager.instance.GameOver();
 	}
 
 	private void SetMovementVectors() {

@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour {
 	[Header("UI")]
 	//[SerializeField] GameObject playerUI;
 	[SerializeField] GameObject[] playerUis;
-	[SerializeField] GameObject gameOverUI;
+	[SerializeField] GameObject[] gameOverUis;
 	[SerializeField] GameObject clockUI;
 	[SerializeField] Text clock = null;
 	[SerializeField] Canvas canvas;
@@ -50,6 +50,19 @@ public class GameManager : MonoBehaviour {
 	[Header("Debug Tools")]
 	[SerializeField] bool spawnEnemies;
 	[SerializeField] bool freezeEnemies;
+
+	private bool allAdventurersDown() {
+		if(adventurers.Count == 0) { return false; }
+		foreach(GameObject adventurer in adventurers) {
+			Debug.Log("Checking " + adventurer.GetComponent<Adventurer>().PlayerNumber);
+			if (!adventurer.GetComponent<Adventurer>().Downed) {
+				Debug.Log("Returning false");
+				return false;
+			}
+		}
+		Debug.Log("Returning true");
+		return true;
+	}
 
 	public static GameManager instance;
 	float spawnTime;
@@ -111,7 +124,8 @@ public class GameManager : MonoBehaviour {
 				Debug.Log("Spawning Enemy");
 				SpawnEnemy();
 			}
-			else if (currentWave < waves.Length) { Debug.Log("You are winrar!"); }
+			else if (currentWave < waves.Length) { GameOver(); }
+			if (allAdventurersDown()) { GameOver(); }
 			/*
 			if (Input.GetKeyDown(KeyCode.Z)) {
 				SpawnZombie();
@@ -135,11 +149,19 @@ public class GameManager : MonoBehaviour {
 				quitBtn = GameObject.FindGameObjectWithTag("QuitBtn").GetComponent<Button>();
 				quitBtn.onClick.AddListener(MenuOptions.menuOptions.QuitGame);
 			}
+			/*
 			foreach (GameObject adventurer in adventurers) {
 				GameOver newUI = Instantiate(gameOverUI, canvas.transform, false).GetComponent<GameOver>();
 				newUI.PlayerText.text = "Player " + (adventurers.IndexOf(adventurer) + 1);
 				newUI.TimeText.text = "Time: " + timeString;
 				newUI.KillText.text = "Kills: " + playerKills[adventurers.IndexOf(adventurer)];
+			}
+			*/
+			for(int i = 0; i < adventurers.Count; i++) {
+				GameOver newUI = Instantiate(gameOverUis[i], canvas.transform, false).GetComponent<GameOver>();
+				newUI.PlayerText.text = "Player " + (i + 1);
+				newUI.TimeText.text = "Time: " + timeString;
+				newUI.KillText.text = "Kills: " + playerKills[i];
 			}
 			ResetVariables();
 		}

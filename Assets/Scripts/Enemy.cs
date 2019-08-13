@@ -202,7 +202,7 @@ public class Enemy : MonoBehaviour {
 				Vector3 spawnPoint = transform.position + (transform.forward);
 				Bullet bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.Euler(0, transform.eulerAngles.y, 0)).GetComponent<Bullet>();
 				bullet.Actor = gameObject;
-				//bullet.Damage = damage;
+				bullet.Damage = damage;
 				bullet.Thrust = thrust;
 			} else {
 				Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
@@ -216,7 +216,7 @@ public class Enemy : MonoBehaviour {
 					if (c == target.GetComponent<Collider>()) {
 						if (dot >= Mathf.Cos((attackRadius / 2) * Mathf.Deg2Rad)) {
 							Adventurer adventurer = c.gameObject.GetComponent<Adventurer>();
-							//adventurer.TakeDamage(damage);
+							adventurer.TakeDamage(damage);
 						} else {
 						}
 					}
@@ -225,8 +225,8 @@ public class Enemy : MonoBehaviour {
 			onCooldown = true;
 			nextAttackTime = GameManager.instance._Time + cooldown;
 			if (skirmisher) {
-				//skirmishing = true;
-				//skirmishPosition = new Vector3(Random.Range(-skirmishDistance, skirmishDistance) + transform.position.x, 0, Random.Range(-skirmishDistance, skirmishDistance) + transform.position.z);
+				skirmishing = true;
+				skirmishPosition = new Vector3(Random.Range(-skirmishDistance, skirmishDistance) + transform.position.x, 0, Random.Range(-skirmishDistance, skirmishDistance) + transform.position.z);
 				GetSkirmishPosition();
 			}
 		}

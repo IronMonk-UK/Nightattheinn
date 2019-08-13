@@ -77,15 +77,16 @@ MonoBehaviour:
   - {fileID: 7651415929436698026, guid: d0b383819961a5a44bdf3e1dab80a7ea, type: 3}
   - {fileID: 7651415929436698026, guid: ab50a93a03c73e2488e2dddf5cd605a1, type: 3}
   - {fileID: 7651415929436698026, guid: 2293b88345d56704780db9151af07dbf, type: 3}
-  gameOverUI: {fileID: 8703760292878234705, guid: 3c235bad9426edc4182b0d746667d98e,
-    type: 3}
+  gameOverUis:
+  - {fileID: 8703760292878234705, guid: 3c235bad9426edc4182b0d746667d98e, type: 3}
+  - {fileID: 6544652156978885635, guid: 00a8bfe8aef5807489588567cf3b435c, type: 3}
   clockUI: {fileID: 2464170480188026872, guid: 8311df31477ec0047bdb41745aa2436f, type: 3}
   clock: {fileID: 0}
   canvas: {fileID: 0}
   restartBtn: {fileID: 0}
   mainMenuBtn: {fileID: 0}
   quitBtn: {fileID: 0}
-  spawnEnemies: 0
+  spawnEnemies: 1
   freezeEnemies: 0
 --- !u!114 &1591992511
 MonoBehaviour:
