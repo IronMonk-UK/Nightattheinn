@@ -52,7 +52,7 @@ public class PlayerPanel : MonoBehaviour
 	private void ClassSelectPanel() {
 		if (!currentClass) {
 			classIndex = 0;
-			EventSystem.current.SetSelectedGameObject(selectClass.gameObject);
+			//EventSystem.current.SetSelectedGameObject(selectClass.gameObject);
 			ChangeClass();
 			nextClass.onClick = new Button.ButtonClickedEvent();
 			nextClass.onClick.AddListener(NextClass);

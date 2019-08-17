@@ -24,6 +24,7 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] int manaRegen;
 	[SerializeField] int manaDelay;
 	[SerializeField] int killCount;
+	[SerializeField] int flashTime;
 
 	[Header("Primary Skill")]
 	[SerializeField] int primaryDamage;
@@ -66,6 +67,7 @@ public class Adventurer : MonoBehaviour {
 	[Header("Adventurer Model")]
 	[SerializeField] GameObject modelHolder;
 	[SerializeField] GameObject model;
+	[SerializeField] Material modelMaterial;
 
 	[Header("Particle System")]
 	[SerializeField] GameObject particleParent;
@@ -241,6 +243,8 @@ public class Adventurer : MonoBehaviour {
 
 	public void TakeDamage(int dam) {
 		currentHealth -= dam;
+		modelMaterial.color = Color.red;
+		Invoke("ResetMaterial", flashTime);
 		if(currentHealth <= 0) {
 			adventurerDowned();
 		}
@@ -308,6 +312,7 @@ public class Adventurer : MonoBehaviour {
 		model = Instantiate(characterClassData.Model, transform.position, modelHolder.transform.rotation);
 		model.transform.parent = modelHolder.transform;
 		model.transform.localPosition = new Vector3(0, 0, 0);
+		modelMaterial = model.GetComponentInChildren<MeshRenderer>().material;
 	}
 
 	public void SetUI() {
@@ -455,6 +460,11 @@ public class Adventurer : MonoBehaviour {
 		}		
 		if(animTrigger != "") anim.ResetTrigger(animTrigger);
 	}
+
+	private void ResetMaterial() {
+		modelMaterial.color = Color.white;
+	}
+
 	private void adventurerDowned() {
 		downed = true;
 		//GameManager.instance.GameOver();

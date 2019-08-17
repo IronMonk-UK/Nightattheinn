@@ -66,11 +66,6 @@ public class MainMenu : MonoBehaviour {
 			foreach(PlayerPanel player in players) {
 				ChooseClass(player.ClassIndex, player._Input);
 			}
-			foreach(GameObject panel in playerPanels) {
-				panel.GetComponent<PlayerPanel>().Ready = false;
-				Debug.Log("Panel Ready?: " + panel.GetComponent<PlayerPanel>().Ready);
-				panel.GetComponent<PlayerPanel>().Keyboard = false;
-			}
 			MenuOptions.menuOptions.LoadGame();
 		}
 	}
