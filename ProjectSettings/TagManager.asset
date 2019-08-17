@@ -16,6 +16,7 @@ TagManager:
   - MainMenuBtn
   - QuitBtn
   - EnemyProjectile
+  - Obstacle
   layers:
   - Default
   - TransparentFX

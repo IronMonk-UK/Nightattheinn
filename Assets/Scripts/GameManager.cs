@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] List<int> playerClasses;
 	[SerializeField] List<InputData> playerInputs;
 	[SerializeField] List<int> playerKills;
+	[SerializeField] List<GameObject> activeEnemies;
 	[SerializeField] Vector3[] adventurerSpawns;
 	[SerializeField] SkillData[] primarySkills;
 	//0 - Fighter | 1 - Mage | 2 - Ranger
@@ -70,6 +71,7 @@ public class GameManager : MonoBehaviour {
 	public List<GameObject> Adventurers { get { return adventurers; } set { adventurers = value; } }
 	public List<int> PlayerClasses { get { return playerClasses; } set { playerClasses = value; } }
 	public List<InputData> PlayerInputs { get { return playerInputs; } set { playerInputs = value; } }
+	public List<GameObject> ActiveEnemies { get { return activeEnemies; } set { activeEnemies = value; } }
 	public float _Time { get { return time; } set { time = value; } }
 	public SkillData[] PrimarySkills { get { return primarySkills; } }
 	public ClassData[] Characters { get { return characters; } }
@@ -98,7 +100,6 @@ public class GameManager : MonoBehaviour {
 				for(int i = 0; i < playerCount; i++) {
 					Debug.Log("Player Classes Count" + playerClasses.Count);
 					Adventurer newAd = Instantiate(adventurer, adventurerSpawns[i], Quaternion.identity).GetComponent<Adventurer>();
-					//PlayerUI newUI = Instantiate(playerUI, canvas.transform, false).GetComponent<PlayerUI>();
 					PlayerUI newUI = Instantiate(playerUis[i], canvas.transform, false).GetComponent<PlayerUI>();
 					newAd.CharacterClassData = characters[playerClasses[i]];
 					newAd.InputData = playerInputs[i];
@@ -120,11 +121,13 @@ public class GameManager : MonoBehaviour {
 				clock = Instantiate(clockUI, canvas.transform, false).GetComponent<Text>();
 			}
 			clock.text = timeString;
-			if ((time >= spawnTime) && (currentWave >= waves.Length)) {
-				Debug.Log("Spawning Enemy");
+			if ((time >= spawnTime || activeEnemies.Count == 0) && currentWave <= waves.Length) {
+				Debug.Log("Current Wave: " + currentWave + " Wave total: " + waves.Length);
 				SpawnEnemy();
 			}
-			else if (currentWave < waves.Length) { GameOver(); }
+			else if (currentWave > waves.Length) {
+				GameOver();
+			}
 			if (allAdventurersDown()) { GameOver(); }
 			/*
 			if (Input.GetKeyDown(KeyCode.Z)) {
@@ -201,18 +204,18 @@ public class GameManager : MonoBehaviour {
 				GameObject spawnLocation = waves[currentWave - 1].SpawnOrder[waveProgress];
 				Enemy enemyClass = Instantiate(enemy, spawnLocation.transform.position, Quaternion.identity).GetComponent<Enemy>();
 				enemyClass._EnemyData = currentEnemy;
+				activeEnemies.Add(enemyClass.gameObject);
 				if (freezeEnemies) {
 					enemyClass.FollowAdventurers = false;
 				}
 				spawnTime = time + Random.Range(minSpawnTime, maxSpawnTime);
 				waveProgress++;
 				Debug.Log("Wave Progress: " + waveProgress + " Wave Length: " + waves[currentWave - 1].EnemyOrder.Length);
-				if (waveProgress >= waves[currentWave - 1].EnemyOrder.Length) {
-					currentWave++;
-					Debug.Log("Current Wave: " + currentWave);
-				}
 			} else {
 				Debug.Log("Wave Finished Spawning");
+			}
+			if (waveProgress >= waves[currentWave - 1].EnemyOrder.Length && activeEnemies.Count == 0) {
+				currentWave++;
 			}
 		}
 	}

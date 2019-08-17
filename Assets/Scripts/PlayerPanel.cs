@@ -29,8 +29,8 @@ public class PlayerPanel : MonoBehaviour
 	[SerializeField] int rotateSpeed;
 	[SerializeField] InputData input;
 
-	public bool Ready { get { return ready; } }
-	public bool Keyboard { get { return keyboard; } }
+	public bool Ready { get { return ready; } set { ready = value; } }
+	public bool Keyboard { get { return keyboard; } set { keyboard = value; } }
 	public int ClassIndex { get { return classIndex; } }
 	public InputData _Input { get { return input; } }
     // Start is called before the first frame update

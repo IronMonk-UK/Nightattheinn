@@ -11,6 +11,7 @@ public class Bullet : MonoBehaviour {
 	bool enemy;
 
 	[SerializeField] float thrust;
+	[SerializeField] int outOfBoundsDistance;
 	float time;
 
 	int damage;
@@ -95,7 +96,7 @@ public class Bullet : MonoBehaviour {
 	void Update() {
 		time += Time.deltaTime;
 		if (!stop) {
-			transform.Translate(forward * (Time.deltaTime * thrust), Space.World);
+			transform.Translate(new Vector3(forward.x, 0, forward.z) * (Time.deltaTime * thrust), Space.World);
 		}
 		if (aoeTriggered) {
 			if (aoeScale && aoePrefab.transform.localScale.x <= (aoePrefabScale.x * 4)) {
@@ -109,6 +110,7 @@ public class Bullet : MonoBehaviour {
 			}
 			if (time > aoeStartTime + aoeTime) { Destroy(gameObject); }
 		}
+		CheckOutOfBounds();
 	}
 
 	private void OnTriggerEnter(Collider col) {
@@ -132,12 +134,18 @@ public class Bullet : MonoBehaviour {
 					triggered = true;
 				}
 			}
-			if(col.gameObject.tag == "Wall") {
+			if(col.gameObject.tag == "Wall" || col.gameObject.tag == "Obstacle") {
 			Debug.Log("A bullet has hit a wall");
 				DeleteBullet();
 				TriggerEffects(col);
 				triggered = true;
 			}
+		}
+	}
+
+	private void CheckOutOfBounds() {
+		if (transform.position.x >= outOfBoundsDistance || transform.position.x <= -outOfBoundsDistance || transform.position.z >= outOfBoundsDistance || transform.position.z <= -outOfBoundsDistance) {
+			Destroy(gameObject);
 		}
 	}
 

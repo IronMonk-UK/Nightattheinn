@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour {
 	[SerializeField] GameObject bulletPrefab;
 	[SerializeField] float thrust;
 	[SerializeField] bool skirmisher;
-	bool skirmishing;
+	[SerializeField] bool skirmishing;
 
 	[SerializeField] bool followAdventurers = true;
 	[SerializeField] GameObject target;
@@ -280,6 +280,7 @@ public class Enemy : MonoBehaviour {
 
 	//Simple function for now, designed as such for potential modular coding later
 	private void EnemyDead() {
+		GameManager.instance.ActiveEnemies.Remove(gameObject);
 		Destroy(gameObject);
 	}
 

@@ -27,6 +27,7 @@ public class MainMenu : MonoBehaviour {
 		foreach(PlayerPanel player in players) {
 			if (!player.Ready) { return false; }
 		}
+		Debug.Log("All players ready");
 		return true;
 	}
 
@@ -40,9 +41,15 @@ public class MainMenu : MonoBehaviour {
 
 	public bool KeyboardTaken { get { return keyboardTaken(); } }
 
+	private void Awake() {
+
+	}
+
 	private void Start() {
 		classPanel.SetActive(false);
-		foreach(GameObject panel in playerPanels) { panel.SetActive(false); }
+		foreach(GameObject panel in playerPanels) {
+			panel.SetActive(false);
+		}
 		openPanels = 0;
 		innSign.SetActive(true);
 		SetStartButton();
@@ -58,6 +65,11 @@ public class MainMenu : MonoBehaviour {
 		if (allPlayersReady()) {
 			foreach(PlayerPanel player in players) {
 				ChooseClass(player.ClassIndex, player._Input);
+			}
+			foreach(GameObject panel in playerPanels) {
+				panel.GetComponent<PlayerPanel>().Ready = false;
+				Debug.Log("Panel Ready?: " + panel.GetComponent<PlayerPanel>().Ready);
+				panel.GetComponent<PlayerPanel>().Keyboard = false;
 			}
 			MenuOptions.menuOptions.LoadGame();
 		}

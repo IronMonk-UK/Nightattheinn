@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actor: {fileID: 0}
   thrust: 0
+  outOfBoundsDistance: 50
   bulletPrefab: {fileID: 719439280724960000}
 --- !u!54 &7727535928633971655
 Rigidbody:
@@ -86,6 +87,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7749905024745021309}
     m_Modifications:
+    - target: {fileID: -927199367670048503, guid: e6469605ce3adaf41b2ce467bfef4452,
+        type: 3}
+      propertyPath: m_Name
+      value: arrow_green
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: e6469605ce3adaf41b2ce467bfef4452,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -140,11 +146,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: e6469605ce3adaf41b2ce467bfef4452,
-        type: 3}
-      propertyPath: m_Name
-      value: arrow_green
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6469605ce3adaf41b2ce467bfef4452, type: 3}

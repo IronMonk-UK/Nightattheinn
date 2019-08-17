@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actor: {fileID: 0}
   thrust: 0
+  outOfBoundsDistance: 50
   bulletPrefab: {fileID: 2862292918237395724}
 --- !u!54 &4598445309345447610
 Rigidbody:
