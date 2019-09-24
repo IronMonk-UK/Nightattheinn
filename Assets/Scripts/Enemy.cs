@@ -97,7 +97,7 @@ public class Enemy : MonoBehaviour {
 		attackDistance = attackRange;
 		originalMaterial = enemyData._Material;
 
-		if(model != null) {
+		if (model != null) {
 			Destroy(model);
 		}
 		int i = Random.Range(0, enemyData.Models.Length);
@@ -121,13 +121,13 @@ public class Enemy : MonoBehaviour {
 		float step = speed * Time.deltaTime;
 		if (skirmishing) {
 			Skirmish(step);
-		}else if (followAdventurers && !knocked) {
+		} else if (followAdventurers && !knocked) {
 			Follow(step);
 		}
-		if(GameManager.instance._Time >= nextAttackTime) {
+		if (GameManager.instance._Time >= nextAttackTime) {
 			onCooldown = false;
 		}
-		if(audioPlayTime <= GameManager.instance._Time && !audioSource.isPlaying) {
+		if (audioPlayTime <= GameManager.instance._Time && !audioSource.isPlaying) {
 			PlayAudio(audioClips[2]);
 			audioPlayTime = GameManager.instance._Time + Random.Range(5, 20);
 		}
@@ -137,7 +137,7 @@ public class Enemy : MonoBehaviour {
 	private void FixedUpdate() { }
 
 	private void CheckForStatuses() {
-		if(knocked) {
+		if (knocked) {
 			followAdventurers = false;
 			transform.Translate(knockback * (Time.deltaTime * kbForce), Space.World);
 			knockedTime += Time.deltaTime;
@@ -147,11 +147,11 @@ public class Enemy : MonoBehaviour {
 				knockedTime = 0;
 			}
 		}
-		if(stunned) {
+		if (stunned) {
 			followAdventurers = false;
 			navMeshAgent.SetDestination(transform.position);
 			stunnedTime += Time.deltaTime;
-			if(stunnedTime >= stunTime) {
+			if (stunnedTime >= stunTime) {
 				stunned = false;
 				followAdventurers = true;
 				stunnedTime = 0;
@@ -159,7 +159,7 @@ public class Enemy : MonoBehaviour {
 		}
 		if (slowed) {
 			slowedTime += Time.deltaTime;
-			if(slowedTime >= slowTime) {
+			if (slowedTime >= slowTime) {
 				slowed = false;
 				speed += slowForce;
 				slowedTime = 0;
@@ -177,11 +177,13 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void PlayAudio(AudioClip clip) {
-		if(currentClip != clip) {
+		if (currentClip != clip) {
 			currentClip = clip;
 			audioSource.PlayOneShot(currentClip);
 		} else {
-			if (!audioSource.isPlaying) { audioSource.PlayOneShot(currentClip); }
+			if (!audioSource.isPlaying) {
+				audioSource.PlayOneShot(currentClip);
+			}
 		}
 	}
 
@@ -271,7 +273,7 @@ public class Enemy : MonoBehaviour {
 		PlayAudio(audioClips[2]);
 		modelMaterial.color = Color.red;
 		Invoke("ResetMaterial", flashTime);
-		if(currentHealth <= 0) {
+		if (currentHealth <= 0) {
 			adventurer.GetComponent<Adventurer>().KillCount++;
 			Debug.Log("Adventurer Kills: " + adventurer.GetComponent<Adventurer>().KillCount);
 			EnemyDead();
@@ -297,7 +299,7 @@ public class Enemy : MonoBehaviour {
 			if (!a.GetComponent<Adventurer>().Downed) { 
 				Vector3 directionToTarget = a.transform.position - currentPos;
 				float dSqrToTarget = directionToTarget.sqrMagnitude;
-				if(dSqrToTarget < closestDistanceSqr) {
+				if (dSqrToTarget < closestDistanceSqr) {
 					closestDistanceSqr = dSqrToTarget;
 					bestTarget = a.transform;
 				}

@@ -106,14 +106,14 @@ public class PlayerPanel : MonoBehaviour
 		nameText.text = currentName;
 		currentClass.transform.rotation = Quaternion.Euler(0, startRotation, 0);
 		foreach(GameObject model in adventurerModels) {
-			if(model != currentClass && model.activeInHierarchy) {
+			if (model != currentClass && model.activeInHierarchy) {
 				model.SetActive(false);
 			}
 		}
 	}
 
 	private void NextClass() {
-		if(classIndex < adventurerModels.Length - 1) {
+		if (classIndex < adventurerModels.Length - 1) {
 			classIndex++;
 			ChangeClass();
 		} else {
@@ -123,7 +123,7 @@ public class PlayerPanel : MonoBehaviour
 	}
 
 	private void PreviousClass() {
-		if(classIndex == 0) {
+		if (classIndex == 0) {
 			classIndex = adventurerModels.Length - 1;
 			ChangeClass();
 		} else {

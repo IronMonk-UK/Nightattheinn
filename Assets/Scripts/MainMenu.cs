@@ -21,28 +21,31 @@ public class MainMenu : MonoBehaviour {
 	public InputData Keyboard { get { return keyboard; } }
 	public InputData[] Joysticks { get { return joysticks; } }
 	public bool[] JoysticksTaken { get { return joysticksTaken; } set { JoysticksTaken = value; } }
+	public bool KeyboardTaken { get { return keyboardTaken(); } }
 
 	private bool allPlayersReady() {
-		if(GameManager.instance.PlayerCount == 0) { return false; }
+		if (GameManager.instance.PlayerCount == 0) {
+			return false;
+		}
 		foreach(PlayerPanel player in players) {
-			if (!player.Ready) { return false; }
+			if (!player.Ready) {
+				return false;
+			}
 		}
 		Debug.Log("All players ready");
 		return true;
 	}
 
 	private bool keyboardTaken() {
-		if(GameManager.instance.PlayerCount == 0) { return false; }
+		if (GameManager.instance.PlayerCount == 0) {
+			return false;
+		}
 		foreach(PlayerPanel player in players) {
-			if (!player.Keyboard) { return false; }
+			if (!player.Keyboard) {
+				return false;
+			}
 		}
 		return true;
-	}
-
-	public bool KeyboardTaken { get { return keyboardTaken(); } }
-
-	private void Awake() {
-
 	}
 
 	private void Start() {
@@ -57,7 +60,7 @@ public class MainMenu : MonoBehaviour {
 
 	public void Update() {		
 		if (classPanel.activeInHierarchy) {
-			if(openPanels <= GameManager.instance.PlayerCount && openPanels < 2) {
+			if (openPanels <= GameManager.instance.PlayerCount && openPanels < 2) {
 				OpenPlayerPanel(openPanels);
 			}
 		}

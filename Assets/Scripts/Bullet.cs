@@ -82,14 +82,20 @@ public class Bullet : MonoBehaviour {
 		forward = gameObject.transform.position - actor.transform.position;
 		if (actor.tag == "Adventurer") {
 			adventurer = true;
-		}else if(actor.tag == "Enemy") {
+		} else if (actor.tag == "Enemy") {
 			enemy = true;
 		}
 		if (aoe) {
 			aoePrefabScale = new Vector3(aoeRadius, aoeRadius, aoeRadius);
-			if (slow) {	aoeTime = slowTime;	}
-			else if (stun) { aoeTime = stunTime; }
-			else { aoeTime = 1; }
+			if (slow) {
+				aoeTime = slowTime;
+			}
+			else if (stun) {
+				aoeTime = stunTime;
+			}
+			else {
+				aoeTime = 1;
+			}
 		}
 	}
 
@@ -108,36 +114,38 @@ public class Bullet : MonoBehaviour {
 				Debug.Log("Rotating AoE Object!");
 				aoePrefab.transform.Rotate(0, 0.5f, 0);
 			}
-			if (time > aoeStartTime + aoeTime) { Destroy(gameObject); }
+			if (time > aoeStartTime + aoeTime) {
+				Destroy(gameObject);
+			}
 		}
 		CheckOutOfBounds();
 	}
 
 	private void OnTriggerEnter(Collider col) {
 		if (!triggered) {
-			if(adventurer) {		
-				if(col.gameObject.tag == "Enemy") {
-					if(!pierce || (pierce && pierceCount == pierceAmount)) {
+			if (adventurer) {		
+				if (col.gameObject.tag == "Enemy") {
+					if (!pierce || (pierce && pierceCount == pierceAmount)) {
 						Debug.Log("Enemy Hit");
 						DeleteBullet();
-						TriggerEffects(col);
+						TriggerAffects(col);
 						triggered = true;
-					}else if(pierce && pierceCount <= PierceAmount) {
-						TriggerEffects(col);
+					} else if (pierce && pierceCount <= PierceAmount) {
+						TriggerAffects(col);
 						pierceCount++;
 					}
 				}
-			} else if(enemy) {
-				if(col.gameObject.tag == "Adventurer") {
+			} else if (enemy) {
+				if (col.gameObject.tag == "Adventurer") {
 					DeleteBullet();
-					TriggerAdventurerEffects(col);
+					TriggerAdventurerAffects(col);
 					triggered = true;
 				}
 			}
-			if(col.gameObject.tag == "Wall" || col.gameObject.tag == "Obstacle") {
+			if (col.gameObject.tag == "Wall" || col.gameObject.tag == "Obstacle") {
 			Debug.Log("A bullet has hit a wall");
 				DeleteBullet();
-				TriggerEffects(col);
+				TriggerAffects(col);
 				triggered = true;
 			}
 		}
@@ -149,7 +157,7 @@ public class Bullet : MonoBehaviour {
 		}
 	}
 
-	private void TriggerAdventurerEffects(Collider col) {
+	private void TriggerAdventurerAffects(Collider col) {
 		Adventurer adventurer = col.gameObject.GetComponent<Adventurer>();
 		adventurer.TakeDamage(damage);
 		if (destroyed) {
@@ -157,10 +165,10 @@ public class Bullet : MonoBehaviour {
 		}
 	}
 
-	public void TriggerEffects(Collider col) {
+	public void TriggerAffects(Collider col) {
 		Enemy enemy;
 		if (aoe) {
-			Debug.Log("AoE Effect Triggered!");
+			Debug.Log("AoE Affect Triggered!");
 			aoePrefab.SetActive(true);
 			aoeStartTime = time;
 			aoeTriggered = true;
@@ -169,20 +177,38 @@ public class Bullet : MonoBehaviour {
 				if (c.gameObject.tag == "Enemy") {
 					enemy = c.gameObject.GetComponent<Enemy>();
 					enemy.TakeDamage(damage, actor);
-					if(knockback) { enemy.GetKnocked(transform.position, knockbackTime, knockbackForce); }
-					if(stun) { enemy.GetStunned(stunTime); }
+					CheckForAffects(enemy);
+					/*
+					if (knockback) {enemy.GetKnocked(transform.position, knockbackTime, knockbackForce); }
+					if (stun) { enemy.GetStunned(stunTime); }
 					if (slow) { enemy.GetSlowed(slowTime, slowForce); }
+					*/
 				}
 			}
-		} else if(col.gameObject.tag == "Enemy") {
+		} else if (col.gameObject.tag == "Enemy") {
 			enemy = col.gameObject.GetComponent<Enemy>();
 			enemy.TakeDamage(damage, actor);
-			if(knockback) { enemy.GetKnocked(transform.position, knockbackTime, knockbackForce); }
-			if(stun) { enemy.GetStunned(stunTime); }
+			CheckForAffects(enemy);
+			/*
+			if (knockback) { enemy.GetKnocked(transform.position, knockbackTime, knockbackForce); }
+			if (stun) { enemy.GetStunned(stunTime); }
 			if (slow) { enemy.GetSlowed(slowTime, slowForce); }
+			*/
 		}
 		if (destroyed && !aoe) {
 			Destroy(gameObject);
+		}
+	}
+
+	private void CheckForAffects(Enemy enemy) {
+		if (knockback) {
+			enemy.GetKnocked(transform.position, knockbackTime, knockbackForce);
+		}
+		if (stun) {
+			enemy.GetStunned(stunTime);
+		}
+		if (slow) {
+			enemy.GetSlowed(slowTime, slowForce);
 		}
 	}
 

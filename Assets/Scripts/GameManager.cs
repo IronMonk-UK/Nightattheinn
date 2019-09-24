@@ -40,7 +40,6 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] GameObject enemy;
 
 	[Header("UI")]
-	//[SerializeField] GameObject playerUI;
 	[SerializeField] GameObject[] playerUis;
 	[SerializeField] GameObject[] gameOverUis;
 	[SerializeField] GameObject clockUI;
@@ -53,7 +52,7 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] bool freezeEnemies;
 
 	private bool allAdventurersDown() {
-		if(adventurers.Count == 0) { return false; }
+		if (adventurers.Count == 0) { return false; }
 		foreach(GameObject adventurer in adventurers) {
 			Debug.Log("Checking " + adventurer.GetComponent<Adventurer>().PlayerNumber);
 			if (!adventurer.GetComponent<Adventurer>().Downed) {
@@ -79,7 +78,11 @@ public class GameManager : MonoBehaviour {
 
 	void Awake() {
 		DontDestroyOnLoad(gameObject);
-		if (instance == null) { instance = this; } else { Destroy(gameObject); }
+		if (instance == null) {
+			instance = this;
+		} else {
+			Destroy(gameObject);
+		}
 		playerCount = 0;
 		ResetVariables();
 	}
@@ -89,9 +92,11 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update() {
-		if(playerClasses.Capacity < playerCount) { playerClasses.Capacity = playerCount; }
+		if (playerClasses.Capacity < playerCount) {
+			playerClasses.Capacity = playerCount;
+		}
 		if (SceneManager.GetActiveScene().buildIndex == 1) {
-			if(!cameraTransSet) {
+			if (!cameraTransSet) {
 				cameraTransform = Camera.main.transform.position;
 				cameraTransSet = true;
 			}
@@ -103,7 +108,7 @@ public class GameManager : MonoBehaviour {
 					PlayerUI newUI = Instantiate(playerUis[i], canvas.transform, false).GetComponent<PlayerUI>();
 					newAd.CharacterClassData = characters[playerClasses[i]];
 					newAd.InputData = playerInputs[i];
-					if(playerInputs[i].AButton != "Submit") {
+					if (playerInputs[i].AButton != "Submit") {
 						newAd.Joystick = true;
 					}
 					newAd.PlayerNumber = i + 1;
@@ -128,18 +133,14 @@ public class GameManager : MonoBehaviour {
 			else if (currentWave > waves.Length) {
 				GameOver();
 			}
-			if (allAdventurersDown()) { GameOver(); }
-			/*
-			if (Input.GetKeyDown(KeyCode.Z)) {
-				SpawnZombie();
+			if (allAdventurersDown()) {
+				GameOver();
 			}
-			if (Input.GetKeyDown(KeyCode.X)) {
-				SpawnSkeleton();
-			}
-			*/
 		}
 		if (SceneManager.GetActiveScene().buildIndex == 2) {
-			if (!canvas) { canvas = Canvas.FindObjectOfType<Canvas>(); }
+			if (!canvas) {
+				canvas = Canvas.FindObjectOfType<Canvas>();
+			}
 			if (!restartBtn) {
 				restartBtn = GameObject.FindGameObjectWithTag("RestartBtn").GetComponent<Button>();
 				restartBtn.onClick.AddListener(MenuOptions.menuOptions.LoadGame);
@@ -152,14 +153,6 @@ public class GameManager : MonoBehaviour {
 				quitBtn = GameObject.FindGameObjectWithTag("QuitBtn").GetComponent<Button>();
 				quitBtn.onClick.AddListener(MenuOptions.menuOptions.QuitGame);
 			}
-			/*
-			foreach (GameObject adventurer in adventurers) {
-				GameOver newUI = Instantiate(gameOverUI, canvas.transform, false).GetComponent<GameOver>();
-				newUI.PlayerText.text = "Player " + (adventurers.IndexOf(adventurer) + 1);
-				newUI.TimeText.text = "Time: " + timeString;
-				newUI.KillText.text = "Kills: " + playerKills[adventurers.IndexOf(adventurer)];
-			}
-			*/
 			for(int i = 0; i < adventurers.Count; i++) {
 				GameOver newUI = Instantiate(gameOverUis[i], canvas.transform, false).GetComponent<GameOver>();
 				newUI.PlayerText.text = "Player " + (i + 1);
@@ -183,7 +176,9 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void GameOver() {
-		foreach (GameObject adventurer in adventurers) { playerKills.Add(adventurer.GetComponent<Adventurer>().KillCount); }
+		foreach (GameObject adventurer in adventurers) {
+			playerKills.Add(adventurer.GetComponent<Adventurer>().KillCount);
+		}
 		SceneManager.LoadScene(2);
 		canvas = null;
 	}
@@ -205,9 +200,7 @@ public class GameManager : MonoBehaviour {
 				Enemy enemyClass = Instantiate(enemy, spawnLocation.transform.position, Quaternion.identity).GetComponent<Enemy>();
 				enemyClass._EnemyData = currentEnemy;
 				activeEnemies.Add(enemyClass.gameObject);
-				if (freezeEnemies) {
-					enemyClass.FollowAdventurers = false;
-				}
+				if (freezeEnemies) { enemyClass.FollowAdventurers = false; }
 				spawnTime = time + Random.Range(minSpawnTime, maxSpawnTime);
 				waveProgress++;
 				Debug.Log("Wave Progress: " + waveProgress + " Wave Length: " + waves[currentWave - 1].EnemyOrder.Length);
@@ -219,49 +212,4 @@ public class GameManager : MonoBehaviour {
 			}
 		}
 	}
-
-	/*
-	private void SpawnEnemy() {
-		int enemyIndex = Random.Range(0, 2);
-		spawnTime = time + Random.Range(minSpawnTime, maxSpawnTime);
-		int i = Random.Range(0, enemySpawns.Length);
-		Enemy enemyClass = Instantiate(enemy, enemySpawns[i], Quaternion.identity).GetComponent<Enemy>();
-		enemyClass._EnemyData = enemies[enemyIndex];
-		if(freezeEnemies) {
-			enemyClass.FollowAdventurers = false;
-		}
-
-	}
-
-	void SpawnEnemy() {
-		float enemySwitch = Random.Range(0, 2);
-		Debug.Log("Enemy Switch: " + enemySwitch);
-		switch (enemySwitch) {
-			case 0: SpawnZombie(); break;
-			case 1: SpawnSkeleton(); break;
-			default: Debug.Log("Spawning Error!"); break;
-
-		}
-	}
-
-	void SpawnZombie() {
-		spawnTime = time + Random.Range(1, 10);
-		int i = Random.Range(0, enemySpawns.Length);
-		Enemy enemyClass = Instantiate(enemy, enemySpawns[i], Quaternion.identity).GetComponent<Enemy>();
-		enemyClass._EnemyData = enemies[0];
-		if(freezeZombies) {
-			enemyClass.FollowAdventurers = false;
-		}
-	}
-
-	void SpawnSkeleton() {
-		spawnTime = time + Random.Range(1, 10);
-		int i = Random.Range(0, enemySpawns.Length);
-		Enemy enemyClass = Instantiate(enemy, enemySpawns[i], Quaternion.identity).GetComponent<Enemy>();
-		enemyClass._EnemyData = enemies[1];
-		if(freezeZombies) {
-			enemyClass.FollowAdventurers = false;
-		}
-	}
-	*/
 }

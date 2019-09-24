@@ -14,7 +14,7 @@ public class MenuOptions : MonoBehaviour
 	public static MenuOptions menuOptions;
 
 	private void Awake() {
-		if(menuOptions == null) { menuOptions = this; } else { Destroy(this); }
+		if (menuOptions == null) { menuOptions = this; } else { Destroy(this); }
 	}
 
 	public void SetClassPaneActive() {
