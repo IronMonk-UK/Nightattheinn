@@ -22,11 +22,16 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] float time;
 	[SerializeField] float minutes;
 	[SerializeField] float seconds;
+	[SerializeField] float breakEndTime;
+	[SerializeField] float waveBreakLength;
 	[SerializeField] int playerCount;
 	[SerializeField] int minSpawnTime;
 	[SerializeField] int maxSpawnTime;
 	[SerializeField] int currentWave;
 	[SerializeField] int waveProgress;
+
+	[Header("Bools")]
+	[SerializeField] bool waveBreak;
 
 	[Header("Camera")]
 	[SerializeField] bool cameraTransSet;
@@ -126,15 +131,18 @@ public class GameManager : MonoBehaviour {
 				clock = Instantiate(clockUI, canvas.transform, false).GetComponent<Text>();
 			}
 			clock.text = timeString;
-			if ((time >= spawnTime || activeEnemies.Count == 0) && currentWave <= waves.Length) {
-				Debug.Log("Current Wave: " + currentWave + " Wave total: " + waves.Length);
-				SpawnEnemy();
-			}
-			else if (currentWave > waves.Length) {
-				GameOver();
-			}
-			if (allAdventurersDown()) {
-				GameOver();
+			if (!waveBreak) {
+				if ((time >= spawnTime || activeEnemies.Count == 0) && currentWave <= waves.Length) {
+					SpawnEnemy();
+				} else if (currentWave > waves.Length) {
+					GameOver();
+				}
+				if (allAdventurersDown()) {
+					GameOver();
+				}
+			} else if(time > breakEndTime) {
+				Debug.Log("Ending Wave Break");
+				waveBreak = false;
 			}
 		}
 		if (SceneManager.GetActiveScene().buildIndex == 2) {
@@ -193,7 +201,9 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void SpawnEnemy() {
-		if (currentWave - 1 < waves.Length && spawnEnemies) {
+		Debug.Log("Current Wave: " + currentWave + " Wave total: " + waves.Length);
+		if (currentWave - 1 <= waves.Length && spawnEnemies) {
+			Debug.Log("Wave Progress: " + waveProgress + " Wave Length: " + waves[currentWave - 1].EnemyOrder.Length);
 			if (waveProgress < waves[currentWave - 1].EnemyOrder.Length) {
 				EnemyData currentEnemy = waves[currentWave - 1].EnemyOrder[waveProgress];
 				GameObject spawnLocation = waves[currentWave - 1].SpawnOrder[waveProgress];
@@ -203,13 +213,23 @@ public class GameManager : MonoBehaviour {
 				if (freezeEnemies) { enemyClass.FollowAdventurers = false; }
 				spawnTime = time + Random.Range(minSpawnTime, maxSpawnTime);
 				waveProgress++;
-				Debug.Log("Wave Progress: " + waveProgress + " Wave Length: " + waves[currentWave - 1].EnemyOrder.Length);
 			} else {
 				Debug.Log("Wave Finished Spawning");
 			}
 			if (waveProgress >= waves[currentWave - 1].EnemyOrder.Length && activeEnemies.Count == 0) {
-				currentWave++;
+				WaveBreak();
 			}
 		}
+	}
+
+	private void WaveBreak() {
+		Debug.Log("Starting Wave Break");
+		currentWave++;
+		if (currentWave > waves.Length) {
+			GameOver();
+		}
+		breakEndTime = time + waveBreakLength;
+		waveBreak = true;
+		waveProgress = 0;
 	}
 }

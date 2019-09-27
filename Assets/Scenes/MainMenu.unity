@@ -1102,6 +1102,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8044875158605257206, guid: aa03045bc38fe4e4aa44efa7fa51d8af,
         type: 3}
+      propertyPath: waves.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8044875158605257206, guid: aa03045bc38fe4e4aa44efa7fa51d8af,
+        type: 3}
       propertyPath: waves.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: 441c2fe2445148d43b2838030b351f5e,
@@ -1110,6 +1115,17 @@ PrefabInstance:
         type: 3}
       propertyPath: freezeEnemies
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8044875158605257206, guid: aa03045bc38fe4e4aa44efa7fa51d8af,
+        type: 3}
+      propertyPath: waves.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: f2a5dc73316113d4d8e6c84fcfd28627,
+        type: 2}
+    - target: {fileID: 8044875158605257206, guid: aa03045bc38fe4e4aa44efa7fa51d8af,
+        type: 3}
+      propertyPath: waveBreakLength
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aa03045bc38fe4e4aa44efa7fa51d8af, type: 3}
