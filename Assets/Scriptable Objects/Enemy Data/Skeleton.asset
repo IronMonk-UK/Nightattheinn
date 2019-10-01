@@ -23,6 +23,7 @@ MonoBehaviour:
   cooldown: 2
   skirmisher: 1
   skirmishDistance: 3
+  goldValue: 1
   ranged: 1
   thrust: 6
   bulletPrefab: {fileID: 4569826558045817972, guid: acb33c1802d0a1446bd8764effc5224a,

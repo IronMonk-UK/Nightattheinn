@@ -25,6 +25,7 @@ public class PlayerUI : MonoBehaviour {
 	[Header("Misc")]
 	[SerializeField] Adventurer player;
 	[SerializeField] Text killCount;
+	[SerializeField] Text goldCount;
 
 	
 
@@ -43,6 +44,7 @@ public class PlayerUI : MonoBehaviour {
 	public Image Skill02Fill { get { return skill02Fill; } }
 	public Adventurer Player { get { return player; } set { player = value; } }
 	public Text KillCount { get { return killCount; } }
+	public Text GoldCount { get { return goldCount; } }
 
 
 	public void SetToPlayer() { player.UI = this; }

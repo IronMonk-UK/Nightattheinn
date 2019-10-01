@@ -48,24 +48,29 @@ MonoBehaviour:
   playerClasses: 
   playerInputs: []
   playerKills: 
+  activeEnemies: []
   adventurerSpawns:
   - {x: 5, y: 0, z: 5}
-  - {x: 5, y: 0, z: 0}
+  - {x: 0, y: 0, z: 5}
   primarySkills: []
   characters:
   - {fileID: 11400000, guid: 28ac90205e6b53f439a3300dd7824d29, type: 2}
   - {fileID: 11400000, guid: 091b543b154687c49ba3dd2331070629, type: 2}
   - {fileID: 11400000, guid: 7b911ab5265533e498810937b294f887, type: 2}
   waves:
-  - {fileID: 11400000, guid: 5d11f7218d5bbfc4e82e39714d18de65, type: 2}
+  - {fileID: 11400000, guid: 441c2fe2445148d43b2838030b351f5e, type: 2}
+  - {fileID: 11400000, guid: f2a5dc73316113d4d8e6c84fcfd28627, type: 2}
   time: 0
   minutes: 0
   seconds: 0
+  breakEndTime: 0
+  waveBreakLength: 10
   playerCount: 1
   minSpawnTime: 2
   maxSpawnTime: 6
   currentWave: 0
   waveProgress: 0
+  waveBreak: 0
   cameraTransSet: 0
   cameraTransform: {x: 0, y: 0, z: 0}
   timeString: 
@@ -87,7 +92,7 @@ MonoBehaviour:
   mainMenuBtn: {fileID: 0}
   quitBtn: {fileID: 0}
   spawnEnemies: 1
-  freezeEnemies: 0
+  freezeEnemies: 1
 --- !u!114 &1591992511
 MonoBehaviour:
   m_ObjectHideFlags: 0

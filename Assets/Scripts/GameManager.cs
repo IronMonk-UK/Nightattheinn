@@ -80,6 +80,7 @@ public class GameManager : MonoBehaviour {
 	public SkillData[] PrimarySkills { get { return primarySkills; } }
 	public ClassData[] Characters { get { return characters; } }
 	public int PlayerCount { get { return playerCount; } set { playerCount = value; } }
+	public bool WaveBreak { get { return waveBreak; } }
 
 	void Awake() {
 		DontDestroyOnLoad(gameObject);
@@ -217,12 +218,12 @@ public class GameManager : MonoBehaviour {
 				Debug.Log("Wave Finished Spawning");
 			}
 			if (waveProgress >= waves[currentWave - 1].EnemyOrder.Length && activeEnemies.Count == 0) {
-				WaveBreak();
+				StartWaveBreak();
 			}
 		}
 	}
 
-	private void WaveBreak() {
+	private void StartWaveBreak() {
 		Debug.Log("Starting Wave Break");
 		currentWave++;
 		if (currentWave > waves.Length) {

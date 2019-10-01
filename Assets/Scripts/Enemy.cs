@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour {
 	[SerializeField] float thrust;
 	[SerializeField] bool skirmisher;
 	[SerializeField] bool skirmishing;
+	[SerializeField] int goldValue;
 
 	[SerializeField] bool followAdventurers = true;
 	[SerializeField] GameObject target;
@@ -96,6 +97,7 @@ public class Enemy : MonoBehaviour {
 		attackRange = enemyData.AttackRange;
 		attackDistance = attackRange;
 		originalMaterial = enemyData._Material;
+		goldValue = enemyData.GoldValue;
 
 		if (model != null) {
 			Destroy(model);
@@ -275,7 +277,7 @@ public class Enemy : MonoBehaviour {
 		Invoke("ResetMaterial", flashTime);
 		if (currentHealth <= 0) {
 			adventurer.GetComponent<Adventurer>().KillCount++;
-			Debug.Log("Adventurer Kills: " + adventurer.GetComponent<Adventurer>().KillCount);
+			adventurer.GetComponent<Adventurer>().Gold += goldValue;
 			EnemyDead();
 		}
 	}

@@ -25,6 +25,7 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] int manaDelay;
 	[SerializeField] int killCount;
 	[SerializeField] int flashTime;
+	[SerializeField] int gold;
 
 	[Header("Primary Skill")]
 	[SerializeField] int primaryDamage;
@@ -100,6 +101,7 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] Slider sec01SkillBar;
 	[SerializeField] Image sec01SkillFill;
 	[SerializeField] Text killCountText;
+	[SerializeField] Text goldCountText;
 
 	// Keeping for further development of the hit radius
 	// Currently takes centre of GO, want to change to far edges
@@ -152,6 +154,16 @@ public class Adventurer : MonoBehaviour {
 			if (ui == value) return;
 			ui = value;
 			SetUI();
+		}
+	}
+
+	public int Gold {
+		get {
+			return gold;
+		} set {
+			if (gold == value) return;
+			gold = value;
+			goldCountText.text = "Gold: " + gold;
 		}
 	}
 
@@ -352,6 +364,9 @@ public class Adventurer : MonoBehaviour {
 
 		killCountText = ui.KillCount;
 		killCountText.text = "Kill Count: " + killCount;
+
+		goldCountText = ui.GoldCount;
+		goldCountText.text = "Gold: " + gold;
 	}
 	
 	private void Attack() {

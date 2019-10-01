@@ -63,8 +63,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Adventurer.cs" />
+    <Compile Include="Assets\Scripts\Bar.cs" />
     <Compile Include="Assets\Scripts\Bullet.cs" />
     <Compile Include="Assets\Scripts\ClassData.cs" />
+    <Compile Include="Assets\Scripts\Drink.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
     <Compile Include="Assets\Scripts\EnemyData.cs" />
     <Compile Include="Assets\Scripts\EnemyWaveData.cs" />

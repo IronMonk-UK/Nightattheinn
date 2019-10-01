@@ -14,6 +14,7 @@ public class EnemyData : ScriptableObject {
 	[SerializeField] float cooldown;
 	[SerializeField] bool skirmisher;
 	[SerializeField] int skirmishDistance;
+	[SerializeField] int goldValue;
 
 	[SerializeField] bool ranged; //True - Ranged unit | False - Melee unit
 	[SerializeField] float thrust;
@@ -39,5 +40,6 @@ public class EnemyData : ScriptableObject {
 	public float AttackRadius { get { return attackRadius; } }
 	public float AttackRange { get { return attackRange; } }
 	public AudioClip[] _AudioClips { get { return audioClips; } }
+	public int GoldValue { get { return goldValue; } }
 }
 
