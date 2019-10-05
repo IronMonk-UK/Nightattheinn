@@ -126,6 +126,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bar: {fileID: 0}
+  skill: {fileID: 0}
+  adventurerClass: 0
+  canvas: {fileID: 0}
+  panel: {fileID: 0}
 --- !u!65 &8113164718966215395
 BoxCollider:
   m_ObjectHideFlags: 0

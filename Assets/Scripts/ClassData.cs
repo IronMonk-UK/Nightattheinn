@@ -16,6 +16,7 @@ public class ClassData : ScriptableObject
 	[Header("Skills")]
 	[SerializeField] SkillData primarySkill;
 	[SerializeField] SkillData secondarySkill;
+	[SerializeField] SkillData passiveSkill;
 	[SerializeField] Adventurer.AdventurerClass adventurerClass;
 	[SerializeField] GameObject weapon;
 	[SerializeField] GameObject model;

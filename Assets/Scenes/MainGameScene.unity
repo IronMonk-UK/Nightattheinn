@@ -360,7 +360,7 @@ Canvas:
   m_GameObject: {fileID: 826413843}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 1590096547}
   m_PlaneDistance: 1
   m_PixelPerfect: 0
@@ -524,6 +524,8 @@ MonoBehaviour:
   - {fileID: 1914788922}
   drinksReady: 0
   drink: {fileID: 6626208213859022168, guid: 6f4a97460945e1f42b9a43c3b27ea932, type: 3}
+  classesSet: 0
+  potentialClasses: 
 --- !u!1001 &1084193186
 PrefabInstance:
   m_ObjectHideFlags: 0

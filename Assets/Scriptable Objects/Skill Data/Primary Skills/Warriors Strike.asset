@@ -19,7 +19,8 @@ MonoBehaviour:
   cooldown: 1
   manaCost: 0
   continuousAttack: 0
-  particleEffect: {fileID: 0}
+  skillCost: 5
+  particleAffect: {fileID: 0}
   hasAnim: 1
   animTrigger: Slash
   trail: {fileID: 210109052499139610, guid: 5bae384924a71d44881a2c83157e3f42, type: 3}

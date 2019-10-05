@@ -80,6 +80,7 @@
     <Compile Include="Assets\Scripts\PlayerPanel.cs" />
     <Compile Include="Assets\Scripts\PlayerUI.cs" />
     <Compile Include="Assets\Scripts\SkillData.cs" />
+    <Compile Include="Assets\Scripts\SkillSetData.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/calum/Documents/PROJECTS/Night at the Inn/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>

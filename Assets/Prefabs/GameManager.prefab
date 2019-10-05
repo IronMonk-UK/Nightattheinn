@@ -53,10 +53,14 @@ MonoBehaviour:
   - {x: 5, y: 0, z: 5}
   - {x: 0, y: 0, z: 5}
   primarySkills: []
-  characters:
+  classes:
   - {fileID: 11400000, guid: 28ac90205e6b53f439a3300dd7824d29, type: 2}
   - {fileID: 11400000, guid: 091b543b154687c49ba3dd2331070629, type: 2}
   - {fileID: 11400000, guid: 7b911ab5265533e498810937b294f887, type: 2}
+  classSkills:
+  - {fileID: 11400000, guid: 3f5ee655bf52d4e48bb8260c9aa242a1, type: 2}
+  - {fileID: 11400000, guid: 9c493bd4c64f0f748856adf3a04cb1e1, type: 2}
+  - {fileID: 11400000, guid: 8a824d0b3a5f0d440af0cc8793909b70, type: 2}
   waves:
   - {fileID: 11400000, guid: 441c2fe2445148d43b2838030b351f5e, type: 2}
   - {fileID: 11400000, guid: f2a5dc73316113d4d8e6c84fcfd28627, type: 2}
@@ -64,7 +68,7 @@ MonoBehaviour:
   minutes: 0
   seconds: 0
   breakEndTime: 0
-  waveBreakLength: 10
+  waveBreakLength: 60
   playerCount: 1
   minSpawnTime: 2
   maxSpawnTime: 6
@@ -91,6 +95,8 @@ MonoBehaviour:
   restartBtn: {fileID: 0}
   mainMenuBtn: {fileID: 0}
   quitBtn: {fileID: 0}
+  drinkPanel: {fileID: 4699633263965903577, guid: 5a4c25b8eaa1be042972ca82481bcba3,
+    type: 3}
   spawnEnemies: 1
   freezeEnemies: 1
 --- !u!114 &1591992511

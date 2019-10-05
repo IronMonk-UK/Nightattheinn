@@ -45,6 +45,16 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] AnimationClip sec01Anim;
 	[SerializeField] int sec01ManaCost;
 	[SerializeField] bool sec01IgnoreAudio;
+	
+	[Header("Secondary Skill 02")]
+	[SerializeField] int secondary02Damage;
+	[SerializeField] float sec02Cooldown;
+	[SerializeField] bool sec02OnCooldown;
+	[SerializeField] string sec02AnimTrigger;
+	[SerializeField] GameObject sec02Trail;
+	[SerializeField] AnimationClip sec02Anim;
+	[SerializeField] int sec02ManaCost;
+	[SerializeField] bool sec02IgnoreAudio;
 
 	[Header("Audio")]
 	[SerializeField] AudioSource audioSource;
@@ -123,7 +133,7 @@ public class Adventurer : MonoBehaviour {
 	Vector3 cameraTransform;
 	public int PlayerNumber { get { return playerNumber; } set { playerNumber = value; } }
 	public bool Downed { get { return downed; } }
-	public enum AdventurerClass { Mage, Ranger, Warrior }
+	public enum AdventurerClass { Mage, Ranger, Fighter }
 	public AdventurerClass _AdventurerClass { get { return adventurerClass; } }
 	public bool Joystick { get { return joyStick; } set { joyStick = value; } }
 	public InputData InputData { get { return inputData; } set { inputData = value; } }
@@ -547,7 +557,7 @@ public class Adventurer : MonoBehaviour {
 		Gizmos.color = Color.green;
 		Gizmos.DrawRay(transform.position, (transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z))) * 2);
 		float primRayRange = 0;
-		if (primaryAttackData && (primaryAttackData._AdventurerClass == AdventurerClass.Warrior || primaryAttackData.UseCone)) {
+		if (primaryAttackData && (primaryAttackData._AdventurerClass == AdventurerClass.Fighter || primaryAttackData.UseCone)) {
 			primRayRange = primaryAttackData.AttackRadius;
 			float primTotalFOV = primaryAttackData.AttackDegrees;
 			float primHalfFOV = primTotalFOV / 2;
@@ -584,7 +594,7 @@ public class Adventurer : MonoBehaviour {
 			primRightDot = Vector3.Dot(primRightRayDirection, transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z)));
 			primRightDot = Mathf.Acos(primRightDot) * Mathf.Rad2Deg;
 		}
-		if (secondaryAttack01Data && (secondaryAttack01Data._AdventurerClass == AdventurerClass.Warrior || secondaryAttack01Data.UseCone)) {
+		if (secondaryAttack01Data && (secondaryAttack01Data._AdventurerClass == AdventurerClass.Fighter || secondaryAttack01Data.UseCone)) {
 			float secTotalFOV = secondaryAttack01Data.AttackDegrees;
 			float secRayRange = secondaryAttack01Data.AttackRadius;
 			float secHalfFOV = secTotalFOV / 2;

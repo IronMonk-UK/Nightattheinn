@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bf703122c43eb942a9c469b6461a48e, type: 3}
+  m_Name: FighterData
+  m_EditorClassIdentifier: 
+  className: Fighter
+  movementSpeed: 5
+  attackSpeed: 5
+  health: 300
+  mana: 100
+  manaRegen: 3
+  primarySkill: {fileID: 11400000, guid: 1bec5ec5774825a40b24ff2155082ad0, type: 2}
+  secondarySkill: {fileID: 11400000, guid: a060d00bf7a3c934e9c4c8e65677b28e, type: 2}
+  passiveSkill: {fileID: 0}
+  adventurerClass: 2
+  weapon: {fileID: 262623424319348990, guid: 03e2d41563779134981e0d5aca64b62e, type: 3}
+  model: {fileID: -927199367670048503, guid: 629f16cf2018d1f40bc73506bb5f8588, type: 3}

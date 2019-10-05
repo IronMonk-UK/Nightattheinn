@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] Vector3[] adventurerSpawns;
 	[SerializeField] SkillData[] primarySkills;
 	//0 - Fighter | 1 - Mage | 2 - Ranger
-	[SerializeField] ClassData[] characters;
+	[SerializeField] ClassData[] classes;
+	[SerializeField] SkillSetData[] classSkills;
 	[SerializeField] EnemyWaveData[] waves;
 
 	[Header("Floats & Integers")]
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour {
 	[SerializeField] Text clock = null;
 	[SerializeField] Canvas canvas;
 	[SerializeField] Button restartBtn, mainMenuBtn, quitBtn;
+	[SerializeField] GameObject drinkPanel;
 
 	[Header("Debug Tools")]
 	[SerializeField] bool spawnEnemies;
@@ -78,9 +80,12 @@ public class GameManager : MonoBehaviour {
 	public List<GameObject> ActiveEnemies { get { return activeEnemies; } set { activeEnemies = value; } }
 	public float _Time { get { return time; } set { time = value; } }
 	public SkillData[] PrimarySkills { get { return primarySkills; } }
-	public ClassData[] Characters { get { return characters; } }
+	public ClassData[] Characters { get { return classes; } }
 	public int PlayerCount { get { return playerCount; } set { playerCount = value; } }
 	public bool WaveBreak { get { return waveBreak; } }
+	public Canvas Canvas { get { return canvas; } }
+	public GameObject DrinkPanel { get { return drinkPanel; } }
+	public SkillSetData[] ClassSkills { get { return classSkills; } }
 
 	void Awake() {
 		DontDestroyOnLoad(gameObject);
@@ -112,7 +117,7 @@ public class GameManager : MonoBehaviour {
 					Debug.Log("Player Classes Count" + playerClasses.Count);
 					Adventurer newAd = Instantiate(adventurer, adventurerSpawns[i], Quaternion.identity).GetComponent<Adventurer>();
 					PlayerUI newUI = Instantiate(playerUis[i], canvas.transform, false).GetComponent<PlayerUI>();
-					newAd.CharacterClassData = characters[playerClasses[i]];
+					newAd.CharacterClassData = classes[playerClasses[i]];
 					newAd.InputData = playerInputs[i];
 					if (playerInputs[i].AButton != "Submit") {
 						newAd.Joystick = true;

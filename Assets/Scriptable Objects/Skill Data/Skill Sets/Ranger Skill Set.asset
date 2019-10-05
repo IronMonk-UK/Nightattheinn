@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e15e22c58f1a9fa41b3392f7cd731c8a, type: 3}
+  m_Name: Ranger Skill Set
+  m_EditorClassIdentifier: 
+  classSet: 1
+  skills:
+  - {fileID: 11400000, guid: 21d75946ca3b14644b90add2d007a84f, type: 2}
+  - {fileID: 11400000, guid: a32d80d164abbc74baec02f0c8a1151f, type: 2}

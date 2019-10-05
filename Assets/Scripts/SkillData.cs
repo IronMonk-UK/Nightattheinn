@@ -12,6 +12,7 @@ public class SkillData : ScriptableObject{
 	[SerializeField] float cooldown;
 	[SerializeField] int manaCost;
 	[SerializeField] bool continuousAttack;
+	[SerializeField] int skillCost;
 	[Header("Particle Affect")]
 	[SerializeField] GameObject particleAffect;
 	[Header("Animation")]
@@ -69,8 +70,9 @@ public class SkillData : ScriptableObject{
 	public GameObject Trail { get { return trail; } }
 	public AnimationClip Anim { get { return anim; } }
 	public AudioClip _AudioClip { get { return audioClip; } }
+	public int SkillCost { get { return skillCost; } }
 
-	public enum SkillType { Primary, Secondary, CC }
+	public enum SkillType { Primary, Secondary, Passive }
 	/*  Function for an Adventurers ranged attack
 		Takes a null animation standard in case a Melee attack is miscalled
 		Takes centre, current rotation, and the euler Y of the adventurer, the camera right, and the adventurer GO itself
