@@ -146,6 +146,27 @@ public class Adventurer : MonoBehaviour {
 	public Text ManaText { get { return manaText; } set { manaText = value; } }
 	public Slider ManaBar { get { return manaBar; } set { manaBar = value; } }
 	public Image ManaBarFill { get { return manaBarFill; } set { manaBarFill = value; } }
+	public SkillData PrimaryAttackData {
+		get {
+			return primaryAttackData;
+		} set {
+			primaryAttackData = value;
+		}
+	}
+	public SkillData SecondaryAttack01Data {
+		get {
+			return secondaryAttack01Data;
+		} set {
+			secondaryAttack01Data = value;
+		}
+	}
+	public SkillData SecondaryAttack02Data {
+		get {
+			return secondaryAttack02Data;
+		} set {
+			secondaryAttack02Data = value;
+		}
+	}
 
 	public ClassData CharacterClassData {
 		get {
