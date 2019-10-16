@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Enemy Data", menuName = "Enemy Data")]
 public class EnemyData : ScriptableObject {
 	[Header("-Generic Variables-")]
+	[SerializeField] Enemy.EnemyClass enemyClass;
 	[SerializeField] Material material;
 	[SerializeField] GameObject[] models;
 	[SerializeField] string enemyName;
@@ -24,7 +25,10 @@ public class EnemyData : ScriptableObject {
 	[SerializeField] float attackRange;
 
 	[SerializeField] AudioClip[] audioClips;
+
+	[SerializeField] SkillData[] bossAttacks;
 	
+	public Enemy.EnemyClass _EnemyClass { get { return enemyClass; } }
 	public string EnemyName { get { return enemyName; } }
 	public int Damage { get { return damage; } }
 	public float Speed { get { return speed; } }
@@ -41,5 +45,6 @@ public class EnemyData : ScriptableObject {
 	public float AttackRange { get { return attackRange; } }
 	public AudioClip[] _AudioClips { get { return audioClips; } }
 	public int GoldValue { get { return goldValue; } }
+	public SkillData[] BossAttacks { get { return bossAttacks; } }
 }
 

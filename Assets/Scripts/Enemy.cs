@@ -6,6 +6,7 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour {
 	[SerializeField] EnemyData enemyData;
+	[SerializeField] EnemyClass enemyClass;
 	[SerializeField] NavMeshAgent navMeshAgent;
 	[SerializeField] float speed;
 	float lastHit;
@@ -60,6 +61,9 @@ public class Enemy : MonoBehaviour {
 	float slowForce;
 	float slowTime;
 
+	[SerializeField] SkillData[] bossAttacks;
+
+	public enum EnemyClass { Minion, Boss }
 	public int Health { get { return currentHealth; } set { currentHealth = value; } }
 	public bool FollowAdventurers { get { return followAdventurers; } set { followAdventurers = value; } }
 	public EnemyData _EnemyData {
@@ -82,6 +86,7 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void SetData() {
+		enemyClass = enemyData._EnemyClass;
 		ranged = enemyData.Ranged;
 		damage = enemyData.Damage;
 		speed = enemyData.Speed;
@@ -117,6 +122,13 @@ public class Enemy : MonoBehaviour {
 		audioPlayTime = GameManager.instance._Time + Random.Range(5, 20);
 
 		navMeshAgent.stoppingDistance = attackDistance - 0.5f;
+
+		if(enemyData._EnemyClass == EnemyClass.Boss) {
+			bossAttacks = new SkillData[enemyData.BossAttacks.Length];
+			foreach(SkillData attack in enemyData.BossAttacks) {
+				bossAttacks[System.Array.IndexOf(enemyData.BossAttacks, attack)] = attack;
+			}
+		}
 	}
 
 	private void Update() {
@@ -201,37 +213,41 @@ public class Enemy : MonoBehaviour {
 	}
 	private void Attack() {
 		if (!onCooldown) {
-			PlayAudio(audioClips[1]);
-			if (ranged) {
-				Vector3 spawnPoint = transform.position + (transform.forward);
-				Bullet bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.Euler(0, transform.eulerAngles.y, 0)).GetComponent<Bullet>();
-				bullet.Actor = gameObject;
-				bullet.Damage = damage;
-				bullet.Thrust = thrust;
-			} else {
-				Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
-				Vector3 characterToCollider;
-				float dot;
-				float dotToDeg;
-				foreach (Collider c in hitColliders) {
-					characterToCollider = (c.transform.position - transform.position).normalized;
-					dot = Vector3.Dot (characterToCollider, transform.forward);
-					dotToDeg = Mathf.Acos(dot) * Mathf.Rad2Deg;
-					if (c == target.GetComponent<Collider>()) {
-						if (dot >= Mathf.Cos((attackRadius / 2) * Mathf.Deg2Rad)) {
-							Adventurer adventurer = c.gameObject.GetComponent<Adventurer>();
-							adventurer.TakeDamage(damage);
-						} else {
+			if (enemyClass == EnemyClass.Minion) {
+				PlayAudio(audioClips[1]);
+				if (ranged) {
+					Vector3 spawnPoint = transform.position + (transform.forward);
+					Bullet bullet = Instantiate(bulletPrefab, spawnPoint, Quaternion.Euler(0, transform.eulerAngles.y, 0)).GetComponent<Bullet>();
+					bullet.Actor = gameObject;
+					bullet.Damage = damage;
+					bullet.Thrust = thrust;
+				} else {
+					Collider[] hitColliders = Physics.OverlapSphere(transform.position, attackRange);
+					Vector3 characterToCollider;
+					float dot;
+					float dotToDeg;
+					foreach (Collider c in hitColliders) {
+						characterToCollider = (c.transform.position - transform.position).normalized;
+						dot = Vector3.Dot(characterToCollider, transform.forward);
+						dotToDeg = Mathf.Acos(dot) * Mathf.Rad2Deg;
+						if (c == target.GetComponent<Collider>()) {
+							if (dot >= Mathf.Cos((attackRadius / 2) * Mathf.Deg2Rad)) {
+								Adventurer adventurer = c.gameObject.GetComponent<Adventurer>();
+								adventurer.TakeDamage(damage);
+							} else {
+							}
 						}
 					}
 				}
-			}
-			onCooldown = true;
-			nextAttackTime = GameManager.instance._Time + cooldown;
-			if (skirmisher) {
-				skirmishing = true;
-				skirmishPosition = new Vector3(Random.Range(-skirmishDistance, skirmishDistance) + transform.position.x, 0, Random.Range(-skirmishDistance, skirmishDistance) + transform.position.z);
-				GetSkirmishPosition();
+				onCooldown = true;
+				nextAttackTime = GameManager.instance._Time + cooldown;
+				if (skirmisher) {
+					skirmishing = true;
+					skirmishPosition = new Vector3(Random.Range(-skirmishDistance, skirmishDistance) + transform.position.x, 0, Random.Range(-skirmishDistance, skirmishDistance) + transform.position.z);
+					GetSkirmishPosition();
+				}
+			} else if (enemyClass == EnemyClass.Boss) {
+
 			}
 		}
 	}

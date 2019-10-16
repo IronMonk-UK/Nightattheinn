@@ -33,8 +33,12 @@ public class Drink : MonoBehaviour
 						if ((adventurer.Joystick && Input.GetAxis(adventurer.InputData.Fire1) > 0) || (!adventurer.Joystick && Input.GetButtonDown(adventurer.InputData.Fire1))) {
 							
 						}
-					} else if(skill._SkillType == SkillData.SkillType.Secondary && (skill != adventurer.SecondaryAttack01Data || skill != adventurer.SecondaryAttack02Data)) {
+					} else if(skill._SkillType == SkillData.SkillType.Secondary && (skill != adventurer.SecondaryAttackData01 || skill != adventurer.SecondaryAttackData02)) {
 						if ((adventurer.Joystick && Input.GetAxis(adventurer.InputData.Fire2) > 0) || (!adventurer.Joystick && Input.GetButtonDown(adventurer.InputData.Fire2))) {
+							
+						}
+					} else if(skill._SkillType == SkillData.SkillType.Passive && skill != adventurer.PassiveSkillData) {
+						if ((adventurer.Joystick && Input.GetAxis(adventurer.InputData.Fire1) > 0) || (!adventurer.Joystick && Input.GetButtonDown(adventurer.InputData.Fire1))) {
 							
 						}
 					}

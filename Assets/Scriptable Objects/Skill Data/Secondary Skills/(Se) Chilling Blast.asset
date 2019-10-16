@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f42ebb77e7f13b84e8f3269039f73894, type: 3}
+  m_Name: (Se) Chilling Blast
+  m_EditorClassIdentifier: 
+  skillType: 0
+  adventurerClass: 0
+  attackType: 1
+  skillName: Chilling Blast
+  damage: 10
+  cooldown: 0.1
+  manaCost: 8
+  continuousAttack: 1
+  skillCost: 0
+  particleAffect: {fileID: 7831025571501848424, guid: 8f78d6b48e85fcc48ac5871926d1b5c6,
+    type: 3}
+  hasAnim: 0
+  animTrigger: 
+  trail: {fileID: 0}
+  anim: {fileID: 0}
+  audioClip: {fileID: 8300000, guid: 7ec4a0be08d27e54fbc3ed69cd971dbd, type: 3}
+  knockback: 0
+  knockbackForce: 0
+  knockbackTime: 0
+  slow: 1
+  slowForce: 1.5
+  slowTime: 3
+  stun: 0
+  stunTime: 0
+  useCone: 1
+  thrust: 0
+  bulletPrefab: {fileID: 0}
+  bulletDuration: 0
+  aoe: 0
+  aoeRadius: 0
+  aoePrefab: {fileID: 0}
+  aoeScale: 0
+  aoeRotate: 0
+  pierce: 0
+  pierceAmount: 0
+  overlapType: 1
+  attackRadius: 145
+  attackHalfBox: {x: 0, y: 0, z: 0}
+  attackRange: 4
+  destroyProjectiles: 0

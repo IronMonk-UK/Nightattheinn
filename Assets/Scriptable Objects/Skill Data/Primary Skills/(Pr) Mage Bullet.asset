@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f42ebb77e7f13b84e8f3269039f73894, type: 3}
+  m_Name: (Pr) Mage Bullet
+  m_EditorClassIdentifier: 
+  skillType: 0
+  adventurerClass: 0
+  attackType: 2
+  skillName: Mage Bullet
+  damage: 40
+  cooldown: 2
+  manaCost: 0
+  continuousAttack: 0
+  skillCost: 0
+  particleAffect: {fileID: 0}
+  hasAnim: 0
+  animTrigger: 
+  trail: {fileID: 0}
+  anim: {fileID: 0}
+  audioClip: {fileID: 8300000, guid: f2f5f8581ccbb9446a4b7f225a6bf5d1, type: 3}
+  knockback: 0
+  knockbackForce: 0
+  knockbackTime: 0
+  slow: 0
+  slowForce: 0
+  slowTime: 0
+  stun: 0
+  stunTime: 0
+  useCone: 0
+  thrust: 6
+  bulletPrefab: {fileID: 1461124619359588081, guid: 337bb1422fa3ba14eb46ba82c216dbed,
+    type: 3}
+  bulletDuration: 0
+  aoe: 1
+  aoeRadius: 2
+  aoePrefab: {fileID: 4727002603132181594, guid: a71521cbda0ccb34682a51746e27d9b5,
+    type: 3}
+  aoeScale: 0
+  aoeRotate: 1
+  pierce: 0
+  pierceAmount: 0
+  overlapType: 0
+  attackRadius: 0
+  attackHalfBox: {x: 0, y: 0, z: 0}
+  attackRange: 0
+  destroyProjectiles: 0

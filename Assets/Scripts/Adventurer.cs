@@ -37,39 +37,40 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] bool primIgnoreAudio;
 
 	[Header("Secondary Skill 01")]
-	[SerializeField] int secondary01Damage;
-	[SerializeField] float sec01Cooldown;
-	[SerializeField] bool sec01OnCooldown;
-	[SerializeField] string sec01AnimTrigger;
-	[SerializeField] GameObject sec01Trail;
-	[SerializeField] AnimationClip sec01Anim;
-	[SerializeField] int sec01ManaCost;
-	[SerializeField] bool sec01IgnoreAudio;
+	[SerializeField] int secondaryDamage01;
+	[SerializeField] float secCooldown01;
+	[SerializeField] bool secOnCooldown01;
+	[SerializeField] string secAnimTrigger01;
+	[SerializeField] GameObject secTrail01;
+	[SerializeField] AnimationClip secAnim01;
+	[SerializeField] int secManaCost01;
+	[SerializeField] bool secIgnoreAudio01;
 	
 	[Header("Secondary Skill 02")]
-	[SerializeField] int secondary02Damage;
-	[SerializeField] float sec02Cooldown;
-	[SerializeField] bool sec02OnCooldown;
-	[SerializeField] string sec02AnimTrigger;
-	[SerializeField] GameObject sec02Trail;
-	[SerializeField] AnimationClip sec02Anim;
-	[SerializeField] int sec02ManaCost;
-	[SerializeField] bool sec02IgnoreAudio;
+	[SerializeField] int secondaryDamage02;
+	[SerializeField] float secCooldown02;
+	[SerializeField] bool secOnCooldown02;
+	[SerializeField] string secAnimTrigger02;
+	[SerializeField] GameObject secTrail02;
+	[SerializeField] AnimationClip secAnim02;
+	[SerializeField] int secManaCost02;
+	[SerializeField] bool secIgnoreAudio02;
 
 	[Header("Audio")]
 	[SerializeField] AudioSource audioSource;
 	[SerializeField] AudioClip currentClip;
 	[SerializeField] AudioClip primAudio;
-	[SerializeField] AudioClip sec01Audio;
+	[SerializeField] AudioClip secAudio01;
 
 	[Header("Prefabs")]
 	[SerializeField] GameObject bullet;
 
 	[Header("Scriptable Objects")]
 	[SerializeField] ClassData characterClassData;
-	[SerializeField] SkillData primaryAttackData;
-	[SerializeField] SkillData secondaryAttack01Data;
-	[SerializeField] SkillData secondaryAttack02Data;
+	[SerializeField] SkillData primarySkillData;
+	[SerializeField] SkillData secondarySkillData01;
+	[SerializeField] SkillData secondarySkillData02;
+	[SerializeField] SkillData passiveSkillData;
 
 	[Header("Animation")]
 	[SerializeField] Animator anim;
@@ -85,8 +86,8 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] GameObject particleParent;
 	[SerializeField] ParticleSystem primParticleAffect;
 	[SerializeField] bool hasPrimParticleAffect;
-	[SerializeField] ParticleSystem sec01ParticleAffect;
-	[SerializeField] bool hasSec01ParticleAffect;
+	[SerializeField] ParticleSystem secParticleAffect01;
+	[SerializeField] bool hasSecParticleAffect01;
 
 	[Header("NavMesh Agent")]
 	[SerializeField] NavMeshAgent navMeshAgent;
@@ -107,9 +108,9 @@ public class Adventurer : MonoBehaviour {
 	[SerializeField] Text primSkillText;
 	[SerializeField] Slider primSkillBar;
 	[SerializeField] Image primSkillFill;
-	[SerializeField] Text sec01SkillText;
-	[SerializeField] Slider sec01SkillBar;
-	[SerializeField] Image sec01SkillFill;
+	[SerializeField] Text secSkillText01;
+	[SerializeField] Slider secSkillBar01;
+	[SerializeField] Image secSkillFill01;
 	[SerializeField] Text killCountText;
 	[SerializeField] Text goldCountText;
 
@@ -125,7 +126,7 @@ public class Adventurer : MonoBehaviour {
 	//[SerializeField] GameManager instance;
 
 	float nextPrimAttackTime;
-	float nextSecAttack01Time;
+	float nextSecAttackTime01;
 
 	bool downed = false;
 
@@ -139,7 +140,7 @@ public class Adventurer : MonoBehaviour {
 	public InputData InputData { get { return inputData; } set { inputData = value; } }
 	public Animator Anim { get { return anim; } }
 	public float PrimCooldown { get { return primCooldown; } }
-	public float Sec01Cooldown { get { return sec01Cooldown; } }
+	public float Sec01Cooldown { get { return secCooldown01; } }
 	public Text HealthText { get { return healthText; } set { healthText = value; } }
 	public Slider HealthBar { get { return healthBar; } set { healthBar = value; } }
 	public Image HealthBarFill { get { return healthBarFill; } set { healthBarFill = value; } }
@@ -148,23 +149,30 @@ public class Adventurer : MonoBehaviour {
 	public Image ManaBarFill { get { return manaBarFill; } set { manaBarFill = value; } }
 	public SkillData PrimaryAttackData {
 		get {
-			return primaryAttackData;
+			return primarySkillData;
 		} set {
-			primaryAttackData = value;
+			primarySkillData = value;
 		}
 	}
-	public SkillData SecondaryAttack01Data {
+	public SkillData SecondaryAttackData01 {
 		get {
-			return secondaryAttack01Data;
+			return secondarySkillData01;
 		} set {
-			secondaryAttack01Data = value;
+			secondarySkillData01 = value;
 		}
 	}
-	public SkillData SecondaryAttack02Data {
+	public SkillData SecondaryAttackData02 {
 		get {
-			return secondaryAttack02Data;
+			return secondarySkillData02;
 		} set {
-			secondaryAttack02Data = value;
+			secondarySkillData02 = value;
+		}
+	}
+	public SkillData PassiveSkillData {
+		get {
+			return passiveSkillData;
+		} set {
+			passiveSkillData = value;
 		}
 	}
 
@@ -232,15 +240,15 @@ public class Adventurer : MonoBehaviour {
 			} else if (primSkillBar.value >= 0) {
 				primSkillBar.value -= Time.deltaTime;
 			}
-			if (GameManager.instance._Time >= nextSecAttack01Time) {
-				sec01OnCooldown = false;
-				sec01SkillBar.value = sec01SkillBar.maxValue;
-			} else if (sec01SkillBar.value >= 0) {
-				sec01SkillBar.value -= Time.deltaTime;
+			if (GameManager.instance._Time >= nextSecAttackTime01) {
+				secOnCooldown01 = false;
+				secSkillBar01.value = secSkillBar01.maxValue;
+			} else if (secSkillBar01.value >= 0) {
+				secSkillBar01.value -= Time.deltaTime;
 			}
-			if (hasSec01ParticleAffect && (((joyStick && Input.GetAxis(inputData.Fire2) == 0 && sec01ParticleAffect.gameObject.activeInHierarchy)) || (!joyStick && Input.GetButtonUp(inputData.Fire2)))) { 
+			if (hasSecParticleAffect01 && (((joyStick && Input.GetAxis(inputData.Fire2) == 0 && secParticleAffect01.gameObject.activeInHierarchy)) || (!joyStick && Input.GetButtonUp(inputData.Fire2)))) { 
 				Debug.Log("Disabling GO");
-				sec01ParticleAffect.gameObject.SetActive(false);
+				secParticleAffect01.gameObject.SetActive(false);
 				audioSource.Stop();
 			}
 		} else {
@@ -304,52 +312,52 @@ public class Adventurer : MonoBehaviour {
 		
 		className = characterClassData.ClassName;
 		moveSpeed = characterClassData.MovementSpeed;
-		primaryAttackData = characterClassData.PrimarySkill;
+		primarySkillData = characterClassData.PrimarySkill;
 		primCooldown = characterClassData.PrimarySkill.Cooldown;
-		secondaryAttack01Data = characterClassData.SecondarySkill;
-		sec01Cooldown = characterClassData.SecondarySkill.Cooldown;
+		secondarySkillData01 = characterClassData.SecondarySkill;
+		secCooldown01 = characterClassData.SecondarySkill.Cooldown;
 		adventurerClass = characterClassData._AdventurerClass;
 
-		if (primaryAttackData.AnimTrigger != null) {
-			primAnimTrigger = primaryAttackData.AnimTrigger;
-			primTrail = primaryAttackData.Trail;
-			primAnim = primaryAttackData.Anim;
+		if (primarySkillData.AnimTrigger != null) {
+			primAnimTrigger = primarySkillData.AnimTrigger;
+			primTrail = primarySkillData.Trail;
+			primAnim = primarySkillData.Anim;
 			SetAnimationEvents(primAnim, "PrimaryAttack", "PrimDestroyTrail");
 		}
-		if (secondaryAttack01Data.AnimTrigger != null) {
-			sec01AnimTrigger = secondaryAttack01Data.AnimTrigger;
-			sec01Trail = secondaryAttack01Data.Trail;
-			sec01Anim = secondaryAttack01Data.Anim;
-			SetAnimationEvents(sec01Anim, "SecondaryAttack", "SecDestroyTrail");
+		if (secondarySkillData01.AnimTrigger != null) {
+			secAnimTrigger01 = secondarySkillData01.AnimTrigger;
+			secTrail01 = secondarySkillData01.Trail;
+			secAnim01 = secondarySkillData01.Anim;
+			SetAnimationEvents(secAnim01, "SecondaryAttack", "SecDestroyTrail");
 		}
 
-		if (primaryAttackData.ParticleAffect != null && primaryAttackData.BulletPrefab == null) {
+		if (primarySkillData.ParticleAffect != null && primarySkillData.BulletPrefab == null) {
 			hasPrimParticleAffect = true;
-			primParticleAffect = Instantiate(primaryAttackData.ParticleAffect, transform.position, transform.rotation).GetComponent<ParticleSystem>();
+			primParticleAffect = Instantiate(primarySkillData.ParticleAffect, transform.position, transform.rotation).GetComponent<ParticleSystem>();
 			primParticleAffect.gameObject.transform.parent = particleParent.transform;
-		} else if (primaryAttackData.ParticleAffect == null) {
+		} else if (primarySkillData.ParticleAffect == null) {
 			if (primParticleAffect != null) {
 				Destroy(primParticleAffect.gameObject);
 			}
 			primParticleAffect = null;
 			hasPrimParticleAffect = false;
 		}
-		if (secondaryAttack01Data.ParticleAffect != null && secondaryAttack01Data.BulletPrefab == null) {
-			hasSec01ParticleAffect = true;
-			sec01ParticleAffect = Instantiate(secondaryAttack01Data.ParticleAffect, transform.position, transform.rotation).GetComponent<ParticleSystem>();
-			sec01ParticleAffect.gameObject.transform.parent = particleParent.transform;
-		} else if (secondaryAttack01Data.ParticleAffect == null) {
-			if (sec01ParticleAffect != null) {
-				Destroy(sec01ParticleAffect.gameObject);
+		if (secondarySkillData01.ParticleAffect != null && secondarySkillData01.BulletPrefab == null) {
+			hasSecParticleAffect01 = true;
+			secParticleAffect01 = Instantiate(secondarySkillData01.ParticleAffect, transform.position, transform.rotation).GetComponent<ParticleSystem>();
+			secParticleAffect01.gameObject.transform.parent = particleParent.transform;
+		} else if (secondarySkillData01.ParticleAffect == null) {
+			if (secParticleAffect01 != null) {
+				Destroy(secParticleAffect01.gameObject);
 			}
-			sec01ParticleAffect = null;
-			hasSec01ParticleAffect = false;
+			secParticleAffect01 = null;
+			hasSecParticleAffect01 = false;
 		}
 
-		sec01ManaCost = secondaryAttack01Data.ManaCost;
+		secManaCost01 = secondarySkillData01.ManaCost;
 
-		primAudio = primaryAttackData._AudioClip;
-		sec01Audio = secondaryAttack01Data._AudioClip;
+		primAudio = primarySkillData._AudioClip;
+		secAudio01 = secondarySkillData01._AudioClip;
 
 		if (model != null) {
 			Destroy(model);
@@ -377,21 +385,21 @@ public class Adventurer : MonoBehaviour {
 		manaBar.maxValue = maxMana;
 		manaBar.value = maxMana;
 		manaBarFill.color = maxManaColour;
-		manaCostText.text = "Mana Cost: " + sec01ManaCost;
+		manaCostText.text = "Mana Cost: " + secManaCost01;
 
 		primSkillText = ui.Skill01Text;
 		primSkillBar = ui.Skill01Slider;
 		primSkillFill = ui.Skill01Fill;
 		primSkillBar.maxValue = primCooldown;
 		primSkillBar.value = primSkillBar.maxValue;
-		primSkillText.text = primaryAttackData.SkillName;
+		primSkillText.text = primarySkillData.SkillName;
 
-		sec01SkillText = ui.Skill02Text;
-		sec01SkillBar = ui.Skill02Slider;
-		sec01SkillFill = ui.Skill02Fill;
-		sec01SkillBar.maxValue = sec01Cooldown;
-		sec01SkillBar.value = sec01SkillBar.maxValue;
-		sec01SkillText.text = secondaryAttack01Data.SkillName;
+		secSkillText01 = ui.Skill02Text;
+		secSkillBar01 = ui.Skill02Slider;
+		secSkillFill01 = ui.Skill02Fill;
+		secSkillBar01.maxValue = secCooldown01;
+		secSkillBar01.value = secSkillBar01.maxValue;
+		secSkillText01.text = secondarySkillData01.SkillName;
 
 		killCountText = ui.KillCount;
 		killCountText.text = "Kill Count: " + killCount;
@@ -403,7 +411,7 @@ public class Adventurer : MonoBehaviour {
 	private void Attack() {
 		if (((joyStick && Input.GetAxis(inputData.Fire1) > 0) || (!joyStick && Input.GetButton(inputData.Fire1))) && !primOnCooldown) { 
 			PlayAudio(primAudio, primIgnoreAudio, out primIgnoreAudio);
-			if (primaryAttackData.HasAnim) {
+			if (primarySkillData.HasAnim) {
 				AddTrail(primTrail);
 				anim.SetTrigger(primAnimTrigger);
 			} else {
@@ -414,15 +422,15 @@ public class Adventurer : MonoBehaviour {
 				PrimaryAttack();
 			}
 		}
-		if (((joyStick && Input.GetAxis(inputData.Fire2) > 0) || (!joyStick && Input.GetButton(inputData.Fire2))) && !sec01OnCooldown) { 
-			PlayAudio(sec01Audio, sec01IgnoreAudio, out sec01IgnoreAudio);
-			if (secondaryAttack01Data.HasAnim) {
-				AddTrail(sec01Trail);
-				anim.SetTrigger(sec01AnimTrigger);
+		if (((joyStick && Input.GetAxis(inputData.Fire2) > 0) || (!joyStick && Input.GetButton(inputData.Fire2))) && !secOnCooldown01) { 
+			PlayAudio(secAudio01, secIgnoreAudio01, out secIgnoreAudio01);
+			if (secondarySkillData01.HasAnim) {
+				AddTrail(secTrail01);
+				anim.SetTrigger(secAnimTrigger01);
 			} else {
-				if (hasSec01ParticleAffect) {
-					sec01ParticleAffect.gameObject.SetActive(true);
-					sec01ParticleAffect.Play();
+				if (hasSecParticleAffect01) {
+					secParticleAffect01.gameObject.SetActive(true);
+					secParticleAffect01.Play();
 				}
 				SecondaryAttack();
 			}
@@ -469,7 +477,7 @@ public class Adventurer : MonoBehaviour {
 		DestroyTrail(out primIgnoreAudio);
 	}
 	private void SecDestroyTrail() {
-		DestroyTrail(out sec01IgnoreAudio);
+		DestroyTrail(out secIgnoreAudio01);
 	}
 
 	private void DestroyTrail(out bool ignoreAudio) {
@@ -490,15 +498,26 @@ public class Adventurer : MonoBehaviour {
 		}
 		outIgnoreAudio = true;
 	}
-
-
 	private void PrimaryAttack() {
-		MakeAttack(primaryAttackData, primCooldown, primAnimTrigger, out primOnCooldown, out nextPrimAttackTime);
+		MakeAttack(primarySkillData, primCooldown, primAnimTrigger, out primOnCooldown, out nextPrimAttackTime);
 	}
 	private void SecondaryAttack() {
-		MakeAttack(secondaryAttack01Data, sec01Cooldown, sec01AnimTrigger, out sec01OnCooldown, out nextSecAttack01Time);
+		MakeAttack(secondarySkillData01, secCooldown01, secAnimTrigger01, out secOnCooldown01, out nextSecAttackTime01);
 	}
-
+	
+	private void MakeAttack(SkillData attackData, float cooldown, string animTrigger, out bool onCooldown, out float nextAttackTime) {
+		attackData.Attack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
+		onCooldown = true;
+		nextAttackTime = GameManager.instance._Time + cooldown;
+		if (attackData == secondarySkillData01) {
+			Debug.Log("Making Secondary Attack!");
+			currentMana -= secManaCost01;
+		}
+		if (animTrigger != "") {
+			anim.ResetTrigger(animTrigger);
+		}
+	}
+	/*
 	private void MakeAttack(SkillData attackData, float cooldown, string animTrigger, out bool onCooldown, out float nextAttackTime) {
 		if (attackData.BulletPrefab != null) {
 			attackData.RangedAttack(anim, transform.position, transform.rotation, right, transform.eulerAngles.y, gameObject);
@@ -507,13 +526,13 @@ public class Adventurer : MonoBehaviour {
 		}
 		onCooldown = true;
 		nextAttackTime = GameManager.instance._Time + cooldown;
-		if (attackData == secondaryAttack01Data) {
+		if (attackData == secondarySkillData01) {
 			Debug.Log("Making Secondary Attack!");
-			currentMana -= sec01ManaCost;
+			currentMana -= secManaCost01;
 		}		
 		if (animTrigger != "") anim.ResetTrigger(animTrigger);
 	}
-
+	*/
 	private void ResetMaterial() {
 		modelMaterial.color = Color.white;
 	}
@@ -578,9 +597,9 @@ public class Adventurer : MonoBehaviour {
 		Gizmos.color = Color.green;
 		Gizmos.DrawRay(transform.position, (transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z))) * 2);
 		float primRayRange = 0;
-		if (primaryAttackData && (primaryAttackData._AdventurerClass == AdventurerClass.Fighter || primaryAttackData.UseCone)) {
-			primRayRange = primaryAttackData.AttackRadius;
-			float primTotalFOV = primaryAttackData.AttackDegrees;
+		if (primarySkillData && (primarySkillData._AdventurerClass == AdventurerClass.Fighter || primarySkillData.UseCone)) {
+			primRayRange = primarySkillData.AttackRadius;
+			float primTotalFOV = primarySkillData.AttackDegrees;
 			float primHalfFOV = primTotalFOV / 2;
 			float primTheta = 0;
 			float primX = primRayRange * Mathf.Cos(primTheta);
@@ -615,9 +634,9 @@ public class Adventurer : MonoBehaviour {
 			primRightDot = Vector3.Dot(primRightRayDirection, transform.rotation * -Vector3.Normalize(new Vector3(Camera.main.transform.right.x, 0, Camera.main.transform.right.z)));
 			primRightDot = Mathf.Acos(primRightDot) * Mathf.Rad2Deg;
 		}
-		if (secondaryAttack01Data && (secondaryAttack01Data._AdventurerClass == AdventurerClass.Fighter || secondaryAttack01Data.UseCone)) {
-			float secTotalFOV = secondaryAttack01Data.AttackDegrees;
-			float secRayRange = secondaryAttack01Data.AttackRadius;
+		if (secondarySkillData01 && (secondarySkillData01._AdventurerClass == AdventurerClass.Fighter || secondarySkillData01.UseCone)) {
+			float secTotalFOV = secondarySkillData01.AttackDegrees;
+			float secRayRange = secondarySkillData01.AttackRadius;
 			float secHalfFOV = secTotalFOV / 2;
 			float secTheta = 0;
 			float secX = secRayRange * Mathf.Cos(secTheta);

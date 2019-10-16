@@ -526,6 +526,8 @@ MonoBehaviour:
   drink: {fileID: 6626208213859022168, guid: 6f4a97460945e1f42b9a43c3b27ea932, type: 3}
   classesSet: 0
   potentialClasses: 
+  classesCount: 0
+  skillSets: []
 --- !u!1001 &1084193186
 PrefabInstance:
   m_ObjectHideFlags: 0
