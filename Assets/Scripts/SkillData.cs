@@ -5,8 +5,9 @@ using UnityEditor;
 using System;
 
 [CreateAssetMenu(fileName = "New Skill Data", menuName = "Skill Data")]
-public class SkillData : ScriptableObject{
+public class SkillData : ScriptableObject {
 	[Header("-Generic Variables-")]
+	[SerializeField] Attacker attacker;
 	[SerializeField] SkillType skillType;
 	[SerializeField] Adventurer.AdventurerClass adventurerClass;
 	[SerializeField] AttackType attackType;
@@ -60,6 +61,8 @@ public class SkillData : ScriptableObject{
 	[SerializeField] float attackRange;
 	[Header("Destroy Projectiles")]
 	[SerializeField] bool destroyProjectiles;
+	[Header("-Debug-")]
+	[SerializeField] GameObject testBox;
 	/*
 	[Header("-Passive Variables-", order = 0)]
 	[Header("Passive Generic", order = 1)]
@@ -68,10 +71,11 @@ public class SkillData : ScriptableObject{
 	[SerializeField] bool hpRegen;
 	[SerializeField] int hpPerSec;
 	*/
-	public enum AttackType { NA, Melee, Ranged };
+	public enum AttackType { NA, Melee, Ranged }
 	public enum MeleeOverlap { NA, Sphere, Rect }
+	public enum Attacker { Adventurer, Enemy }
 
-
+	public Attacker _Attacker { get { return attacker; } }
 	public string SkillName { get { return skillName; } }
 	public int Damage { get { return damage; } }
 	public GameObject BulletPrefab { get { return bulletPrefab; } }
@@ -91,33 +95,50 @@ public class SkillData : ScriptableObject{
 	public int SkillCost { get { return skillCost; } }
 	public bool Stun { get { return stun; } }
 	public enum SkillType { Primary, Secondary, Passive }
+	public MeleeOverlap OverlapType { get { return overlapType; } }
+	public Vector3 AttackHalfBox { get { return attackHalfBox; } }
 	/*  Function for an Adventurers ranged attack
 		Takes a null animation standard in case a Melee attack is miscalled
 		Takes centre, current rotation, and the euler Y of the adventurer, the camera right, and the adventurer GO itself
 	*/
 
 	public void Attack(Animator anim, Vector3 centre, Quaternion rotation, Vector3 right, float eulerY, GameObject adventurer) {
+		Attacker targetTag;
+		if (attacker == Attacker.Adventurer) {
+			targetTag = Attacker.Enemy;
+		} else {
+			targetTag = Attacker.Adventurer;
+		}
 		if (attackType == AttackType.Melee) {
 			Collider[] hitColliders;
-			CreateOverlap(centre, out hitColliders);
+			CreateOverlap(centre, right, rotation, out hitColliders);
 			Vector3 characterToCollider;
 			float dot;
 			foreach (Collider c in hitColliders) {
 				characterToCollider = (c.transform.position - centre).normalized;
-				dot = Vector3.Dot(characterToCollider, rotation * -right);
-				if (c.gameObject.tag == "Enemy") {
+				if(attacker == Attacker.Adventurer) {
+					dot = Vector3.Dot(characterToCollider, rotation * -right);
+				} else {
+					dot = Vector3.Dot(characterToCollider, right);
+				}
+				if (c.gameObject.tag == targetTag.ToString()) {
 					if (dot >= Mathf.Cos((attackRadius / 2) * Mathf.Deg2Rad)) {
-						Enemy enemy = c.gameObject.GetComponent<Enemy>();
-						Debug.Log("Dealing " + damage + " Damage.");
-						enemy.TakeDamage(damage, adventurer);
-						if (knockback) {
-							enemy.GetKnocked(centre, knockbackTime, knockbackForce);
-						}
-						if (stun) {
-							enemy.GetStunned(stunTime);
-						}
-						if (slow) {
-							enemy.GetSlowed(slowTime, slowForce);
+						if (targetTag == Attacker.Enemy) {
+							Enemy enemy = c.gameObject.GetComponent<Enemy>();
+							Debug.Log("Dealing " + damage + " Damage.");
+							enemy.TakeDamage(damage, adventurer);
+							if (knockback) {
+								enemy.GetKnocked(centre, knockbackTime, knockbackForce);
+							}
+							if (stun) {
+								enemy.GetStunned(stunTime);
+							}
+							if (slow) {
+								enemy.GetSlowed(slowTime, slowForce);
+							}
+						} else {
+							Adventurer target = c.gameObject.GetComponent<Adventurer>();
+							target.TakeDamage(damage);
 						}
 					}
 				}
@@ -161,6 +182,7 @@ public class SkillData : ScriptableObject{
 			}
 		}
 	}
+	/*
 	public void RangedAttack (Animator anim, Vector3 centre, Quaternion rotation, Vector3 right, float eulerY, GameObject adventurer) {
 		// Confirms it is not a cone attack
 		if (!useCone) {
@@ -202,9 +224,8 @@ public class SkillData : ScriptableObject{
 			MeleeAttack(anim, centre, rotation, right, adventurer);
 		}
 	}
-	/*  Function for an Adventurers melee attack
-		Takes the attack animation, adventurer centre, current rotation, the adventurer GO, and camera right
-	*/
+	//Function for an Adventurers melee attack
+	//Takes the attack animation, adventurer centre, current rotation, the adventurer GO, and camera right
 	public void MeleeAttack (Animator anim, Vector3 centre, Quaternion rotation, Vector3 right, GameObject adventurer) {
 		// Creates a sphere with the adventurer at centre, and a radius based on attack range
 		//Collider[] hitColliders = Physics.OverlapSphere(centre, attackRange);
@@ -243,11 +264,18 @@ public class SkillData : ScriptableObject{
 			}
 		}
 	}
-
-	private void CreateOverlap(Vector3 centre, out Collider[] hitColliders) {
+	*/
+	private void CreateOverlap(Vector3 centre, Vector3 forward, Quaternion rotation, out Collider[] hitColliders) {
 		hitColliders = null;
 		if (overlapType == MeleeOverlap.Rect) {
-			hitColliders = Physics.OverlapBox(centre, attackHalfBox);
+			hitColliders = Physics.OverlapBox(centre + (forward * attackRange), attackHalfBox, rotation);
+			Debug.Log("Centre: " + (centre + (forward * attackRange)) + " Size: " + (attackHalfBox * 2) + " Rotation: " + rotation);
+			/*
+			if (testBox) {
+				GameObject box = Instantiate(testBox, centre + (forward * attackRange), rotation);
+				box.transform.localScale = attackHalfBox * 2;
+			}
+			*/
 		} else if (overlapType == MeleeOverlap.Sphere) {
 			hitColliders = Physics.OverlapSphere(centre, attackRange);
 		}

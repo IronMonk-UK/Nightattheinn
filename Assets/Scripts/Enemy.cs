@@ -45,6 +45,8 @@ public class Enemy : MonoBehaviour {
 	[SerializeField] List<AudioClip> audioClips;
 	[SerializeField] float audioPlayTime;
 
+	[SerializeField] Animator anim;
+
 	[SerializeField] bool knocked = false;
 
 	float knockedTime;
@@ -76,7 +78,23 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 
+	[Header("Gizmo Debug")]
+	[SerializeField] Vector3 translation;
+	[SerializeField] Vector3 eulerAngles;
+	[SerializeField] Vector3 scale = new Vector3(1, 1, 1);
+
+	MeshFilter mf;
+	Vector3[] origVerts;
+	Vector3[] newVerts;
+	Matrix4x4 m;
+
 	private void Awake() {
+		//Debug
+		//mf = GetComponent<MeshFilter>();
+		//origVerts = mf.mesh.vertices;
+		//newVerts = new Vector3[origVerts.Length];
+		//Debug
+		//anim = gameObject.GetComponent<Animator>();
 		SetData();
 		if (skirmisher) {
 			skirmishPosition = new Vector3(0, 1, 0);
@@ -132,6 +150,10 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private void Update() {
+		//Debug
+		Quaternion rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, eulerAngles.z);
+		m = Matrix4x4.TRS(translation, rotation, scale);
+		//Debug
 		float step = speed * Time.deltaTime;
 		if (skirmishing) {
 			Skirmish(step);
@@ -239,15 +261,17 @@ public class Enemy : MonoBehaviour {
 						}
 					}
 				}
-				onCooldown = true;
-				nextAttackTime = GameManager.instance._Time + cooldown;
-				if (skirmisher) {
-					skirmishing = true;
-					skirmishPosition = new Vector3(Random.Range(-skirmishDistance, skirmishDistance) + transform.position.x, 0, Random.Range(-skirmishDistance, skirmishDistance) + transform.position.z);
-					GetSkirmishPosition();
-				}
 			} else if (enemyClass == EnemyClass.Boss) {
-
+				int index = Random.Range(0, bossAttacks.Length);
+				Debug.Log("Boss Attacking with Attack " + index);
+				bossAttacks[index].Attack(anim, transform.position, transform.rotation, transform.forward, transform.eulerAngles.y, gameObject);
+			}
+			onCooldown = true;
+			nextAttackTime = GameManager.instance._Time + cooldown;
+			if (skirmisher) {
+				skirmishing = true;
+				skirmishPosition = new Vector3(Random.Range(-skirmishDistance, skirmishDistance) + transform.position.x, 0, Random.Range(-skirmishDistance, skirmishDistance) + transform.position.z);
+				GetSkirmishPosition();
 			}
 		}
 	}
@@ -329,10 +353,10 @@ public class Enemy : MonoBehaviour {
 	private void OnDrawGizmos() {
 		Gizmos.color = Color.blue;
 		//Gizmos.DrawRay(transform.position, knockback);
-		Gizmos.DrawRay(transform.position, transform.forward * attackRange);
-		float rayRange = attackRange;
+		Gizmos.DrawRay(transform.position, transform.forward * enemyData.AttackRange);
+		float rayRange = enemyData.AttackRange;
 		Gizmos.color = Color.red;
-		float primTotalFOV = attackRadius;
+		float primTotalFOV = enemyData.AttackRadius;
 		float primHalfFOV = primTotalFOV / 2;
 		float primTheta = 0;
 		float primX = rayRange * Mathf.Cos(primTheta);
@@ -363,5 +387,16 @@ public class Enemy : MonoBehaviour {
 		Gizmos.DrawRay(transform.position, primRightRayDirection * rayRange);
 		float primRightDot = Vector3.Dot(primRightRayDirection, transform.forward);
 		primRightDot = Mathf.Acos(primRightDot) * Mathf.Rad2Deg;
+		if(enemyData._EnemyClass == EnemyClass.Boss) {
+			foreach(SkillData attack in enemyData.BossAttacks) {
+				if(attack.OverlapType == SkillData.MeleeOverlap.Rect) {
+					//Matrix4x4 rotationMatrix = Matrix4x4.TRS(transform.position, , scale);
+					//Gizmos.matrix = rotationMatrix;
+					Gizmos.color = Color.cyan;
+					Gizmos.DrawWireCube(transform.position + (transform.forward * rayRange), attack.AttackHalfBox * 2);
+					//Gizmos.DrawWireCube(transform.position, attack.AttackHalfBox * 2);
+				}
+			}
+		}
 	}
 }

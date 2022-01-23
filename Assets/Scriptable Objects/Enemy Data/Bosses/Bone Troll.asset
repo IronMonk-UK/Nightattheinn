@@ -14,22 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyClass: 1
   material: {fileID: 0}
-  models: []
+  models:
+  - {fileID: -927199367670048503, guid: 9f2af9fa1521a2943a5e430b2a0b802b, type: 3}
   enemyName: Bone Troll
-  speed: 0
-  health: 0
+  speed: 2
+  health: 300
   damage: 0
-  cooldown: 0
+  cooldown: 2
   skirmisher: 0
   skirmishDistance: 0
-  goldValue: 0
+  goldValue: 10
   ranged: 0
   thrust: 0
   bulletPrefab: {fileID: 0}
   attackRadius: 0
-  attackRange: 0
-  audioClips: []
+  attackRange: 3
+  audioClips:
+  - {fileID: 8300000, guid: 13f5d8246c4effa448b6ceeaaab75c9e, type: 3}
+  - {fileID: 8300000, guid: 13f5d8246c4effa448b6ceeaaab75c9e, type: 3}
+  - {fileID: 8300000, guid: 13f5d8246c4effa448b6ceeaaab75c9e, type: 3}
   bossAttacks:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: ded216d6995d7784aaf54aef1e41c130, type: 2}
+  - {fileID: 11400000, guid: acb43336cb2a57345a8f1ffd0644d5c1, type: 2}

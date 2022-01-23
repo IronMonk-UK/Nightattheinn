@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 665988111}
   - component: {fileID: 7995477075220071266}
   - component: {fileID: 8339223713027640815}
+  - component: {fileID: -8541215259341771544}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -79,6 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyData: {fileID: 11400000, guid: 64c8958fee6dc6a48b4d08b0a69c9057, type: 2}
+  enemyClass: 0
   navMeshAgent: {fileID: 8339223713027640815}
   speed: 2
   maxHealth: 0
@@ -94,6 +96,7 @@ MonoBehaviour:
   thrust: 0
   skirmisher: 0
   skirmishing: 0
+  goldValue: 0
   followAdventurers: 1
   target: {fileID: 0}
   distanceToTarget: 0
@@ -110,9 +113,14 @@ MonoBehaviour:
   currentClip: {fileID: 0}
   audioClips: []
   audioPlayTime: 0
+  anim: {fileID: 0}
   knocked: 0
   stunned: 0
   slowed: 0
+  bossAttacks: []
+  translation: {x: 0, y: 0, z: 0}
+  eulerAngles: {x: 0, y: 0, z: 0}
+  scale: {x: 1, y: 1, z: 1}
 --- !u!65 &65628370444363764
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -260,3 +268,22 @@ NavMeshAgent:
   m_BaseOffset: -0.166
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!95 &-8541215259341771544
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751320589176948}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8b7b7dcab152c384e87a7b813030c3d7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
