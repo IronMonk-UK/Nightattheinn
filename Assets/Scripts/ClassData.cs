@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/* 
+ * Copyright (c) Iron Monk Studios 2022
+ * www.ironmonkstudios.co.uk 
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 

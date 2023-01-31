@@ -1,4 +1,9 @@
-﻿//using System; - Was causing conflict for random.range
+﻿/* 
+ * Copyright (c) Iron Monk Studios 2022
+ * www.ironmonkstudios.co.uk 
+ */
+
+//using System; - Was causing conflict for random.range
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
